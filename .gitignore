@@ -1,0 +1,12 @@
+# Bản gộp 1 file do build_bundle.py sinh ra — chạy lại lúc cần, đừng commit.
+# Mỗi lần build là một file ~22 MB mới, commit vào sẽ phình repo rất nhanh.
+iPOS-Inventory-Present.html
+
+# Rác hệ điều hành / trình soạn thảo
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+*.tmp
+*.bak

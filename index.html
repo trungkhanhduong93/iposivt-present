@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>iPOS Inventory — Bộ trình chiếu Plus &amp; Pro</title>
+<meta name="description" content="Bộ trình chiếu web iPOS Inventory Plus và iPOS Inventory Pro cho ngành F&amp;B.">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-deck="plus">
+
+<div class="app">
+
+  <!-- Thanh công cụ -->
+  <header class="bar">
+    <div class="brand">
+      <img src="assets/logo-ipos.png" alt="iPOS.vn">
+      <span>Inventory</span>
+    </div>
+
+    <div class="seg">
+      <button id="toPlus" class="on" title="Phím 1">IVT Plus</button>
+      <button id="toPro"            title="Phím 2">IVT Pro</button>
+    </div>
+
+    <span class="sp"></span>
+
+    <span class="cnt" id="cnt">01<i> / 28</i></span>
+
+    <button class="tbtn" id="gridBtn" title="Lưới slide (ESC)">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span>Lưới</span>
+    </button>
+
+    <button class="tbtn" id="fsBtn" title="Toàn màn hình (F)">
+      <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+      <span>Toàn màn hình</span>
+    </button>
+
+    <button class="tbtn" id="helpBtn" title="Phím tắt (?)">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></svg>
+    </button>
+  </header>
+
+  <!-- Sân khấu -->
+  <main class="stagewrap">
+    <button class="arrow prev" id="prev" title="Slide trước (←)">
+      <svg viewBox="0 0 24 24"><path d="M15 18 9 12l6-6"/></svg>
+    </button>
+
+    <div class="stage" id="stage"></div>
+
+    <button class="arrow next" id="next" title="Slide sau (→)">
+      <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+  </main>
+
+  <div class="prog" id="prog"><i></i></div>
+</div>
+
+<!-- Lưới slide -->
+<div class="grid" id="grid">
+  <div class="gh">
+    <h2 id="gt"></h2>
+    <button class="tbtn" id="gclose">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      <span>Đóng (ESC)</span>
+    </button>
+  </div>
+  <div class="gb" id="gb"></div>
+</div>
+
+<!-- Phóng to ảnh -->
+<div class="lb" id="lb">
+  <img src="" alt="">
+  <button class="x"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+</div>
+
+<!-- Phím tắt -->
+<div class="help" id="help">
+  <div class="cd">
+    <h3>Phím tắt</h3>
+    <table>
+      <tr><td><kbd>→</kbd><kbd>Space</kbd></td><td>Slide sau</td></tr>
+      <tr><td><kbd>←</kbd></td><td>Slide trước</td></tr>
+      <tr><td><kbd>Home</kbd><kbd>End</kbd></td><td>Slide đầu / cuối</td></tr>
+      <tr><td><kbd>Esc</kbd></td><td>Mở / đóng lưới slide</td></tr>
+      <tr><td><kbd>F</kbd></td><td>Toàn màn hình</td></tr>
+      <tr><td><kbd>X</kbd></td><td>Hiện đánh dấu nội dung bổ sung &amp; ghi chú việc cần làm</td></tr>
+      <tr><td><kbd>1</kbd><kbd>2</kbd></td><td>Chuyển bộ Plus / Pro</td></tr>
+      <tr><td><kbd>?</kbd></td><td>Bảng này</td></tr>
+    </table>
+    <div class="cl"><button class="tbtn" id="hclose"><span>Đóng</span></button></div>
+  </div>
+</div>
+
+<script src="js/slides-data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
