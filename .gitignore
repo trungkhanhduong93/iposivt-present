@@ -10,3 +10,6 @@ desktop.ini
 .idea/
 *.tmp
 *.bak
+
+# Ảnh chụp do tools/check_slides.py sinh ra khi kiểm tra
+tools/shots/
