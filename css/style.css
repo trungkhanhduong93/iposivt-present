@@ -137,8 +137,7 @@ body[data-deck="v3"] .prog i{background:linear-gradient(90deg,#0f6d64,#2fc0b1)}
    ========================================================================== */
 .slide{position:absolute;inset:0;background:#fff;overflow:hidden;
   display:flex;flex-direction:column;color:var(--body);font-size:15px;line-height:1.6}
-.slide.in{animation:sl .34s cubic-bezier(.22,.8,.3,1) both}
-@keyframes sl{from{opacity:0;transform:translateX(var(--dx,18px))}to{opacity:1;transform:none}}
+.slide.in{animation:sl var(--d-fast,.46s) var(--ease,cubic-bezier(.22,.72,.24,1)) both}
 
 /* nền trang trí nhạt */
 .slide::before{content:'';position:absolute;right:-180px;top:-200px;width:520px;height:520px;
@@ -1147,54 +1146,102 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
 
 /* =============================================================================
    CHUYỂN ĐỘNG KHI TRÌNH CHIẾU
-   Ba lớp chồng lên nhau: cả slide trượt vào · điểm nhấn trong khung tự chạy ·
-   các phần nội dung hiện dần theo phím Space. Tổng một slide dưới 800ms.
-   ========================================================================== */
 
-/* ── Các phần hiện dần theo phím Space ──────────────────────────────────── */
+   Một thang nhịp duy nhất cho cả ba bộ. Thứ tự vào bám đúng thứ tự mắt đọc:
+   nền → dòng dẫn → tiêu đề → gạch cam → dòng phụ → nội dung → ảnh.
+   Ảnh vào SAU CÙNG: nó nặng mắt nhất, vào trước là kéo mắt khỏi tiêu đề.
+   Tổng một slide khoảng 1.1 giây — đủ chậm để theo kịp khi đang nói, chưa tới
+   mức phải chờ. Sửa nhịp thì sửa ở bảng biến này, đừng rải số vào từng chỗ.
+   ========================================================================== */
+:root{
+  --t-kick:  70ms;   /* dòng dẫn  */
+  --t-title:160ms;   /* tiêu đề   */
+  --t-rule: 280ms;   /* gạch cam  */
+  --t-sub:  320ms;   /* dòng phụ  */
+  --t-body: 400ms;   /* nội dung  */
+  --t-art:  460ms;   /* ảnh, khung, minh hoạ */
+  --d-fast: 460ms;
+  --d-base: 560ms;
+  --d-slow: 680ms;
+  /* Ease-out đầy đặn: bung nhanh ở đầu rồi hãm êm, không nảy ngược */
+  --ease:      cubic-bezier(.22,.72,.24,1);
+  --ease-soft: cubic-bezier(.26,.62,.28,1);
+  --ease-line: cubic-bezier(.45,.05,.2,1);
+}
+
+/* ── Cả slide vào ──────────────────────────────────────────────────────── */
+/* Trượt theo đúng hướng đang đi, kèm một nhịp nở rất nhẹ cho có chiều sâu */
+@keyframes sl{
+  from{opacity:0;transform:translateX(var(--dx,24px)) scale(.994)}
+  to  {opacity:1;transform:none}
+}
+/* Nền trang trí đi chậm hơn tiền cảnh — mắt đọc chữ trước, nền lùi ra sau */
+@keyframes rvbg{from{opacity:0;transform:scale(.9)}to{opacity:.85;transform:none}}
+.slide.in::before{animation:rvbg 1s .1s var(--ease-soft) both}
+
+/* ── Khung chữ đầu slide ───────────────────────────────────────────────── */
+@keyframes rvup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.slide.in .kicker {animation:rvup var(--d-fast) var(--t-kick)  var(--ease) both}
+.slide.in .s-title{animation:rvup var(--d-base) var(--t-title) var(--ease) both}
+.slide.in .s-sub  {animation:rvup var(--d-base) var(--t-sub)   var(--ease) both}
+
+/* Gạch cam vẽ ra từ trái, đi sau tiêu đề như một nét gạch chân thật */
+@keyframes rvrule{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.slide.in .rule,.slide.in .ln:not(svg){transform-origin:left center;
+  animation:rvrule var(--d-base) var(--t-rule) var(--ease-line) both}
+
+/* ── Ảnh, khung máy, khung trình duyệt ─────────────────────────────────── */
+/* Trôi lên và nở rất nhẹ. Không nảy ngược: ảnh chụp màn mà nảy thì rẻ tiền. */
+@keyframes rvpop{from{opacity:0;transform:translateY(16px) scale(.985)}
+                 to  {opacity:1;transform:none}}
+.slide.in .pf,.slide.in .dev .shots>img,.slide.in .val .shots>img,
+.slide.in .brw,.slide.in .plat .box,.slide.in .vid .fr,
+.slide.in .imgfull img,.slide.in .oflow .pic img,.slide.in .prod .c .im img,
+.slide.in .profwrap .art img,.slide.in .bl.hasart .art img{
+  animation:rvpop var(--d-slow) var(--t-art) var(--ease-soft) both}
+
+/* ── Chữ cỡ lớn trên slide không chia bước ─────────────────────────────── */
+@keyframes rvnum{from{opacity:0;transform:translateY(20px) scale(.94)}
+                 to  {opacity:1;transform:none}}
+.slide.in .sect .r b,.slide.in .cfm .vl,.slide.in .qa h1,.slide.in .thx h1{
+  animation:rvnum var(--d-slow) var(--t-body) var(--ease) both}
+
+/* ── Slide mở đầu phần: chữ theo nhịp, ảnh trôi vào từ mép phải ─────────── */
+@keyframes rvside{from{opacity:0;transform:translateX(46px)}to{opacity:1;transform:none}}
+.slide.in .intro h1  {animation:rvup var(--d-base) var(--t-title) var(--ease) both}
+.slide.in .intro .num{animation:rvup var(--d-fast) var(--t-kick)  var(--ease) both}
+.slide.in .intro p   {animation:rvup var(--d-base) var(--t-sub)   var(--ease) both}
+.slide.in .intro .foot{animation:rvup var(--d-base) 620ms var(--ease) both}
+.slide.in .intro .art .brw{animation:rvside var(--d-slow) var(--t-art) var(--ease-soft) both}
+/* Chip điểm nhấn nối nhau, mỗi cái lệch một nhịp ngắn */
+.slide.in .intro .chips span{animation:rvup var(--d-fast) var(--ease) both}
+.slide.in .intro .chips span:nth-child(1){animation-delay:420ms}
+.slide.in .intro .chips span:nth-child(2){animation-delay:490ms}
+.slide.in .intro .chips span:nth-child(3){animation-delay:560ms}
+.slide.in .intro .chips span:nth-child(4){animation-delay:630ms}
+
+/* ── Các phần hiện dần theo phím Space ─────────────────────────────────── */
 /* Ẩn bằng độ mờ, KHÔNG dùng display:none — auto-fit phải đo được chiều cao
    thật của cả slide ngay từ đầu, không thì slide dài sẽ tràn lúc hiện nốt.
    opacity cần !important vì vài selector sẵn có đặc hiệu cao hơn, ví dụ
    .val .rail .r vốn đặt opacity:.5 cho mục chưa tới lượt. */
-.slide [data-rv]{transition:opacity .40s cubic-bezier(.22,.8,.3,1),
-                            transform .40s cubic-bezier(.22,.8,.3,1)}
-.slide [data-rv]:not(.rvon){opacity:0 !important;transform:translateY(9px)}
+.slide [data-rv]{transition:opacity var(--d-base) var(--ease),
+                            transform var(--d-base) var(--ease)}
+.slide [data-rv]:not(.rvon){opacity:0 !important;transform:translateY(13px)}
+/* Lúc auto-fit đo chiều cao thì ghim mọi phần về đúng chỗ, xem chú thích ở
+   fitOnce trong app.js. Chỉ tồn tại trong đúng một nhịp đo. */
+.slide.measuring [data-rv]{transform:none !important;transition:none !important}
 
 /* Số phần còn lại của slide, nằm cạnh số slide trên thanh công cụ */
 .bar .cnt u{text-decoration:none;margin-left:9px;padding:1.5px 7px 2.5px;border-radius:5px;
   background:var(--orange);color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.3px}
 
-/* ── Điểm nhấn trong khung, tự chạy khi vào slide ───────────────────────── */
-/* Gạch cam vẽ ra từ trái. Loại trừ svg vì slide sơ đồ cũng dùng class .ln. */
-@keyframes rvrule{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-.slide.in .rule,.slide.in .ln:not(svg){transform-origin:left center;
-  animation:rvrule .46s .10s cubic-bezier(.22,.8,.3,1) both}
-
-/* Ảnh máy và khung trình duyệt nảy nhẹ vào chỗ */
-@keyframes rvpop{from{opacity:0;transform:scale(.962) translateY(7px)}
-                 to{opacity:1;transform:none}}
-.slide.in .pf,.slide.in .dev .shots>img,.slide.in .val .shots>img,
-.slide.in .brw,.slide.in .plat .box,.slide.in .vid .fr{
-  animation:rvpop .52s .06s cubic-bezier(.34,1.32,.5,1) both}
-
-/* Chữ cỡ lớn trồi lên. Chỉ đặt cho slide không chia bước — chỗ nào cha đã
-   nằm trong danh sách hiện dần thì con không cần chuyển động riêng, nó chạy
-   lúc cha còn đang ẩn nên người xem không thấy. */
-@keyframes rvnum{from{opacity:0;transform:translateY(14px) scale(.92)}
-                 to{opacity:1;transform:none}}
-.slide.in .sect .r b,.slide.in .cfm .vl,.slide.in .qa h1,.slide.in .thx h1{
-  animation:rvnum .54s .12s cubic-bezier(.22,.9,.32,1) both}
-
-/* Tiêu đề vào sau khung một nhịp ngắn */
-@keyframes rvup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.slide.in .kicker {animation:rvup .40s .04s cubic-bezier(.22,.8,.3,1) both}
-.slide.in .s-title{animation:rvup .44s .08s cubic-bezier(.22,.8,.3,1) both}
-.slide.in .s-sub  {animation:rvup .44s .16s cubic-bezier(.22,.8,.3,1) both}
-
 /* ── Máy người xem bật giảm chuyển động thì tắt hết, chỉ giữ mờ dần ─────── */
 @media (prefers-reduced-motion: reduce){
-  .slide.in,.slide.in *{animation:none !important}
-  .slide [data-rv]{transition:opacity .12s linear}
+  .slide.in,.slide.in *,.slide.in::before{animation:none !important}
+  /* Độ trễ do JS đặt thẳng vào thẻ, phải !important mới đè được — không thì
+     tắt chuyển động rồi mà nội dung vẫn hiện nhỏ giọt sau gần nửa giây. */
+  .slide [data-rv]{transition:opacity .14s linear;transition-delay:0s !important}
   .slide [data-rv]:not(.rvon){transform:none}
 }
 

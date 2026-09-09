@@ -70,7 +70,7 @@ with sync_playwright() as p:
 
     for t in targets:
         pg.evaluate('(h) => { location.hash = h; }', '#' + t)
-        pg.wait_for_timeout(450)
+        pg.wait_for_timeout(1600)   # chờ hiệu ứng vào slide chạy xong rồi mới đo
         r = pg.evaluate(PROBE)
         notes = []
         if r['over']:       notes.append('TRAN: ' + ' | '.join(r['over']))

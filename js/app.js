@@ -714,10 +714,15 @@ const RV = {
   orderflow : '.oflow .s, .oflow .terms>div',
   production: '.prod .chk, .prod .cols .c',
   twolane   : '.twol .lane',
-  pipeline  : '.pipe .row>*'
+  pipeline  : '.pipe .row>*',
+  packs     : '.pks .pk, .pks .dept .d'
 };
-const RV_GAP = 45;    // ms giữa hai phần tử khi cả slide hiện trọn một lượt
-const RV_CAP = 360;   // trần độ trễ, giữ tổng thời gian vào slide dưới 800ms
+const RV_LEAD = 380;  // chờ khung chữ đầu slide vào xong rồi mới tới nội dung
+/* Mốc mọi chuyển động của một slide đã dừng hẳn: độ trễ lớn nhất của phần hiện
+   dần (RV_LEAD + RV_CAP) cộng thời lượng một nhịp, chừa thêm chút hao. */
+const ANIM_END = 1600;
+const RV_GAP = 80;    // ms giữa hai phần tử khi cả slide hiện trọn một lượt
+const RV_CAP = 560;   // trần độ trễ, giữ tổng thời gian vào slide quanh 1.1 giây
 
 /* ── Ứng dụng ────────────────────────────────────────────────────────────── */
 const App = {
@@ -912,8 +917,10 @@ const App = {
     $$('[data-rv]', el).forEach(n => {
       const k = +n.getAttribute('data-rv');
       const on = k <= this.step;
+      /* Khi cả slide hiện trọn thì nội dung chờ khung chữ vào xong mới tới
+         lượt; khi bấm Space từng bước thì hiện ngay, không bắt người ta đợi. */
       n.style.transitionDelay = (on && stagger)
-        ? Math.min((k - 1) * RV_GAP, RV_CAP) + 'ms' : '0ms';
+        ? (RV_LEAD + Math.min((k - 1) * RV_GAP, RV_CAP)) + 'ms' : '0ms';
       n.classList.toggle('rvon', on);
     });
     this.paintCount();
@@ -1049,8 +1056,10 @@ const App = {
     }
 
     const el = this.buildSlide(s, d);
-    el.classList.add('in');
-    el.style.setProperty('--dx', (this.dir === -1 ? '-18px' : '18px'));
+    el.style.setProperty('--dx', (this.dir === -1 ? '-24px' : '24px'));
+    /* Ẩn tạm một khung hình: auto-fit phải đo TRƯỚC khi hiệu ứng chạy, vì mọi
+       phép dịch chuyển đều tính vào vùng tràn và làm phép đo sai. */
+    el.style.visibility = 'hidden';
     this.el.stage.innerHTML = '';
     this.el.stage.appendChild(el);
 
@@ -1079,11 +1088,20 @@ const App = {
     this.el.next.disabled = this.i === d.slides.length - 1;
     this.writeHash();
     this.autofit(el);
+    requestAnimationFrame(() => {
+      el.style.visibility = '';
+      el.classList.add('in');          // đo xong mới cho hiệu ứng chạy
+    });
     if (this.el.grid.classList.contains('open')) this.paintGrid();
   },
 
   /* Một lượt đo và thu nhỏ nếu nội dung tràn khung 1280×720 */
   fitOnce (el) {
+    /* Phần chưa tới lượt đang bị dịch xuống vài pixel, và vùng tràn do dịch
+       chuyển vẫn tính vào scrollHeight của cha — đo lúc đó thì slide vừa khít
+       cũng bị thu nhỏ oan. Ghim chúng về đúng chỗ trong lúc đo, transition tắt
+       luôn nên không sinh nhảy. */
+    el.classList.add('measuring');
     const boxes = [];
     const body = $('.s-body', el);
     if (body && body.firstElementChild) boxes.push([body, body.firstElementChild]);
@@ -1103,14 +1121,21 @@ const App = {
         inner.style.zoom = z.toFixed(2);
       }
     });
+    el.classList.remove('measuring');
   },
 
-  /* Thu nhỏ nội dung nếu tràn khung — bảo đảm không bao giờ có thanh cuộn */
+  /* Thu nhỏ nội dung nếu tràn khung — bảo đảm không bao giờ có thanh cuộn.
+     Đo ba mốc: ngay lúc dựng (hiệu ứng chưa chạy), khi font vào chỗ, và sau
+     khi hiệu ứng kết thúc hẳn. KHÔNG đo giữa lúc đang chuyển động. */
   autofit (el) {
-    const run = () => this.fitOnce(el);
+    const run = () => { if (el.isConnected) this.fitOnce(el); };
     run();
-    requestAnimationFrame(run);           // chạy lại sau khi ảnh/ font vào chỗ
-    setTimeout(run, 260);
+    /* Font tải xong thì đo lại — nhưng chỉ khi hiệu ứng chưa chạy. Đo giữa lúc
+       đang chuyển động sẽ tắt transition đang dở và phần nội dung nhảy phịch
+       ra thay vì trôi lên. Trường hợp font về muộn thì để lượt cuối lo. */
+    if (document.fonts && document.fonts.ready)
+      document.fonts.ready.then(() => { if (!el.classList.contains('in')) run(); });
+    setTimeout(run, ANIM_END);
   },
 
   /* Thứ tự ba bước bắt buộc: đổi lớp chế độ → đặt tỉ lệ thu nhỏ → dựng lại.

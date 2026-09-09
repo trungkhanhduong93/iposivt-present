@@ -364,26 +364,61 @@ khi trừ tiêu đề và padding. Con số này dùng để tính chiều cao k
 
 Sau mỗi lần render, `app.js` đo `scrollHeight` của `.s-body` và các phần tử
 `[data-fit]`. Nếu tràn thì thu nhỏ dần bằng `zoom` (tối đa 12 bước, mỗi bước 4%).
-Chạy 3 lần: ngay lập tức, sau `requestAnimationFrame`, và sau 260ms — để chờ ảnh
-với font vào chỗ.
+
+**Đo trước, chạy hiệu ứng sau.** Slide dựng xong bị đặt `visibility:hidden`, đo
+xong mới bỏ ẩn và gắn lớp `.in`. Lý do: mọi phép dịch chuyển đều cộng vào vùng
+tràn của cha, đo giữa lúc đang chuyển động thì slide vừa khít cũng bị thu nhỏ oan.
+
+Ba mốc đo, không mốc nào rơi vào lúc đang chuyển động:
+
+| Mốc | Khi nào |
+|---|---|
+| 1 | ngay lúc dựng, hiệu ứng chưa chạy |
+| 2 | `document.fonts.ready` — **chỉ chạy nếu lớp `.in` chưa gắn** |
+| 3 | `ANIM_END` = 1600ms, sau khi mọi chuyển động đã dừng hẳn |
+
+Mốc 2 phải có điều kiện vì hàm đo gắn lớp `.measuring` để ghim phần tử về đúng
+chỗ, mà lớp đó đặt `transition:none`. Đặt giữa chừng là trình duyệt **huỷ**
+transition đang chạy và chốt luôn giá trị cuối — nội dung nhảy phịch ra thay vì
+trôi lên. Đã đo được: độ mờ nhảy 0 → 1 ở mốc 213ms trong khi độ trễ đặt 380ms.
 
 **Slide bị auto-fit thu nhỏ là dấu hiệu bố cục sai, không phải giải pháp.** Thấy
 `zoom=0.xx` trong kết quả kiểm tra thì sửa bố cục cho vừa, đừng để auto-fit gánh.
 
 ### Chuyển động
 
-Ba lớp chồng lên nhau, tổng một slide dưới 800ms:
+Một thang nhịp duy nhất cho cả ba bộ, khai báo ở `:root` trong `style.css`. Sửa
+nhịp thì sửa ở bảng biến đó, **đừng rải số vào từng chỗ**.
 
-1. Cả slide trượt vào — `@keyframes sl`, 340ms, hướng theo biến `--dx`.
-2. Điểm nhấn trong khung tự chạy — gạch cam vẽ ra từ trái, ảnh máy và khung
-   trình duyệt nảy nhẹ vào chỗ, tiêu đề trồi lên sau một nhịp ngắn.
-3. Các phần nội dung hiện dần theo `Space` (mục 5), cách nhau 45ms, trần tổng
-   độ trễ 360ms.
+Thứ tự vào bám đúng thứ tự mắt đọc. Ảnh vào sau cùng vì nó nặng mắt nhất, cho
+vào trước là kéo mắt rời khỏi tiêu đề khi người trình bày còn đang dẫn đề.
+
+| Lớp | Biến | Độ trễ | Thời lượng |
+|---|---|---|---|
+| Nền trang trí | — | 100ms | 1000ms |
+| Dòng dẫn | `--t-kick` | 70ms | `--d-fast` 460ms |
+| Tiêu đề | `--t-title` | 160ms | `--d-base` 560ms |
+| Gạch cam vẽ từ trái | `--t-rule` | 280ms | 560ms |
+| Dòng phụ | `--t-sub` | 320ms | 560ms |
+| Chữ số cỡ lớn | `--t-body` | 400ms | `--d-slow` 680ms |
+| Ảnh, khung máy, khung trình duyệt | `--t-art` | 460ms | 680ms |
+| Phần hiện dần | `RV_LEAD` trong `app.js` | 380ms + 80ms mỗi phần, trần 560ms | 560ms |
+
+Đường cong đều là ease-out đầy đặn (`--ease`), bung nhanh ở đầu rồi hãm êm.
+**Không nảy ngược** — ảnh chụp màn hình mà nảy thì nhìn rẻ tiền.
+
+`RV_LEAD` giữ cho nội dung không tranh chỗ với tiêu đề: bấm mũi tên sang slide
+thì nội dung chờ khung chữ vào xong mới tới lượt. Bấm `Space` từng bước thì độ
+trễ về 0, không bắt người xem đợi.
+
+Số đo thật (mốc 0 = lúc đổi slide, đo bằng `timing.py`): dòng dẫn 114ms, tiêu đề
+204ms, nội dung 400–470ms, ảnh 510–550ms, mọi thứ đứng yên trước 1.3 giây.
 
 Chỗ nào cha đã nằm trong bảng `RV` thì con **không** thêm chuyển động riêng —
 nó chạy lúc cha còn đang ẩn nên người xem không thấy gì.
 
-Máy người xem bật giảm chuyển động thì tắt hết, chỉ giữ mờ dần 120ms.
+Máy người xem bật giảm chuyển động thì tắt hết, chỉ giữ mờ dần 140ms — và phải
+đè `transition-delay:0s !important`, vì độ trễ do JS đặt thẳng vào thẻ.
 
 ### Cỡ chữ và khoảng trống
 
