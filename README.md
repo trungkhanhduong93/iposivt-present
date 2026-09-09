@@ -142,6 +142,9 @@ CSS cùng tên.
 | `1` `2` | chuyển bộ Plus / Pro |
 | `?` | bảng phím tắt |
 
+Phím tắt chỉ dùng ở chế độ một slide một màn. Dưới 900px là chế độ xấp trang,
+điều hướng bằng cuộn.
+
 Bấm vào ảnh trong slide để phóng to. Bấm vào video để dừng / chạy tiếp.
 
 ---
@@ -184,30 +187,33 @@ là tràn.
 
 ## 6. Xem trên điện thoại
 
-Dưới **900px** bề ngang và cao từ **521px** trở lên, trang bỏ khung cứng
-1280×720: slide chảy theo bề ngang màn rồi cuộn dọc, mọi lưới nhiều cột dồn về
-một cột, chữ trở về đúng cỡ đọc được.
+Dưới **900px** bề ngang, trang chuyển sang **chế độ xấp trang**, xem như trình
+đọc PDF: cả bộ dựng sẵn thành trang xếp dọc, mỗi trang giữ nguyên khung
+1280×720 thu nhỏ vừa bề ngang màn, cuộn liên tục từ trang đầu tới trang cuối.
 
-| Trên iPhone 14 dọc | Trước | Sau |
-|---|---|---|
-| Chữ thân bài | 4.1 px | 14 px |
-| Tiêu đề slide | 9.7 px | 23 px |
+Bố cục từng slide **không đổi gì** so với bản máy tính — không dồn cột, không
+đổi cỡ chữ. Chữ nhỏ là đúng như xem PDF; muốn đọc kỹ thì phóng bằng hai ngón.
 
-Cột "trước" là cỡ chữ thật nhân tỉ lệ thu nhỏ của khung — khung 1280 ép vào màn
-393 thì tỉ lệ chỉ còn 0.286.
+| | |
+|---|---|
+| Khung mỗi trang | tỉ lệ 16:9, rộng bằng bề ngang màn |
+| Tỉ lệ thu nhỏ | biến `--ms` = `innerWidth / 1280`, `app.js` đặt mỗi lần đổi cỡ |
+| Ảnh | `loading="lazy"`, tải dần theo tầm nhìn — cả bộ nặng vài MB |
+| Hiệu ứng | tắt hết. Không chia phần, không chuyển động, không trượt slide |
+| Vuốt ngang | tắt, để không nhầm với cuộn |
 
-Màn thấp dưới 521px là điện thoại đang xoay ngang. Ở đó giữ nguyên khung slide
-vừa màn, vì cuộn dọc trên màn cao 393px khó chịu hơn là nhìn slide nhỏ. Ngưỡng
-này khai hai chỗ và phải khớp nhau: `MOB_W` với `MOB_H` trong `app.js`, và
-`@media` trong `style.css`.
+`renderPages()` trong `app.js` dựng cả bộ một lần rồi nhớ trong `pagesKey`; đổi
+bộ hay đổi chế độ mới dựng lại.
 
-Vài chỗ không reflow được thì thu nhỏ nguyên khối theo biến `--ms` do `app.js`
-đặt: slide bìa, banner Giới thiệu, dải ba thiết bị của bộ Pro. Riêng bìa có mục
-lục thì chữ chỉ 16.5px, thu nhỏ nguyên khối còn 5px — nó mang thêm lớp
-`softcover` và được cho chảy dọc như slide thường.
+### Trang nào đang đọc
 
-Trên điện thoại **không chia phần** và **tắt auto-fit**: người xem cuộn chứ không
-bấm, và slide cứ cao bao nhiêu thì cuộn bấy nhiêu.
+Màn cao chứa gần bốn trang cùng lúc, nên không thể lấy trang nào "đang hiển thị"
+— phải lấy trang **chạm mép trên vùng xem**. Bộ theo dõi nằm trong `watchPages()`:
+một trình quan sát lo bật tắt video theo tầm nhìn, một trình nghe cuộn cập nhật
+số trang, thanh tiến độ và địa chỉ.
+
+Cuộn hết cỡ vẫn còn ba trang cuối nằm dưới mép trên, nên có thêm một nhánh: chạm
+đáy tài liệu thì chốt luôn trang cuối, không thì không bao giờ tới được trang 28.
 
 Đây là chỗ duy nhất trong `style.css` được phép sinh thanh cuộn.
 
@@ -379,7 +385,7 @@ laptop thu nhỏ. Bộ kiểm cũ chỉ chạy 1280 trở lên nên không bắt
 
 Sửa bằng toạ độ thay vì trông vào alignment: `.stage` đặt `position:absolute;
 left:50%; top:50%`, còn `app.js` ghép `translate(-50%,-50%)` vào trước `scale`.
-Đã thêm hai cỡ màn `1024×768` và `852×393` vào `check_app.py`.
+Đã thêm cỡ màn `1024×768` vào `check_app.py`.
 
 ### Bản gộp mất ảnh vì regex chỉ bắt một dạng ghép đường dẫn
 
@@ -398,6 +404,14 @@ chạy được là bản gộp cũng chạy được.
 `.slide.bare>div` áp cho cả `<div class="s-foot">`, làm chân slide hiện lên ở
 trang bìa và bị `flex:1` kéo giãn ra giữa trang. Mọi selector `>div` trên
 `.slide` phải loại trừ: `:not(.s-foot):not(.todo)`.
+
+### `complete` của ảnh không đáng tin khi có `loading="lazy"`
+
+Ảnh nằm trong phần tử `display:none` — logo ở chân trang bìa — thì trình duyệt
+không tải, `complete` mãi là `false` dù `naturalWidth` đã có. Bộ kiểm bắt theo
+`!complete` sẽ báo ảnh hỏng ở trang bìa, tốn một vòng truy tìm.
+
+Tiêu chí đúng: chỉ xét ảnh đang hiện, `offsetWidth > 0 && !naturalWidth`.
 
 ### Chụp ảnh kiểm tra đừng dùng `full_page`
 
@@ -426,10 +440,11 @@ Không cần `playwright install` — script dùng Chrome sẵn có trong máy.
 |---|---|
 | `python tools/check_slides.py` | render toàn bộ 51 slide, báo slide nào tràn khung, slide nào bị auto-fit thu nhỏ, lỗi console |
 | `python tools/check_app.py` | điều hướng, lưới ESC, lightbox, chuyển bộ, phím X, hiện dần từng phần, và **không sinh thanh cuộn ở 6 cỡ màn hình** |
-| `python tools/check_mobile.py` | rà cả 51 slide ở bố cục dọc khổ iPhone 14: tràn ngang, chữ dưới 10.5px, ảnh hỏng |
+| `python tools/check_mobile.py` | chế độ xấp trang khổ iPhone 14: đủ số trang, tỉ lệ 16:9, không tràn ngang, số trang chạy đúng khi cuộn, ảnh hỏng |
 
-Ảnh chụp từng slide lưu vào `tools/shots/`, xem lại để soi bố cục. Bộ mobile chụp
-khi thêm tham số: `python tools/check_mobile.py shot` — ảnh vào `tools/shots-mobile/`.
+Ảnh chụp từng slide lưu vào `tools/shots/`, xem lại để soi bố cục. Bộ điện thoại
+chụp khi thêm tham số: `python tools/check_mobile.py shot` — ảnh vào
+`tools/shots-mobile/`.
 
 **Đây là chốt duy nhất giữa code sửa và trang chạy thật.** Các lỗi trong mục 9 đều
 do 2 script này bắt được, không phải nhìn mắt thường mà thấy.

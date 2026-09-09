@@ -65,15 +65,11 @@ const xf = o => (o && o.x ? ' xflag' : '');
 const SHOT_R = 1272 / 2772;
 const COL_H = 500;          // chiều cao trống thật của .s-body ở slide có tiêu đề
 const PAD   = 12;           // viền trắng của khung máy (.pf padding 6px hai bên)
-/* Ngưỡng đổi sang bố cục dọc — phải khớp @media trong style.css.
-   Màn thấp dưới 521px là điện thoại đang xoay ngang: ở đó cuộn dọc rất khó chịu,
-   giữ nguyên khung slide vừa màn thì xem dễ hơn. */
+/* Ngưỡng đổi sang chế độ xấp trang — phải khớp @media trong style.css. */
 const MOB_W = 900;
-const MOB_H = 521;
-const isMob = () => innerWidth < MOB_W && innerHeight >= MOB_H;
+const isMob = () => innerWidth < MOB_W;
 function frameH (n, colW, colH, gap) {
-  /* Bố cục dọc không còn khung 1280×720 nên chiều cao tính sẵn sẽ sai — để CSS lo. */
-  if (n < 2 || isMob()) return '';
+  if (n < 2) return '';
   const w = (colW - (n - 1) * gap) / n;      // bề ngang tối đa cho một khung
   const h = (w - PAD) / SHOT_R + PAD;        // PAD là viền trắng, phải trừ ra rồi cộng lại
   // Cao hơn chỗ trống thì đừng ép — để CSS height:100% lo, không thì tràn mất đầu ảnh.
@@ -735,7 +731,7 @@ const App = {
     this.el.stage.addEventListener('touchstart', e => { x0 = e.changedTouches[0].clientX; }, { passive: true });
     this.el.stage.addEventListener('touchend', e => {
       const dx = e.changedTouches[0].clientX - x0;
-      if (Math.abs(dx) > 55) this.go(dx < 0 ? 1 : -1, 'all');
+      if (!this.mob && Math.abs(dx) > 55) this.go(dx < 0 ? 1 : -1, 'all');
     }, { passive: true });
 
     addEventListener('hashchange', () => { this.readHash(); this.render('all'); });
@@ -803,46 +799,137 @@ const App = {
       `<i> / ${String(d.slides.length).padStart(2, '0')}</i>${left}`;
   },
 
-  render (mode) {
-    const d = this.deck, s = this.slide;
-    document.body.dataset.deck = this.key;
-    $('#toPlus').classList.toggle('on', this.key === 'plus');
-    $('#toPro').classList.toggle('on', this.key === 'pro');
-
+  /* Dựng một slide thành phần tử rời — dùng chung cho cả hai chế độ xem */
+  buildSlide (s, d) {
     const build = T[s.type];
-    const inner = build ? build(s, d, d) : `<div class="s-body"><div>Chưa có mẫu cho type "${esc(s.type)}"</div></div>`;
-    const solo = /nodeco/.test(inner);
-    const bare = s.type === 'cover' || s.type === 'end';
-    /* Bìa có mục lục thì chữ nhỏ: thu nhỏ nguyên khối trên điện thoại sẽ còn 5px,
-       phải cho nó chảy dọc như slide thường. CSS đọc lớp này. */
-    const soft = bare && !!s.agenda;
-
+    const inner = build ? build(s, d, d)
+      : `<div class="s-body"><div>Chưa có mẫu cho type "${esc(s.type)}"</div></div>`;
     const el = document.createElement('div');
-    el.className = 'slide in' + (solo ? ' nodeco' : '') + (bare ? ' bare' : '')
-                 + (soft ? ' softcover' : '');
-    el.style.setProperty('--dx', (this.dir === -1 ? '-18px' : '18px'));
+    el.className = 'slide' + (/nodeco/.test(inner) ? ' nodeco' : '')
+                 + (s.type === 'cover' || s.type === 'end' ? ' bare' : '');
     el.innerHTML = inner +
       (s.todo ? `<div class="todo">${esc(s.todo)}</div>` : '') + `
       <div class="s-foot">
         <span class="no">${d.name} · ${String(s.n).padStart(2, '0')} / ${String(d.slides.length).padStart(2, '0')}</span>
         <img class="lg" src="assets/logo-ipos.png" alt="iPOS.vn">
       </div>`;
-
-    this.el.stage.innerHTML = '';
-    this.el.stage.appendChild(el);
-
-    /* Video chạy như ảnh động: tự chạy, lặp, tắt tiếng. Bấm để dừng/chạy tiếp. */
-    $$('video', el).forEach(v => {
-      v.addEventListener('click', () => { v.paused ? v.play() : v.pause(); });
-      const go = v.play();
-      if (go && go.catch) go.catch(() => {});     // trình duyệt chặn autoplay thì bỏ qua
-    });
-
     $$('[data-zoom]', el).forEach(im => {
       im.addEventListener('click', () => {
         this.el.lbi.src = im.currentSrc || im.src;
         this.el.lb.classList.add('open');
       });
+    });
+    $$('video', el).forEach(v => {
+      v.addEventListener('click', () => { v.paused ? v.play() : v.pause(); });
+    });
+    return el;
+  },
+
+  /* ── Chế độ xấp trang (điện thoại) ────────────────────────────────────────
+     Dựng sẵn mọi slide của bộ đang xem, mỗi cái một trang giữ nguyên khung
+     1280×720 thu nhỏ vừa bề ngang, xếp dọc để cuộn liên tục như xem PDF.
+     Phóng to đọc kỹ bằng hai ngón, không hiệu ứng, không chia bước. */
+  renderPages () {
+    const d = this.deck;
+    if (this.pagesKey !== this.key) {
+      this.pagesKey = this.key;
+      const frag = document.createDocumentFragment();
+      d.slides.forEach(s => {
+        const pg = document.createElement('div');
+        pg.className = 'page';
+        pg.appendChild(this.buildSlide(s, d));
+        frag.appendChild(pg);
+      });
+      this.el.stage.innerHTML = '';
+      this.el.stage.appendChild(frag);
+      /* Cả bộ nặng vài MB ảnh — để trình duyệt tải dần theo tầm nhìn */
+      $$('img', this.el.stage).forEach(im => im.setAttribute('loading', 'lazy'));
+      this.watchPages();
+      const fit = () => $$('.page > .slide', this.el.stage).forEach(el => this.fitOnce(el));
+      fit();
+      setTimeout(fit, 500);
+    }
+    const pg = this.el.stage.children[this.i];
+    if (pg) pg.scrollIntoView({ block: 'start' });
+    this.paintCount();
+    this.el.prog.style.width = ((this.i + 1) / d.slides.length * 100) + '%';
+    this.writeHash();
+  },
+
+  /* Theo dõi xấp trang: video chỉ chạy khi trang của nó lọt tầm nhìn, và số
+     trang bám theo trang đang chạm mép trên vùng xem. */
+  watchPages () {
+    this.unwatchPages();
+    const pages = $$('.page', this.el.stage);
+
+    this.io = new IntersectionObserver(es => {
+      es.forEach(e => {
+        const v = $('video', e.target);
+        if (!v) return;
+        if (e.isIntersecting) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+        else v.pause();
+      });
+    }, { threshold: 0 });
+    pages.forEach(p => this.io.observe(p));
+
+    /* Màn cao chứa ba bốn trang một lúc. Phải chọn trang chạm mép trên vùng
+       xem, không thì trang cuối trong tầm nhìn thắng và số trang nhảy loạn. */
+    const TOP = 52;                       // chừa chỗ cho thanh công cụ dính
+    let tick = false;
+    this.onScroll = () => {
+      if (tick) return;
+      tick = true;
+      requestAnimationFrame(() => {
+        tick = false;
+        let best = 0, bd = Infinity;
+        for (let k = 0; k < pages.length; k++) {
+          const b = pages[k].getBoundingClientRect();
+          if (b.bottom < TOP) continue;   // đã cuộn qua hẳn
+          const dd = Math.abs(b.top - TOP);
+          if (dd < bd) { bd = dd; best = k; }
+        }
+        /* Màn cao chứa gần bốn trang, nên cuộn hết cỡ vẫn còn ba trang cuối
+           nằm dưới mép trên — không chốt lại thì không bao giờ tới trang cuối. */
+        const doc = document.documentElement;
+        if (innerHeight + scrollY >= doc.scrollHeight - 4) best = pages.length - 1;
+        if (best !== this.i) {
+          this.i = best;
+          this.paintCount();
+          this.el.prog.style.width = ((best + 1) / this.deck.slides.length * 100) + '%';
+          this.writeHash();
+        }
+      });
+    };
+    addEventListener('scroll', this.onScroll, { passive: true });
+  },
+
+  unwatchPages () {
+    if (this.io) { this.io.disconnect(); this.io = null; }
+    if (this.onScroll) { removeEventListener('scroll', this.onScroll); this.onScroll = null; }
+  },
+
+  render (mode) {
+    const d = this.deck, s = this.slide;
+    document.body.dataset.deck = this.key;
+    $('#toPlus').classList.toggle('on', this.key === 'plus');
+    $('#toPro').classList.toggle('on', this.key === 'pro');
+
+    if (this.mob) {
+      this.renderPages();
+      if (this.el.grid.classList.contains('open')) this.paintGrid();
+      return;
+    }
+
+    const el = this.buildSlide(s, d);
+    el.classList.add('in');
+    el.style.setProperty('--dx', (this.dir === -1 ? '-18px' : '18px'));
+    this.el.stage.innerHTML = '';
+    this.el.stage.appendChild(el);
+
+    /* Video chạy như ảnh động: tự chạy, lặp, tắt tiếng. Bấm để dừng/chạy tiếp. */
+    $$('video', el).forEach(v => {
+      const go = v.play();
+      if (go && go.catch) go.catch(() => {});     // trình duyệt chặn autoplay thì bỏ qua
     });
 
     /* Đánh số thứ tự cho các phần chia bước được của slide này.
@@ -867,29 +954,29 @@ const App = {
     if (this.el.grid.classList.contains('open')) this.paintGrid();
   },
 
+  /* Một lượt đo và thu nhỏ nếu nội dung tràn khung 1280×720 */
+  fitOnce (el) {
+    const boxes = [];
+    const body = $('.s-body', el);
+    if (body && body.firstElementChild) boxes.push([body, body.firstElementChild]);
+    $$('[data-fit]', el).forEach(f => { if (f.parentElement) boxes.push([f.parentElement, f]); });
+
+    boxes.forEach(([outer, inner]) => {
+      inner.style.zoom = '';
+      let z = 1;
+      for (let k = 0; k < 12; k++) {
+        const over = outer.scrollHeight > outer.clientHeight + 1 ||
+                     outer.scrollWidth  > outer.clientWidth  + 1;
+        if (!over) break;
+        z -= 0.04;
+        inner.style.zoom = z.toFixed(2);
+      }
+    });
+  },
+
   /* Thu nhỏ nội dung nếu tràn khung — bảo đảm không bao giờ có thanh cuộn */
   autofit (el) {
-    /* Mobile không còn khung cố định để tràn ra — slide cứ cao bao nhiêu thì
-       cuộn bấy nhiêu, thu nhỏ chỉ làm chữ bé lại vô ích. */
-    if (this.mob) return;
-    const run = () => {
-      const boxes = [];
-      const body = $('.s-body', el);
-      if (body && body.firstElementChild) boxes.push([body, body.firstElementChild]);
-      $$('[data-fit]', el).forEach(f => { if (f.parentElement) boxes.push([f.parentElement, f]); });
-
-      boxes.forEach(([outer, inner]) => {
-        inner.style.zoom = '';
-        let z = 1;
-        for (let k = 0; k < 12; k++) {
-          const over = outer.scrollHeight > outer.clientHeight + 1 ||
-                       outer.scrollWidth  > outer.clientWidth  + 1;
-          if (!over) break;
-          z -= 0.04;
-          inner.style.zoom = z.toFixed(2);
-        }
-      });
-    };
+    const run = () => this.fitOnce(el);
     run();
     requestAnimationFrame(run);           // chạy lại sau khi ảnh/ font vào chỗ
     setTimeout(run, 260);
@@ -900,14 +987,14 @@ const App = {
     if (mob !== this.mob) {
       this.mob = mob;
       document.body.classList.toggle('mob', mob);
-      /* Đổi chế độ thì phải dựng lại: chia bước và chiều cao khung máy khác nhau */
+      this.pagesKey = null;                 // đổi chế độ thì dựng lại từ đầu
+      if (!mob) this.unwatchPages();
       if (this.el.stage.firstElementChild) this.render('all');
     }
     if (mob) {
-      /* Slide chảy theo bề ngang màn. Riêng slide bìa toạ độ cứng không reflow
-         được, CSS đọc --ms để thu nhỏ nguyên khối. */
+      /* Mỗi trang giữ khung 1280×720 rồi thu nhỏ theo --ms cho vừa bề ngang */
       this.el.stage.style.transform = '';
-      document.documentElement.style.setProperty('--ms', (innerWidth / W).toFixed(4));
+      document.documentElement.style.setProperty('--ms', (innerWidth / W).toFixed(5));
       return;
     }
     document.documentElement.style.removeProperty('--ms');

@@ -98,9 +98,9 @@ with sync_playwright() as p:
     ok('Esc dong lightbox',
        not pg.evaluate('()=>document.getElementById("lb").classList.contains("open")'))
 
-    # 1024 va 852 tung lam slide lech sang phai roi bi cat: grid tu bo canh giua
-    # khi item rong hon khung. 393 la dien thoai — o do phai vao bo cuc doc.
-    for w, hgt in [(1366, 768), (1920, 1080), (1280, 720), (2560, 1440), (1024, 768), (852, 393)]:
+    # 1024 tung lam slide lech sang phai roi bi cat: grid tu bo canh giua khi
+    # item rong hon khung. Tu 900px tro len la che do mot slide mot man.
+    for w, hgt in [(1366, 768), (1920, 1080), (1280, 720), (2560, 1440), (1024, 768)]:
         pg.set_viewport_size({'width': w, 'height': hgt}); pg.wait_for_timeout(350)
         sc = pg.evaluate("""()=>{const d=document.documentElement;
              return [d.scrollWidth>d.clientWidth, d.scrollHeight>d.clientHeight];}""")
@@ -108,11 +108,14 @@ with sync_playwright() as p:
              return r.width<=innerWidth+1&&r.height<=innerHeight+1;}""")
         ok('man %dx%d khong scroll, slide lot khung' % (w, hgt), not any(sc) and fit)
 
-    pg.set_viewport_size({'width': 393, 'height': 852}); pg.wait_for_timeout(500)
-    ok('man dien thoai vao bo cuc doc',
-       pg.evaluate('()=>document.body.classList.contains("mob")'))
-    ok('bo cuc doc khong tran ngang',
-       not pg.evaluate('()=>{const d=document.documentElement;return d.scrollWidth>d.clientWidth;}'))
+    # duoi 900px la che do xap trang: cuon doc nhu xem PDF, khong duoc tran ngang
+    for w, hgt in [(393, 852), (852, 393), (768, 1024)]:
+        pg.set_viewport_size({'width': w, 'height': hgt}); pg.wait_for_timeout(1400)
+        r = pg.evaluate('''()=>({mob:document.body.classList.contains("mob"),
+             pages:document.querySelectorAll("#stage .page").length,
+             hs:document.documentElement.scrollWidth>document.documentElement.clientWidth})''')
+        ok('man %dx%d vao che do xap trang, khong tran ngang' % (w, hgt),
+           r['mob'] and r['pages'] > 0 and not r['hs'], r)
     b.close()
 
 print('\n=> ' + ('TAT CA PASS' if not fails else 'CO LOI: ' + ', '.join(map(str, fails))))

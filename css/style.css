@@ -1060,178 +1060,45 @@ body[data-deck="pro"] .grid .t:hover{border-color:var(--orange)}
 
 /* =============================================================================
    MÀN HÌNH HẸP — ĐIỆN THOẠI
-   Dưới 820px bỏ khung cứng 1280×720: slide chảy theo bề ngang màn rồi cuộn dọc,
-   chữ trở về đúng cỡ đọc được thay vì bị thu nhỏ còn 4px. Slide bìa toạ độ
-   tuyệt đối không reflow được thì thu nhỏ nguyên khối theo --ms do app.js đặt.
+   Xem như trình đọc PDF: mỗi slide là một trang giữ nguyên khung 1280×720, thu
+   nhỏ vừa bề ngang màn, xếp dọc và cuộn liên tục hết bộ. Không đổi bố cục, không
+   hiệu ứng, không chia bước — muốn đọc kỹ thì phóng bằng hai ngón.
    Đây là chỗ DUY NHẤT trong file được phép sinh thanh cuộn.
    ========================================================================== */
-@media (max-width: 899px) and (min-height: 521px){
+@media (max-width: 899px){
 
-  /* ── Khung ứng dụng: mở khoá cuộn dọc ──────────────────────────────────── */
+  /* Khung ứng dụng: mở khoá cuộn dọc */
   html,body{overflow:visible;height:auto}
   .app{position:static;display:block;min-height:100%}
 
-  .bar{position:sticky;top:0;z-index:60;height:44px;gap:9px;padding:0 11px}
+  /* Dinh o dau trang, phia sau la trang giay trang cuon qua — nen phai dac */
+  .bar{position:sticky;top:0;z-index:60;height:44px;gap:9px;padding:0 11px;
+    background:#0f1a29;border-bottom:1px solid rgba(255,255,255,.1)}
   .bar .brand span,.tbtn span{display:none}
   .bar .brand img{height:17px}
   .bar .cnt{font-size:12.5px}
   .seg button{padding:5px 11px}
 
   .stagewrap{display:block;overflow:visible;min-height:0}
-  .arrow{display:none}                    /* vuốt ngang để lật, nút chiếm chỗ */
-  .prog{position:sticky;bottom:0;z-index:60}
+  .arrow{display:none}                    /* cuộn thay cho lật, nút chiếm chỗ */
+  .prog{position:sticky;bottom:0;z-index:60;background:#0f1a29}
 
-  /* ── Sân khấu ──────────────────────────────────────────────────────────── */
-  .stage{position:static;width:100%;height:auto;transform:none;border-radius:0;
-    overflow:visible;box-shadow:none;background:transparent}
-  .slide{position:relative;inset:auto;height:auto;overflow:visible;
-    min-height:calc(100vh - 47px);font-size:15px;border-radius:0}
-  .slide::before{display:none}
-  .slide.in{animation:none}               /* trượt ngang vô nghĩa khi trang cuộn */
+  /* Sân khấu thành xấp trang xếp dọc */
+  .stage{position:static;width:100%;height:auto;transform:none;overflow:visible;
+    background:transparent;box-shadow:none;border-radius:0;
+    display:flex;flex-direction:column;gap:9px;padding:9px 0}
 
-  /* ── Đầu · thân · chân slide ───────────────────────────────────────────── */
-  .s-head{padding:20px 16px 0}
-  .s-title{font-size:23px;line-height:1.28;letter-spacing:-.4px}
-  .s-sub{font-size:14px;margin-top:8px}
-  .kicker{font-size:10.5px;flex-wrap:wrap}
-  .rule{width:54px;height:3px;margin-top:11px}
-  .s-body{display:block;padding:15px 16px 40px;overflow:visible;min-height:0}
-  .s-body>*{max-height:none;height:auto;align-self:auto}
-  /* Slide ngắn thì chân bám đáy màn, không lơ lửng giữa trang */
-  .s-foot{position:relative;height:38px;padding:0 16px;margin-top:auto}
-  .todo{position:relative;left:auto;bottom:auto;margin:10px 16px 0;max-width:none}
+  /* Mỗi trang giữ đúng tỉ lệ 16:9 của slide gốc */
+  .page{position:relative;width:100%;aspect-ratio:16 / 9;overflow:hidden;
+    background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.34);scroll-margin-top:52px}
 
-  /* ── Bìa: không reflow được, thu nhỏ nguyên khối ───────────────────────── */
-  .slide.bare{min-height:0;aspect-ratio:16/9;overflow:hidden;display:block}
-  .slide.bare>div:not(.s-foot):not(.todo){position:absolute;left:0;top:0;
-    width:1280px;height:720px;transform:scale(var(--ms,1));transform-origin:top left}
+  /* Nội dung vẫn là khung 1280×720, chỉ thu nhỏ lại — bố cục y hệt bản máy tính */
+  .page>.slide{position:absolute;left:0;top:0;width:1280px;height:720px;
+    transform:scale(var(--ms,1));transform-origin:top left}
 
-  /* ── Slide nền đặc: bỏ định vị tuyệt đối, cho chảy theo nội dung ───────── */
-  .sect,.qa,.thx,.hero{position:relative;inset:auto;height:auto}
-  .sect{grid-template-columns:1fr;padding:36px 0;min-height:calc(100vh - 47px)}
-  .sect .l{padding:0 16px;gap:15px}
-  .sect h1{font-size:29px;letter-spacing:-.6px}
-  .sect p{font-size:14.5px;max-width:none}
-  .sect .r{display:none}
-  .qa{min-height:calc(100vh - 47px);padding:0 16px}
-  .qa h1{font-size:40px;letter-spacing:-1px}
-  .qa p{font-size:14.5px}
-  .qa .mk:nth-of-type(1){font-size:180px;left:10px;top:30px}
-  .qa .mk:nth-of-type(2){font-size:130px;right:14px;bottom:16px}
-  .thx .top{flex:0 0 auto;padding:36px 16px}
-  .thx h1{font-size:38px;letter-spacing:-1.2px}
-  .thx .bot{padding:22px 16px 30px;gap:18px}
-  .thx .offs{grid-template-columns:1fr;gap:14px}
-  .thx .co{gap:12px}
-
-  /* ── Giới thiệu: banner thu nhỏ, chữ giữ cỡ thật ───────────────────────── */
-  .hero{display:block}
-  .hero .pic{max-height:none}
-  .hero .pic.wide{height:calc(520px * var(--ms,1));max-height:none}
-  .hero .pic.dvb{flex:none;height:calc(460px * var(--ms,1));max-height:none}
-  .bnr,.dvband{transform:scale(var(--ms,1));transform-origin:top left}
-  .hero .tx,.hero .pic.wide+.tx{display:block;padding:18px 16px 34px}
-  .hero h1{font-size:24px}
-  .hero .ln{margin-bottom:14px}
-  .hero p{font-size:14.5px;text-align:left}
-  .hero li{font-size:14.5px}
-
-  /* ── Mọi bố cục hai cột về một cột ─────────────────────────────────────── */
-  .bl,.bl.hasart,.hero .tx,.wg.row,.wg.col,.dev,.dev.right,.vid,.val,.profwrap,
-  .mod,.oflow,.cfm,.gl,.tree,.cvp .bt,.plat .row,.twol{
-    display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto;gap:16px}
-  .agenda,.defs .row,.mgrid,.trio,.dept,.mod .gr,.prod .cols,.pil,
-  .wg .pts,.wg .pts.c2,.dev .lst.c2,.cvp .ag,.mgrid .m.wide ul{
-    grid-template-columns:1fr}
-  .mgrid .m{grid-column:auto}
-  .pil{--pc:1}
-  .dev.right .shots{order:0}
-  .twol .lanes{gap:12px}
-  .twol .stp{flex-direction:column}
-  .twol .ar{width:2px;height:14px;flex:0 0 14px;align-self:center}
-  .twol .ar::after{right:-4px;top:auto;bottom:-1px;border:5px solid transparent;
-    border-top-color:var(--c);border-bottom:0;border-left-color:transparent}
-  .pipe .row{flex-direction:column;align-items:stretch;gap:10px}
-  .pipe .gate{flex:0 0 auto;flex-direction:row;gap:10px;padding:2px 0}
-  .pipe .gate .ar{width:26px;flex:0 0 26px}
-
-  /* ── Bảng so sánh: bỏ hàng tiêu đề, gắn nhãn vào từng ô ────────────────── */
-  .cmp .hd{display:none}
-  .cmp .rw{grid-template-columns:minmax(0,1fr) 62px 62px;align-items:stretch}
-  .cmp .rw>div{padding:11px 12px}
-  .cmp .rw>div:first-child{font-size:14px}
-  .cmp .rw .c0,.cmp .rw .c1{position:relative;padding-bottom:16px}
-  .cmp .rw .c0::after,.cmp .rw .c1::after{position:absolute;bottom:3px;font-size:8.5px;
-    font-weight:700;letter-spacing:.6px;opacity:.7}
-  .cmp .rw .c0::after{content:"PLUS";color:var(--blue-d)}
-  .cmp .rw .c1::after{content:"PRO";color:#a4610d}
-
-  /* ── Ảnh: chặn chiều cao theo màn, không còn khung 720px để bám ────────── */
-  .imgfull{height:auto;display:block}
-  .imgfull img{max-height:none;width:100%}
-  .dev .shots,.val .shots{height:auto;gap:10px}
-  .dev .shots img,.val .shots img{max-height:58vh}
-  .dev .shots .pf,.val .shots .pf{height:auto;max-width:calc(50% - 6px)}
-  .dev .shots .pf img,.val .shots .pf img{height:auto;width:100%;max-height:56vh}
-  .trio .ph{height:auto}
-  .trio .ph img{max-height:46vh}
-  .oflow .pic{height:auto}
-  .prod .c .im{height:auto}
-  .plat .row .ph{max-width:none}
-  .plat.fr .row .ph .box,.plat.fr .row .wb .box{height:auto}
-  .plat.fr .row .ph .box img{height:auto;width:100%;max-height:56vh}
-  .plat.fr .row .wb .box img{height:auto;width:100%}
-  .wg.col .brw img{height:auto;width:100%}
-  .vid .fr{height:auto}
-  .vid video{height:auto;max-height:52vh}
-  .vid .fr.shot img{max-height:52vh}
-  .profwrap .art{height:auto}
-  .profwrap .art img{max-height:34vh}
-  .bl.hasart .lft .art img{max-height:30vh}
-
-  /* ── Chữ và ô nhỏ lại cho vừa bề ngang ─────────────────────────────────── */
-  .agenda .it{padding:13px 15px;gap:13px}
-  .agenda .it b{flex:0 0 36px;height:36px;font-size:15px}
-  .agenda .it span{font-size:15px}
-  .bl .lft h1,.bl.sm .lft h1{font-size:24px}
-  .bl li{font-size:14.5px;padding:13px 15px}
-  .defs .fx p{font-size:17px}
-  .mgrid .m{padding:15px 16px}
-  .mgrid .m .no{font-size:34px;top:8px;right:14px}
-  .mgrid .m .hd b{font-size:16px}
-  .pil .c{padding:22px 20px 20px}
-  .pil .c b{font-size:40px}
-  .pil .c p{font-size:16px}
-  .pil[style*="--pc:4"] .c p{font-size:14.5px}
-  .val .rail .r.on span{font-size:15px}
-  .prof .p{padding:16px 18px;gap:15px}
-  .prof .p i{flex:0 0 40px;height:40px}
-  .prof .p .tx>span{font-size:15px}
-  .cfm .lft .vl{font-size:30px;white-space:normal}
-  .cfm .fx{padding:20px 18px;flex-direction:column;gap:12px}
-  .cfm .num,.cfm .den{font-size:16px}
-  .oflow .terms{flex-direction:column}
-
-  /* ── Bìa có mục lục: chữ mục lục chỉ 16.5px, thu nhỏ nguyên khối thì còn 5px.
-     Cho nó chảy dọc — tranh lên trên, chữ và mục lục xuống dưới. ─────────── */
-  .slide.bare.softcover{aspect-ratio:auto;min-height:calc(100vh - 47px);display:flex}
-  .slide.bare.softcover>div:not(.s-foot):not(.todo){position:relative;left:auto;top:auto;
-    width:auto;height:auto;transform:none;flex:1;display:flex;flex-direction:column}
-  .cvs .art{position:relative;right:auto;top:auto;bottom:auto;width:auto;
-    flex:0 0 188px;order:-1;-webkit-mask-image:none;mask-image:none}
-  .cvs .tx{position:relative;left:auto;top:auto;bottom:auto;width:auto;
-    padding:26px 16px 34px;gap:20px;flex:1}
-  .cvs h1{font-size:34px;letter-spacing:-1.1px}
-  .cvs .rule{width:64px;height:4px;margin-top:13px}
-  .cvs .ag>div{padding:12px 15px;gap:12px;font-size:15px}
-  .cvs .ag .tbdg{font-size:11px;padding:3px 10px 4px}
-  .cvs .ag i{flex:0 0 30px;height:30px;font-size:12.5px}
-  .cvp .ph{flex:0 0 200px}
-  .cvp .bt{padding:24px 16px 32px}
-  .cvp h1{font-size:34px;letter-spacing:-1.1px}
-
-  /* Thẻ Plus / Pro trong dòng dẫn: 9.5px quá nhỏ trên màn điện thoại */
-  .kicker .tbdg{font-size:10.5px;padding:3px 9px 3.5px}
+  /* Không hiệu ứng: xem tài liệu chứ không trình chiếu */
+  .page>.slide,.page>.slide *{animation:none !important;transition:none !important}
+  .page>.slide [data-rv]{opacity:1 !important;transform:none !important}
 
   /* Lưới slide, phóng ảnh, bảng phím */
   .grid .gb{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));padding:16px 14px 28px}
