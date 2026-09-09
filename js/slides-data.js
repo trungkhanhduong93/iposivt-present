@@ -177,10 +177,10 @@ plus: {
     note:'Cung cấp công cụ để **Quản lý Danh mục** một cách tiện lợi.' },
 
   /* 13 ─ Danh mục Web --------------------------------------------------- */
-  { n:14, type:'webshot',
+  { n:14, type:'video',
     crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Quản lý kho','Tại Web'],
     title:'DANH MỤC',
-    img:'slide13.png',
+    video:'slide11.mp4',
     note:'**Quản lý Danh mục trên Web** cũng tương tự phiên bản APP.' },
 
   /* 14 ─ Nghiệp vụ kho App ---------------------------------------------- */
