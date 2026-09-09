@@ -20,11 +20,18 @@ def ok(name, cond, note=''):
     print('  %s   %s   %s' % ('OK ' if cond else 'HONG', name, note))
 
 
+# Chan lenh in that de hop thoai in khong chan tien trinh kiem tra.
+BAY = ("window.__p=0;addEventListener('beforeprint',()=>{window.__p=1});"
+       "window.print=new Proxy(window.print,{apply(){window.__p=1}});")
+
+
 def run(url, label):
     print('-- %s --' % label)
     with sync_playwright() as p:
         b = p.chromium.launch(channel='chrome')
-        pg = b.new_page(viewport={'width': 1500, 'height': 900})
+        ctx = b.new_context(viewport={'width': 1500, 'height': 900})
+        ctx.add_init_script(BAY)
+        pg = ctx.new_page()
         errs = []
         pg.on('pageerror', lambda e: errs.append(str(e)))
         pg.goto(url); pg.wait_for_timeout(1000)
@@ -48,6 +55,19 @@ def run(url, label):
         ok('noi dung day du, cuon doc duoc', info['h'] > 3000, '%d px' % info['h'])
         ok('giu nguyen khung .wrap cua ban goc', info['wrap'])
         ok('giu nguyen nut Xuat PDF cua ban goc', info['btn'])
+        ok('chi con mot nut xuat PDF', pg.evaluate(
+            "()=>document.querySelectorAll('#pdfv .pa button').length===1"))
+
+        # Nut Xuat PDF phai mo tab rieng va tab do tu goi lenh in
+        with ctx.expect_page(timeout=9000) as inf:
+            pg.frame_locator('#pdfFrame').locator('.btn').click()
+        tab = inf.value
+        tab.wait_for_load_state(); tab.wait_for_timeout(1600)
+        ok('bam Xuat PDF thi mo tab in rieng',
+           'So sánh tính năng' in tab.title(), tab.title()[:38])
+        ok('tab in tu goi lenh in', tab.evaluate("()=>window.__p") == 1)
+        ok('tab in day du noi dung', tab.evaluate("()=>document.body.scrollHeight") > 3000)
+        tab.close(); pg.bring_to_front()
 
         pg.keyboard.press('Escape'); pg.wait_for_timeout(400)
         ok('Esc dong khung xem', not pg.is_visible('#pdfv'))
@@ -84,10 +104,6 @@ with sync_playwright() as p:
     got = pg.evaluate("()=>document.getElementById('pdfFrame').getAttribute('srcdoc')")
     ok('nhung nguyen van, giong tung ky tu', got == src,
        '%d/%d ky tu' % (len(got or ''), len(src)))
-    who = pg.evaluate("""()=>{const f=document.getElementById('pdfFrame');let w='';
-      f.contentWindow.print=()=>{w='khung nhung'};window.print=()=>{w='trang cha'};
-      document.getElementById('pdfSave').click();return w;}""")
-    ok('nut Luu PDF in khung nhung, khong in trang cha', who == 'khung nhung', who)
     b.close()
 
 print('\n=> %s' % ('TAT CA PASS' if ok_all else 'CO LOI'))

@@ -365,11 +365,13 @@ Bộ này công khai, không có `gated` nên không hỏi mã.
 
 ### Nút PDF — bản gốc dạng cuộn dọc
 
-Cạnh nút Lưới có nút **PDF**, mở bản gốc cuộn dọc **nguyên văn từng ký tự**,
-kèm nút **Lưu PDF** để in ra file gửi khách. Chỉ hiện ở bộ So sánh, bật bằng cờ
-`page: 1` của bộ.
+Cạnh nút Lưới có nút **PDF**, mở bản gốc cuộn dọc **nguyên văn từng ký tự**.
+Chỉ hiện ở bộ So sánh, bật bằng cờ `page: 1` của bộ.
 
-Ba điểm bắt buộc, đổi cái nào là hỏng cái đó:
+Nút xuất PDF chỉ có **một** — nút "Xuất PDF" sẵn có trong thanh của bản gốc.
+Thanh tiêu đề của khung xem cố tình không thêm nút thứ hai cùng việc.
+
+Bốn điểm bắt buộc, đổi cái nào là hỏng cái đó:
 
 1. **Phải là `iframe`.** File gốc có luật CSS cho chính `body`, `h1`, `.head`,
    `.wrap`. Đặt thẳng vào trang thì nó đè lên toàn bộ giao diện trình chiếu.
@@ -379,16 +381,27 @@ Ba điểm bắt buộc, đổi cái nào là hỏng cái đó:
    nằm trong `srcdoc` thì khung nhúng cùng nguồn với trang cha. Bản gộp một file
    cũng nhờ đó mà chạy được, vì không còn thư mục `assets` để trỏ tới.
    Nội dung lấy từ `js/compare-page.js`, do `tools/gen_pdfview.py` sinh ra.
-3. **Phải in cửa sổ của khung nhúng**, không in trang cha. In trang cha thì phần
-   nằm ngoài tầm nhìn của khung bị cắt, ra đúng một trang giấy.
+3. **Chrome không cho khung con tự gọi `print()`.** Bấm nút "Xuất PDF" của bản
+   gốc lúc nó nằm trong khung nhúng thì tuyệt đối không có gì xảy ra, cũng không
+   báo lỗi — đã đo, sự kiện `beforeprint` không hề bắn. Nên `app.js` đấu lại
+   `contentWindow.print` sang `printPdf()`: mở đúng tài liệu đó ra một **tab
+   riêng** rồi in ở đó, vì tab riêng là trang cấp cao nhất nên in đủ trang.
+4. **Tài liệu tạm ở tab đó phải tự gọi lệnh in**, đừng để tab cha gọi hộ. Mở bộ
+   trình chiếu bằng `file://` thì blob mang nguồn `null`, tab cha vừa đụng vào
+   là bị chặn, vòng chờ treo mãi mà không bao giờ in. `printPdf()` chèn một câu
+   `print()` vào chính tài liệu tạm — chỉ tài liệu tạm, file gốc không đổi.
+
+Bấm hay cuộn trong khung nhúng là tiêu điểm bàn phím chuyển vào đó, phím `Esc`
+của trang cha không nhận được nữa. Nên có thêm một tai nghe `keydown` đặt ngay
+trong khung, và lúc đóng thì gọi `blur()` để trả tiêu điểm về trang cha.
 
 `gen_pdfview.py` chỉ thoát ba thứ khi gói vào chuỗi: dấu `\`, dấu backtick và
 `${`. Thêm một chỗ nữa là `</` phải đổi thành `<\/` — không thì lúc
 `build_bundle.py` nhét file này thẳng vào `index.html`, chữ `</script>` nằm
 trong chuỗi sẽ đóng sớm thẻ `<script>` và cả trang chết.
 
-In ra khổ A4 được **4 trang**. Chân trang của bản gốc đã nhắc người in bật
-"Đồ họa nền / Background graphics", không bật thì mất hết màu nền của bảng.
+In ra khổ A4 được **4 trang**. Nhớ bật "Đồ họa nền / Background graphics" trong
+hộp thoại in, không bật thì mất hết màu nền của bảng.
 
 **Số slide không cố định.** Thêm tính năng vào file gốc là số slide đổi theo, nên
 đừng ghi cứng con số ở chỗ khác.

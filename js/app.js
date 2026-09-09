@@ -846,7 +846,6 @@ const App = {
     $('#gridBtn').onclick  = () => this.toggleGrid();
     $('#pdfBtn').onclick   = () => this.togglePdf(true);
     $('#pdfClose').onclick = () => this.togglePdf(false);
-    $('#pdfSave').onclick  = () => this.printPdf();
     $('#gclose').onclick  = () => this.toggleGrid(false);
     $('#fsBtn').onclick   = () => this.fullscreen();
     $('#helpBtn').onclick = () => this.el.help.classList.add('open');
@@ -1269,18 +1268,54 @@ const App = {
       const src = (this.deck.page && typeof COMPARE_PAGE === 'string')
         ? COMPARE_PAGE : '';
       if (!src) return;
-      if (this.el.pdff.getAttribute('srcdoc') !== src) this.el.pdff.srcdoc = src;
+      if (this.el.pdff.getAttribute('srcdoc') !== src) {
+        /* Nút "Xuất PDF" của bản gốc gọi window.print() của chính khung nhúng —
+           mà Chrome chặn lời gọi đó. Đấu lại vào lối xuất PDF ở trên để bấm nút
+           nào cũng ra file, không phải sửa một chữ nào trong bản gốc. */
+        this.el.pdff.onload = () => {
+          const w = this.el.pdff.contentWindow;
+          if (!w) return;
+          w.print = () => this.printPdf();
+          /* Bấm hay cuộn trong khung là tiêu điểm bàn phím chuyển vào đó, phím
+             Esc của trang cha không còn nhận được. Nghe thêm ngay trong khung. */
+          w.addEventListener('keydown', e => {
+            if (e.key === 'Escape') { e.preventDefault(); this.togglePdf(false); }
+          });
+        };
+        this.el.pdff.srcdoc = src;
+      }
     }
+    /* Đóng thì trả tiêu điểm về trang cha, không thì mọi phím tắt sau đó rơi
+       vào khung nhúng đang ẩn và trông như bàn phím chết. */
+    if (!open) this.el.pdff.blur();
     this.el.pdfv.classList.toggle('open', open);
   },
 
-  /* In chính khung nhúng, không in trang cha: in trang cha thì phần nằm ngoài
-     tầm nhìn của khung bị cắt, ra đúng một trang giấy. */
+  /* Xuất PDF từ khung nhúng.
+
+     Chrome KHÔNG cho khung con tự gọi print(): bấm nút "Xuất PDF" của bản gốc
+     lúc nó nằm trong khung nhúng thì tuyệt đối không có gì xảy ra, cũng không
+     báo lỗi nào. Đã đo: sự kiện beforeprint không hề bắn.
+
+     Nên mở đúng tài liệu đó ra một tab riêng rồi in ở đó — tab riêng là trang
+     cấp cao nhất nên in đủ trang, y như mở thẳng file gốc.
+
+     Và phải để chính tài liệu tạm đó tự gọi lệnh in, không nhờ tab cha gọi hộ:
+     mở bộ trình chiếu bằng file:// thì blob mang nguồn null, tab cha vừa đụng
+     vào là bị chặn, vòng chờ treo mãi mà không bao giờ in. */
   printPdf () {
-    const w = this.el.pdff.contentWindow;
-    if (!w) return;
-    w.focus();
-    w.print();
+    const src = (typeof COMPARE_PAGE === 'string') ? COMPARE_PAGE : '';
+    if (!src) return;
+    const auto = '<script>addEventListener("load",function(){setTimeout(print,150)})<\/script>';
+    const url = URL.createObjectURL(
+      new Blob([src.replace(/<\/body>/i, auto + '</body>')], { type: 'text/html' }));
+    if (!open(url, '_blank')) {          // trình duyệt chặn cửa sổ mới
+      URL.revokeObjectURL(url);
+      const f = this.el.pdff.contentWindow;
+      if (f) { f.focus(); f.print(); }
+      return;
+    }
+    setTimeout(() => URL.revokeObjectURL(url), 120000);
   },
 
   toggleGrid (force) {
