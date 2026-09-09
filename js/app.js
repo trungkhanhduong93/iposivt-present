@@ -969,8 +969,11 @@ const App = {
       inner.style.zoom = '';
       let z = 1;
       for (let k = 0; k < 12; k++) {
-        const over = outer.scrollHeight > outer.clientHeight + 1 ||
-                     outer.scrollWidth  > outer.clientWidth  + 1;
+        /* Ngưỡng 4px chứ không phải 1px: ở chế độ xấp trang nội dung được thu
+           nhỏ bằng zoom, phép làm tròn subpixel dôi ra vài pixel không nhìn
+           thấy được — để 1px thì slide vừa khít cũng bị thu nhỏ oan 4%. */
+        const over = outer.scrollHeight > outer.clientHeight + 4 ||
+                     outer.scrollWidth  > outer.clientWidth  + 4;
         if (!over) break;
         z -= 0.04;
         inner.style.zoom = z.toFixed(2);
