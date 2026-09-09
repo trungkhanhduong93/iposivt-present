@@ -274,7 +274,7 @@ plus: {
     num:'05',
     title:'ĐIỂM KHÁC BIỆT GIỮA PLUS & PRO',
     head:'TÍNH NĂNG',
-    cols:['PLUS','PRO'],
+    cols:['Plus','Pro'],
     rows:[
       { t:'Phù hợp cho vận hành kho đơn giản, nhanh chóng',      v:[1,0] },
       { t:'Dashboard cung cấp các chỉ số & biểu đồ quan trọng',  v:[1,1] },
@@ -560,7 +560,7 @@ pro: {
   /* 17 ─ Trợ lý iOne (Trum bổ sung 09/09/2026, nội dung từ tài liệu V3) -- */
   { n:17, type:'trio',
     kicker:'TRỢ LÝ AI',
-    title:'TRỢ LÝ iOne LÀM HỘ PHẦN VIỆC TAY',
+    title:'TRỢ LÝ <b>iONE</b> LÀM HỘ PHẦN VIỆC TAY',
     items:[
       { f:'ione-1.jpg', t:'Quét ảnh tạo phiếu nhập mua',
         s:'Chụp hoá đơn hoặc phiếu giao hàng của nhà cung cấp, Trợ lý đọc và điền sẵn dòng hàng, số lượng, đơn giá.' },

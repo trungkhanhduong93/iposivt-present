@@ -180,14 +180,16 @@ section (s) {
   </div>`;
 },
 
+/* Có tranh thì chữ dồn hết về trái, tranh chiếm cột phải và căn giữa theo
+   khối gạch đầu dòng — không thì tiêu đề trên, tranh dưới, nhìn lệch nhau. */
 bullets (s, d) {
   return `<div class="s-body"><div class="bl${s.small ? ' sm' : ''}${s.art ? ' hasart' : ''}">
     <div class="lft">
       ${s.num ? `<div class="num">PHẦN ${esc(s.num)}</div>` : ''}
       <h1>${md(s.title)}</h1><div class="ln"></div>
-      ${s.art ? `<div class="art"><img src="${d.dir}${s.art}" alt=""></div>` : ''}
     </div>
     <ul>${s.items.map(t => `<li><i></i><span>${md(t)}</span></li>`).join('')}</ul>
+    ${s.art ? `<div class="art"><img src="${d.dir}${s.art}" alt=""></div>` : ''}
   </div></div>`;
 },
 
@@ -429,7 +431,8 @@ compare (s) {
     `<div class="s-body"><div class="cmp">
       <div class="hd">
         <div>${esc(s.head || 'TÍNH NĂNG')}</div>
-        ${s.cols.map((c, i) => `<div class="c${i}">${esc(c)}</div>`).join('')}
+        ${s.cols.map((c, i) =>
+          `<div class="c${i}"><span class="bdg">${esc(c)}</span></div>`).join('')}
       </div>
       ${s.rows.map(r => `<div class="rw">
         <div>${md(r.t)}</div>
