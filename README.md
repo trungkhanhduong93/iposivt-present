@@ -270,6 +270,37 @@ nó chạy lúc cha còn đang ẩn nên người xem không thấy gì.
 
 Máy người xem bật giảm chuyển động thì tắt hết, chỉ giữ mờ dần 120ms.
 
+### Cỡ chữ và khoảng trống
+
+Deck này để chiếu cho khách xem từ xa, nên chữ phải to hơn chữ đọc trên màn hình
+gần. Mức đang dùng trên khung 1280×720:
+
+| Loại chữ | Cỡ |
+|---|---|
+| Tiêu đề slide | 34px |
+| Mục chính trong danh sách | 15–18.5px |
+| Dòng phụ dưới mục chính | 13–14.6px |
+| Dòng dẫn `.kicker` và chân slide | 11.5px — chữ phụ, để nhỏ là cố ý |
+
+**Đừng đặt chữ nội dung dưới 14px.** Nếu phải hạ xuống mới vừa khung thì bố cục
+đang quá tải, bớt nội dung hoặc tách slide chứ đừng thu chữ.
+
+Khoảng trống thì lấp bằng cách cho khối **giãn đầy khung rồi căn giữa nội dung
+bên trong**, không phải bằng cách nhồi thêm chữ:
+
+```css
+.defs { align-self: stretch }          /* thay vì center */
+.defs .row { flex: 1 }
+.defs .c { justify-content: center }   /* chữ vẫn nằm giữa thẻ */
+```
+
+Cẩn thận liều lượng. Cho `.pipe .row` giãn đầy chiều cao thì bốn ô cao 490px với
+mỗi ô hai dòng chữ — trông rỗng ruột, tệ hơn lúc còn trống. Chỉ cần
+`align-items: stretch` để các ô cao bằng ô cao nhất là đủ.
+
+Hiện tỉ lệ lấp đầy trung bình **84%** trên 42 slide có khung nội dung, chỉ còn
+hai slide dưới 65% và cả hai đều là slide ít nội dung theo bản chất.
+
 ### Khung ảnh chụp máy
 
 Ảnh chụp điện thoại tỉ lệ cố định `1272/2772` (hằng số `SHOT_R`). Hàm `frameH()`
