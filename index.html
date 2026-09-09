@@ -35,6 +35,11 @@
       <span>Lưới</span>
     </button>
 
+    <button class="tbtn" id="pdfBtn" title="Bản gốc dạng cuộn dọc (P)">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
+      <span>PDF</span>
+    </button>
+
     <button class="tbtn" id="fsBtn" title="Toàn màn hình (F)">
       <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
       <span>Toàn màn hình</span>
@@ -73,6 +78,25 @@
   <div class="gb" id="gb"></div>
 </div>
 
+<!-- Bản gốc dạng cuộn dọc: nhúng nguyên văn file So-sanh-IVT-Standard-Plus-Pro.html
+     trong iframe để CSS của nó không đụng CSS của bộ trình chiếu -->
+<div class="pdfv" id="pdfv">
+  <div class="ph">
+    <h2>So sánh tính năng — bản gốc<small>Standard · Plus · Pro</small></h2>
+    <div class="pa">
+      <button class="tbtn go" id="pdfSave">
+        <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+        <span>Lưu PDF</span>
+      </button>
+      <button class="tbtn" id="pdfClose">
+        <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        <span>Đóng (ESC)</span>
+      </button>
+    </div>
+  </div>
+  <iframe id="pdfFrame" title="So sánh tính năng — bản gốc"></iframe>
+</div>
+
 <!-- Phóng to ảnh -->
 <div class="lb" id="lb">
   <img src="" alt="">
@@ -104,13 +128,15 @@
       <tr><td><kbd>Esc</kbd></td><td>Mở / đóng lưới slide</td></tr>
       <tr><td><kbd>F</kbd></td><td>Toàn màn hình</td></tr>
       <tr><td><kbd>X</kbd></td><td>Hiện đánh dấu nội dung bổ sung &amp; ghi chú việc cần làm</td></tr>
-      <tr><td><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd></td><td>Chuyển bộ Plus / Pro / Cập nhật V3</td></tr>
+      <tr><td><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd></td><td>Chuyển bộ Plus / Pro / So sánh / Cập nhật V3</td></tr>
+      <tr><td><kbd>P</kbd></td><td>Bản gốc dạng cuộn dọc (chỉ bộ So sánh)</td></tr>
       <tr><td><kbd>?</kbd></td><td>Bảng này</td></tr>
     </table>
     <div class="cl"><button class="tbtn" id="hclose"><span>Đóng</span></button></div>
   </div>
 </div>
 
+<script src="js/compare-page.js"></script>
 <script src="js/slides-data.js"></script>
 <script src="js/app.js"></script>
 </body>

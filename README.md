@@ -202,6 +202,7 @@ khung cắt mất đáy — đã dính một lần ở slide Quay lại bản c�
 | `F` | toàn màn hình |
 | `X` | hiện đánh dấu nội dung bổ sung + ghi chú |
 | `1` `2` `3` `4` | chuyển bộ Plus / Pro / So sánh / Cập nhật V3 |
+| `P` | mở bản gốc dạng cuộn dọc (chỉ có ở bộ So sánh) |
 | `?` | bảng phím tắt |
 
 Phím tắt chỉ dùng ở chế độ một slide một màn. Dưới 900px là chế độ xấp trang,
@@ -348,6 +349,7 @@ hệ, 8 nhóm báo cáo) rồi ghi phần `cmp:` vào `js/slides-data.js`.
 
 ```bash
 python tools/gen_compare.py
+python tools/gen_pdfview.py
 ```
 
 Sửa nội dung thì sửa ở script rồi chạy lại, **đừng sửa tay trong
@@ -360,6 +362,33 @@ mà vẫn giữ nguyên số slide. Cắt tham lam không thôi thì slide cuố
 dòng.
 
 Bộ này công khai, không có `gated` nên không hỏi mã.
+
+### Nút PDF — bản gốc dạng cuộn dọc
+
+Cạnh nút Lưới có nút **PDF**, mở bản gốc cuộn dọc **nguyên văn từng ký tự**,
+kèm nút **Lưu PDF** để in ra file gửi khách. Chỉ hiện ở bộ So sánh, bật bằng cờ
+`page: 1` của bộ.
+
+Ba điểm bắt buộc, đổi cái nào là hỏng cái đó:
+
+1. **Phải là `iframe`.** File gốc có luật CSS cho chính `body`, `h1`, `.head`,
+   `.wrap`. Đặt thẳng vào trang thì nó đè lên toàn bộ giao diện trình chiếu.
+2. **Phải là `srcdoc`, không phải `src`.** Trỏ `src` vào file `.html` thì khi
+   Trum bấm đúp mở `index.html` (giao thức `file://`), Chrome coi khung nhúng là
+   khác nguồn và chặn `contentWindow.print()` — nút Lưu PDF chết lặng. Nội dung
+   nằm trong `srcdoc` thì khung nhúng cùng nguồn với trang cha. Bản gộp một file
+   cũng nhờ đó mà chạy được, vì không còn thư mục `assets` để trỏ tới.
+   Nội dung lấy từ `js/compare-page.js`, do `tools/gen_pdfview.py` sinh ra.
+3. **Phải in cửa sổ của khung nhúng**, không in trang cha. In trang cha thì phần
+   nằm ngoài tầm nhìn của khung bị cắt, ra đúng một trang giấy.
+
+`gen_pdfview.py` chỉ thoát ba thứ khi gói vào chuỗi: dấu `\`, dấu backtick và
+`${`. Thêm một chỗ nữa là `</` phải đổi thành `<\/` — không thì lúc
+`build_bundle.py` nhét file này thẳng vào `index.html`, chữ `</script>` nằm
+trong chuỗi sẽ đóng sớm thẻ `<script>` và cả trang chết.
+
+In ra khổ A4 được **4 trang**. Chân trang của bản gốc đã nhắc người in bật
+"Đồ họa nền / Background graphics", không bật thì mất hết màu nền của bảng.
 
 **Số slide không cố định.** Thêm tính năng vào file gốc là số slide đổi theo, nên
 đừng ghi cứng con số ở chỗ khác.
@@ -375,10 +404,13 @@ js/app.js             bộ dựng slide + điều hướng + auto-fit chống tr
 assets/slides/plus/   ảnh bộ Plus        assets/slides/pro/  ảnh bộ Pro
 assets/slides/v3/     ảnh bộ Cập nhật V3 (WebP, từ bài giới thiệu nội bộ)
                       bộ So sánh không có ảnh riêng — dựng thẳng bằng HTML
+assets/So-sanh-IVT-Standard-Plus-Pro.html   bản gốc, nguồn của cả bộ So sánh
+js/compare-page.js    bản gốc gói thành chuỗi cho nút PDF (sinh tự động)
 assets/video/         video demo         assets/fonts/       Be Vietnam Pro nhúng sẵn
 build_bundle.py       gộp thành một file .html tự chứa
 tools/                script kiểm tra bằng Playwright
 tools/gen_compare.py  sinh lại bộ So sánh từ file HTML gốc
+tools/gen_pdfview.py  gói bản gốc thành js/compare-page.js cho nút PDF
 ```
 
 ### Cách khung hình hoạt động
@@ -703,9 +735,10 @@ Không cần `playwright install` — script dùng Chrome sẵn có trong máy.
 
 | Lệnh | Kiểm gì |
 |---|---|
-| `python tools/check_slides.py` | render toàn bộ 51 slide, báo slide nào tràn khung, slide nào bị auto-fit thu nhỏ, lỗi console |
+| `python tools/check_slides.py` | render toàn bộ 87 slide, báo slide nào tràn khung, slide nào bị auto-fit thu nhỏ, lỗi console |
 | `python tools/check_app.py` | điều hướng, lưới ESC, lightbox, chuyển bộ, phím X, hiện dần từng phần, và **không sinh thanh cuộn ở 6 cỡ màn hình** |
 | `python tools/check_mobile.py` | chế độ xấp trang khổ iPhone 14: đủ số trang, tỉ lệ 16:9, không tràn ngang, số trang chạy đúng khi cuộn, ảnh hỏng |
+| `python tools/check_pdfview.py` | nút PDF: nội dung nhúng giống bản gốc từng ký tự, cùng nguồn, Lưu PDF in đúng khung nhúng, chạy cả trên bản gộp một file |
 | `python tools/check_gate.py` | cổng mã của bộ nội bộ: bấm nút và mở link thẳng đều phải hỏi mã, mã sai bị chặn, mã đúng vào đúng slide |
 
 Ảnh chụp từng slide lưu vào `tools/shots/`, xem lại để soi bố cục. Bộ điện thoại

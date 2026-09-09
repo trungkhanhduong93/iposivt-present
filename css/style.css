@@ -1152,6 +1152,33 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
 .help .cl{margin-top:18px;text-align:right}
 
 /* =============================================================================
+   KHUNG XEM BẢN GỐC (nút PDF)
+   Nội dung là file HTML gốc để nguyên văn, nhét vào srcdoc của iframe. Phải là
+   iframe: file gốc có luật cho chính body, h1, .head… mà đặt thẳng vào trang
+   thì đè lên toàn bộ giao diện trình chiếu.
+   ========================================================================== */
+.pdfv{position:fixed;inset:0;z-index:85;background:#eef2f7;display:none;
+  flex-direction:column}
+.pdfv.open{display:flex}
+.pdfv .ph{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;
+  gap:14px;padding:11px 20px;background:#0f1a29;
+  border-bottom:1px solid rgba(255,255,255,.1)}
+.pdfv .ph h2{font-size:14px;font-weight:600;color:#fff;letter-spacing:-.2px}
+.pdfv .ph h2 small{color:#8296b0;font-weight:400;margin-left:9px}
+.pdfv .pa{display:flex;align-items:center;gap:9px}
+.pdfv iframe{flex:1;width:100%;border:0;background:#eef2f7;display:block}
+
+/* Nút PDF chỉ có nghĩa ở bộ So sánh — bộ khác thì giấu đi cho khỏi bấm nhầm */
+#pdfBtn{display:none}
+body[data-deck="cmp"] #pdfBtn{display:inline-flex}
+
+/* Lúc in thì chỉ còn nội dung khung nhúng, thanh tiêu đề của mình biến mất */
+@media print{
+  .pdfv.open{position:static;display:block}
+  .pdfv .ph{display:none}
+}
+
+/* =============================================================================
    BỘ SO SÁNH TÍNH NĂNG  ·  Standard xám · Plus xanh · Pro vàng
    Ba màu này cố định, KHÔNG lấy theo --acc của bộ đang xem: bảng nói về cả ba
    gói cùng lúc nên màu phải là màu của gói, không phải màu của deck.

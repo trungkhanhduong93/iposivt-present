@@ -135,6 +135,10 @@ def main():
         fav = datauri(m.group(1), quiet=True)
         if fav:
             html = html.replace('href="%s"' % m.group(1), 'href="%s"' % fav)
+    # Bản gốc của bộ So sánh: file này chỉ là một chuỗi, không có đường dẫn asset
+    page = read(os.path.join(ROOT, 'js', 'compare-page.js'))
+    html = html.replace('<script src="js/compare-page.js"></script>',
+                        '<script>\n' + page + '\n</script>')
     html = html.replace('<script src="js/slides-data.js"></script>',
                         shim + '\n<script>\n' + data + '\n</script>')
     html = html.replace('<script src="js/app.js"></script>',

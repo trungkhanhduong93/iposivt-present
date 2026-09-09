@@ -5,7 +5,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 # Ban goc de trong repo de chay lai duoc o may khac, khong tro ra Desktop.
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = os.path.join(ROOT, 'tools', 'source', 'So-sanh-IVT-Standard-Plus-Pro.html')
+SRC = os.path.join(ROOT, 'assets', 'So-sanh-IVT-Standard-Plus-Pro.html')
 DST = os.path.join(ROOT, 'js', 'slides-data.js')
 
 # ── Đọc dữ liệu gốc ──────────────────────────────────────────────────────
@@ -137,6 +137,8 @@ cmp: {
   name: 'So sánh tính năng',
   short: 'SO SÁNH',
   tagline: 'Standard · Plus · Pro — 99 tính năng theo từng phân hệ',
+  /* Bộ này có bản gốc dạng cuộn dọc — cờ này bật nút PDF trên thanh công cụ */
+  page: 1,
   dir: 'assets/slides/plus/',
   vdir: 'assets/video/',
   slides: [

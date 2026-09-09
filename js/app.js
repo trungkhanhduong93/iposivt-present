@@ -816,6 +816,8 @@ const App = {
       grid  : $('#grid'),
       gb    : $('#gb'),
       gt    : $('#gt'),
+      pdfv  : $('#pdfv'),
+      pdff  : $('#pdfFrame'),
       lb    : $('#lb'),
       lbi   : $('#lb img'),
       help  : $('#help')
@@ -841,7 +843,10 @@ const App = {
     this.el.pin.onclick = e => { if (e.target === this.el.pin) this.closePin(); };
     this.el.prev.onclick = () => this.go(-1, 'all');
     this.el.next.onclick = () => this.go(1,  'all');
-    $('#gridBtn').onclick = () => this.toggleGrid();
+    $('#gridBtn').onclick  = () => this.toggleGrid();
+    $('#pdfBtn').onclick   = () => this.togglePdf(true);
+    $('#pdfClose').onclick = () => this.togglePdf(false);
+    $('#pdfSave').onclick  = () => this.printPdf();
     $('#gclose').onclick  = () => this.toggleGrid(false);
     $('#fsBtn').onclick   = () => this.fullscreen();
     $('#helpBtn').onclick = () => this.el.help.classList.add('open');
@@ -854,6 +859,8 @@ const App = {
       if (t === 'INPUT' || t === 'TEXTAREA') return;
       if (this.el.pin.classList.contains('open')) return;
       if (this.el.help.classList.contains('open') && e.key !== 'Escape') return;
+      /* Khung xem bản gốc che kín màn: chỉ còn Esc và phím in của trình duyệt */
+      if (this.el.pdfv.classList.contains('open') && e.key !== 'Escape') return;
 
       switch (e.key) {
         /* Space và PageDown hiện thêm một phần — remote trình chiếu gửi PageDown */
@@ -866,7 +873,11 @@ const App = {
         case 'Escape':
           if (this.el.lb.classList.contains('open'))   this.el.lb.classList.remove('open');
           else if (this.el.help.classList.contains('open')) this.el.help.classList.remove('open');
+          else if (this.el.pdfv.classList.contains('open')) this.togglePdf(false);
           else this.toggleGrid();
+          break;
+        case 'p': case 'P':
+          if (this.deck.page) this.togglePdf();
           break;
         case 'f': case 'F': this.fullscreen(); break;
         case 'x': case 'X': this.toggleX();    break;
@@ -1124,6 +1135,7 @@ const App = {
   render (mode) {
     const d = this.deck, s = this.slide;
     document.body.dataset.deck = this.key;
+    if (!this.deck.page) this.togglePdf(false);   // bộ khác thì đóng khung xem
     $$('.seg button').forEach(b => b.classList.toggle('on', b.dataset.deck === this.key));
 
     if (this.mob) {
@@ -1245,6 +1257,30 @@ const App = {
   toggleX () {
     this.showx = !this.showx;
     document.body.classList.toggle('showx', this.showx);
+  },
+
+  /* ── Khung xem bản gốc ──────────────────────────────────────────────────
+     Nội dung nạp một lần rồi giữ luôn: nạp lại mỗi lần mở thì mất chỗ đang
+     cuộn, mà file nặng hơn 100KB nên dựng lại cũng thấy khựng. */
+  togglePdf (force) {
+    const open = force === undefined
+      ? !this.el.pdfv.classList.contains('open') : force;
+    if (open) {
+      const src = (this.deck.page && typeof COMPARE_PAGE === 'string')
+        ? COMPARE_PAGE : '';
+      if (!src) return;
+      if (this.el.pdff.getAttribute('srcdoc') !== src) this.el.pdff.srcdoc = src;
+    }
+    this.el.pdfv.classList.toggle('open', open);
+  },
+
+  /* In chính khung nhúng, không in trang cha: in trang cha thì phần nằm ngoài
+     tầm nhìn của khung bị cắt, ra đúng một trang giấy. */
+  printPdf () {
+    const w = this.el.pdff.contentWindow;
+    if (!w) return;
+    w.focus();
+    w.print();
   },
 
   toggleGrid (force) {
