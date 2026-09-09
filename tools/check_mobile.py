@@ -76,13 +76,16 @@ with sync_playwright() as p:
     ctx = browser.new_context(viewport={'width': 393, 'height': 852},
                               device_scale_factor=2, is_mobile=True, has_touch=True)
     pg = ctx.new_page()
-    # bo V3 co cong ma — mo san de bo kiem vao duoc
-    pg.add_init_script("try{sessionStorage.setItem('ivt-open-v3','1')}catch(e){}")
     pg.on('pageerror', lambda e: errs.append(str(e)))
     pg.on('console', lambda m: errs.append(m.text) if m.type == 'error' else None)
 
+    # mở khoá bộ nội bộ một lần rồi đổi bộ bằng hash, không tải lại trang
+    pg.goto(BASE)
+    pg.wait_for_timeout(900)
+    pg.evaluate("()=>{for (const k in DECKS) if (DECKS[k].gated) App.gate[k] = true;}")
+
     for deck in DECKS:
-        pg.goto(BASE + '#%s-1' % deck)
+        pg.evaluate('(h) => { location.hash = h; }', '#%s-1' % deck)
         pg.wait_for_timeout(2200)
         r = pg.evaluate(INFO)
         print('-- bo %s --' % deck.upper())

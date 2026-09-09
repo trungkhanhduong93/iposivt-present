@@ -70,7 +70,6 @@ const PAD   = 12;           // viền trắng của khung máy (.pf padding 6px 
    Đây là rào cản nhẹ, KHÔNG phải bảo mật: trang tĩnh nên người thạo kỹ thuật
    vẫn đọc được dữ liệu slide. Muốn chặn thật thì bật Cloudflare Access. */
 const PIN_HASH = 'aba1b56fdf9b7abaad8fa4e9afa71a056e3ebfad0c9e88991cd75dd0b4d42f58';
-const PIN_KEY = 'ivt-open-';
 
 const MOB_W = 900;
 const isMob = () => innerWidth < MOB_W;
@@ -790,10 +789,11 @@ const App = {
   },
 
   /* ── Cổng mã cho bộ nội bộ ──────────────────────────────────────────────
-     Mở một lần cho mỗi tab: đóng tab là phải nhập lại. */
-  opened (k) {
-    try { return sessionStorage.getItem(PIN_KEY + k) === '1'; } catch (e) { return false; }
-  },
+     Nhớ trong bộ nhớ trang, KHÔNG lưu xuống sessionStorage: tải lại tab là
+     mất, phải nhập mã lần nữa. */
+  gate: {},
+
+  opened (k) { return this.gate[k] === true; },
 
   askPin (k) {
     this.wantDeck = k;
@@ -824,7 +824,7 @@ const App = {
       $('#pinInput').select();
       return;
     }
-    try { sessionStorage.setItem(PIN_KEY + k, '1'); } catch (e) {}
+    this.gate[k] = true;
     const want = this.wantSlide;
     this.closePin();
     this.key = k;

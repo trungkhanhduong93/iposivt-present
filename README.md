@@ -265,8 +265,19 @@ v3: {
 ```
 
 Mã lưu trong `app.js` dưới dạng **băm SHA-256** (`PIN_HASH`) nên không nằm thẳng
-trong mã nguồn. Mở một lần cho mỗi tab, nhớ trong `sessionStorage`; đóng tab là
-phải nhập lại. Mở link thẳng như `#v3-5` cũng hỏi mã, nhập xong vào đúng slide 5.
+trong mã nguồn. Trạng thái mở khoá chỉ nằm trong bộ nhớ trang, **không** lưu
+xuống `sessionStorage` — tải lại tab là mất, phải nhập lần nữa. Mở link thẳng
+như `#v3-5` cũng hỏi mã, nhập xong vào đúng slide 5.
+
+Chạy bộ kiểm cổng mã thì truyền mã qua biến môi trường, đừng ghi vào repo:
+
+```bash
+IVT_PIN=<ma> python tools/check_gate.py
+```
+
+Hai bộ kiểm kia không cần mã: chúng bật `App.gate[k] = true` rồi đổi slide bằng
+`location.hash` thay vì tải lại trang, nên trạng thái mở khoá giữ nguyên suốt
+lượt chạy.
 
 ### Đây KHÔNG phải bảo mật
 
@@ -281,8 +292,10 @@ bản free cho 50 user) cho cả trang.
 python -c "import hashlib;print(hashlib.sha256('MA_MOI'.encode()).hexdigest())"
 ```
 
-Ba bộ kiểm tự mở khoá bộ này bằng `add_init_script` để chạy được, nên đừng đổi
-tên khoá `ivt-open-v3` mà quên sửa chúng.
+**Mã hiện tại đã nằm trong lịch sử git** — nó từng bị ghi dạng chữ vào
+`tools/check_gate.py` ở commit `6bd77ef` trước khi chuyển sang biến môi trường.
+Repo là public nên coi như mã đó đã lộ; muốn kín thì đổi sang mã khác và cập
+nhật `PIN_HASH`.
 
 ### Màu nhận diện
 

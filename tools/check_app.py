@@ -32,8 +32,6 @@ def ok(name, cond, extra=''):
 with sync_playwright() as p:
     b = p.chromium.launch(channel='chrome')
     pg = b.new_page(viewport={'width': 1500, 'height': 900})
-    # bo V3 co cong ma — mo san de bo kiem vao duoc
-    pg.add_init_script("try{sessionStorage.setItem('ivt-open-v3','1')}catch(e){}")
     pg.on('pageerror', lambda e: fails.append('PAGEERROR ' + str(e)))
     pg.goto(BASE); pg.wait_for_timeout(600)
     h = lambda: pg.evaluate('()=>location.hash')

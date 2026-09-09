@@ -59,13 +59,17 @@ with sync_playwright() as p:
         sys.exit('khong mo duoc trinh duyet nao')
 
     pg = browser.new_page(viewport={'width': 1500, 'height': 900})
-    # bo V3 co cong ma — mo san de bo kiem vao duoc
-    pg.add_init_script("try{sessionStorage.setItem('ivt-open-v3','1')}catch(e){}")
     pg.on('pageerror', lambda e: errs.append(str(e)))
     pg.on('console', lambda m: errs.append(m.text) if m.type == 'error' else None)
 
+    # Bộ nội bộ nhớ mã trong bộ nhớ trang nên tải lại là mất. Mở khoá một lần
+    # rồi đổi slide bằng hash — không tải lại nên trạng thái giữ nguyên.
+    pg.goto(BASE)
+    pg.wait_for_timeout(700)
+    pg.evaluate("()=>{for (const k in DECKS) if (DECKS[k].gated) App.gate[k] = true;}")
+
     for t in targets:
-        pg.goto(BASE + '#' + t)
+        pg.evaluate('(h) => { location.hash = h; }', '#' + t)
         pg.wait_for_timeout(450)
         r = pg.evaluate(PROBE)
         notes = []

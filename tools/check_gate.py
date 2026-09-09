@@ -5,17 +5,29 @@ thì không vào được, mã đúng thì mở và nhớ trong phiên. Hai bộ
 
     python tools/check_gate.py
 
+Mã lấy từ biến môi trường IVT_PIN, không ghi vào repo:
+
+    IVT_PIN=<ma> python tools/check_gate.py
+
 Lưu ý: đây là rào cản nhẹ chứ không phải bảo mật — trang tĩnh nên dữ liệu slide
 vẫn nằm trong js/slides-data.js, ai xem mã nguồn cũng đọc được. Muốn chặn thật
 thì bật Cloudflare Access.
 """
-import sys, pathlib
+import os, sys, pathlib
 from playwright.sync_api import sync_playwright
 
 sys.stdout.reconfigure(encoding='utf-8')
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 BASE = ROOT.joinpath('index.html').as_uri()
-PIN = '19004766'
+
+# Mã KHÔNG ghi vào repo. Đặt biến môi trường rồi chạy:
+#   PowerShell:  $env:IVT_PIN = '...'; python tools/check_gate.py
+#   Git Bash:    IVT_PIN=... python tools/check_gate.py
+PIN = os.environ.get('IVT_PIN', '')
+if not PIN:
+    print('Chua dat bien moi truong IVT_PIN — bo qua bo kiem cong ma.')
+    print('Cach chay:  IVT_PIN=<ma> python tools/check_gate.py')
+    sys.exit(0)
 
 fails = []
 def ok(name, cond, extra=''):
@@ -92,8 +104,20 @@ with sync_playwright() as p:
     ok('vao dung slide da gõ trong link', r['hash'] == '#v3-5', r['hash'])
     ok('bao loi cu duoc xoa sach', r['err'] == '', repr(r['err']))
 
-    # phim trong o nhap khong duoc lat slide
-    pg2.click('#toPlus'); pg2.wait_for_timeout(400)
+    # tai lai tab thi phai nhap ma lan nua — ma chi nho trong bo nho trang
+    pg2.reload(); pg2.wait_for_timeout(1100)
+    r = pg2.evaluate(ST)
+    ok('tai lai tab thi hoi ma lan nua', r['open'] and r['deck'] == 'plus', r)
+    pg2.fill('#pinInput', PIN)
+    pg2.keyboard.press('Enter'); pg2.wait_for_timeout(900)
+    r = pg2.evaluate(ST)
+    ok('nhap lai thi ve dung slide cu', r['deck'] == 'v3' and r['hash'] == '#v3-5', r)
+
+    # bo cong khai tai lai thi khong hoi gi
+    pg2.click('#toPlus'); pg2.wait_for_timeout(500)
+    pg2.reload(); pg2.wait_for_timeout(900)
+    r = pg2.evaluate(ST)
+    ok('bo cong khai tai lai khong hoi ma', not r['open'] and r['deck'] == 'plus', r)
     ctx2.close()
     browser.close()
 
