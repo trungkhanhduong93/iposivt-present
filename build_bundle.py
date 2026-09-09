@@ -4,7 +4,7 @@ Gộp toàn bộ web-present thành MỘT file .html tự chứa — gửi Teleg
 là mở được ngay, không cần internet, không cần thư mục assets đi kèm.
 
     python build_bundle.py                    -> iPOS-Inventory-Present.html (co video)
-    python build_bundle.py --no-video         -> nhe hon ~11MB, bo 4 video demo
+    python build_bundle.py --no-video         -> nhe hon ~5MB, bo 2 video demo
     python build_bundle.py --deck plus        -> chi bo Plus
     python build_bundle.py --deck pro         -> chi bo Pro
     python build_bundle.py -o D:\\gui-khach.html
@@ -41,7 +41,7 @@ def datauri(rel, quiet=False):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('-o', '--out', default=os.path.join(ROOT, 'iPOS-Inventory-Present.html'))
-    ap.add_argument('--no-video', action='store_true', help='bo 4 video demo cho nhe file')
+    ap.add_argument('--no-video', action='store_true', help='bo 2 video demo cho nhe file')
     ap.add_argument('--deck', choices=['plus', 'pro'], help='chi giu mot bo')
     a = ap.parse_args()
 
@@ -76,10 +76,6 @@ def main():
     app  = pat_full.sub(js_asset, app)
     data = pat_full.sub(js_asset, data)
 
-    # trong slides-data.js đường dẫn bị tách: dir 'assets/slides/plus/' + 'p01_1.jpg'
-    for deck, dirkey in (('plus', 'assets/slides/plus/'), ('pro', 'assets/slides/pro/')):
-        pass  # xử lý bằng cách nội tuyến bảng tra cứu bên dưới
-
     # Bảng tra cứu: tên file -> data URI, để app.js tự ghép lúc chạy.
     lookup, total = {}, 0
     # logo và ảnh nằm thẳng trong assets/ — được ghép động kiểu `assets/${s.logo}`
@@ -111,13 +107,16 @@ def main():
     import json
     shim = ('<script>window.__ASSETS__=' + json.dumps(lookup) + ';</script>')
 
-    # app.js: mọi src="${d.dir}${s.img}" -> tra bảng trước khi dùng
+    # app.js: mọi src="${X}${Y}" -> tra bảng trước khi dùng. Phải bắt cả dạng ghép
+    # trong hàm dựng phụ (framed dùng ${dir}${f}), không riêng ${d.dir}${s.img} —
+    # sót dạng đó thì 10 slide có khung máy mất sạch ảnh trong bản gộp.
     app = app.replace(
         "const $  = (s, r) => (r || document).querySelector(s);",
         "const A = window.__ASSETS__ || null;\n"
         "const U = p => (A && A[p]) ? A[p] : p;\n"
         "const $  = (s, r) => (r || document).querySelector(s);")
-    app = re.sub(r'\$\{d\.(dir|vdir)\}\$\{([^}]+)\}', r'${U(d.\1 + \2)}', app)
+    app = re.sub(r'(src|poster)="\$\{([A-Za-z_$][\w.$]*)\}\$\{([^}]+)\}"',
+                 r'\1="${U(\2 + \3)}"', app)
     app = re.sub(r"d\.dir \+ (s\.imgs\[0\]|s\.img\b)", r"U(d.dir + \1)", app)
     # đường dẫn ghép động trong template literal, vd  src="assets/${s.logo}"
     app = re.sub(r'assets/\$\{([^}]+)\}', r"${U('assets/' + \1)}", app)

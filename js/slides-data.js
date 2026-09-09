@@ -523,10 +523,6 @@ pro: {
         ] },
       { gate:'KHỚP SỐ', gc:'#1a9c61', gs:'ghi nhận hao hụt',
         t:'Tồn kho sau điều chỉnh', s:'Bắt đầu kỳ mới', tone:'good' }
-    ],
-    _notes_da_bo:[
-      { k:'warn', t:'**Lưu ý:** Lập phiếu kiểm kê rồi tưởng tồn đã đúng. Phiếu kiểm kê không làm thay đổi tồn — chưa có phiếu điều chỉnh thì sổ vẫn giữ số cũ. Hàng đóng gói sẵn thì đếm theo hộp và để hệ thống quy đổi, đừng tháo hộp ra đếm.' },
-      { k:'tip',  t:'**Mẹo:** Nhóm này có **Mẫu kiểm kê** — tiện ích khai trước danh sách mã cần đếm theo khu vực kho, nhân viên chỉ mở mẫu và điền số đếm, không sót mã.' }
     ] },
 
   /* 13 ─ Tính giá vốn --------------------------------------------------- */

@@ -53,6 +53,30 @@ with sync_playwright() as p:
     pg.keyboard.press('x'); pg.wait_for_timeout(250)
     ok('phim X bat che do danh dau', pg.evaluate('()=>document.body.classList.contains("showx")'))
 
+    # hien dan tung phan: Space di tung buoc, mui ten bo qua va hien tron
+    st = lambda: pg.evaluate('()=>({s:App.step,n:App.nsteps,h:location.hash,'
+                             'an:[...document.querySelectorAll("#stage [data-rv]")]'
+                             '.filter(e=>getComputedStyle(e).opacity==="0").length})')
+    pg.goto(BASE + '#plus-9'); pg.wait_for_timeout(1100)
+    r = st()
+    ok('mo link thang thi hien san du', r['n'] > 0 and r['s'] == r['n'] and r['an'] == 0, r)
+    h0 = pg.evaluate('()=>document.querySelector("#stage .s-body").scrollHeight')
+    pg.evaluate('()=>{App.step=0;App.paintReveal(false);}'); pg.wait_for_timeout(150)
+    h1 = pg.evaluate('()=>document.querySelector("#stage .s-body").scrollHeight')
+    ok('an het van do dung chieu cao', h0 == h1, '%d vs %d' % (h0, h1))
+
+    pg.goto(BASE + '#plus-1'); pg.wait_for_timeout(700)
+    pg.keyboard.press(' '); pg.wait_for_timeout(600)
+    r = st()
+    ok('Space sang slide sau va cho bam tiep',
+       r['h'] == '#plus-2' and r['s'] == 0 and r['an'] == r['n'] > 0, r)
+    pg.keyboard.press(' '); pg.wait_for_timeout(300)
+    ok('Space hien them mot phan', st()['s'] == 1, st())
+    pg.keyboard.press('ArrowRight'); pg.wait_for_timeout(900)
+    r = st()
+    ok('mui ten phai bo qua buoc va hien tron',
+       r['h'] == '#plus-3' and r['s'] == r['n'] and r['an'] == 0, r)
+
     # video phai tu chay, lap, tat tieng, khong co thanh dieu khien
     for i in range(1, N_PLUS + 1):
         pg.goto(BASE + '#plus-%d' % i); pg.wait_for_timeout(500)
@@ -74,13 +98,21 @@ with sync_playwright() as p:
     ok('Esc dong lightbox',
        not pg.evaluate('()=>document.getElementById("lb").classList.contains("open")'))
 
-    for w, hgt in [(1366, 768), (1920, 1080), (1280, 720), (2560, 1440)]:
+    # 1024 va 852 tung lam slide lech sang phai roi bi cat: grid tu bo canh giua
+    # khi item rong hon khung. 393 la dien thoai — o do phai vao bo cuc doc.
+    for w, hgt in [(1366, 768), (1920, 1080), (1280, 720), (2560, 1440), (1024, 768), (852, 393)]:
         pg.set_viewport_size({'width': w, 'height': hgt}); pg.wait_for_timeout(350)
         sc = pg.evaluate("""()=>{const d=document.documentElement;
              return [d.scrollWidth>d.clientWidth, d.scrollHeight>d.clientHeight];}""")
         fit = pg.evaluate("""()=>{const r=document.getElementById('stage').getBoundingClientRect();
              return r.width<=innerWidth+1&&r.height<=innerHeight+1;}""")
         ok('man %dx%d khong scroll, slide lot khung' % (w, hgt), not any(sc) and fit)
+
+    pg.set_viewport_size({'width': 393, 'height': 852}); pg.wait_for_timeout(500)
+    ok('man dien thoai vao bo cuc doc',
+       pg.evaluate('()=>document.body.classList.contains("mob")'))
+    ok('bo cuc doc khong tran ngang',
+       not pg.evaluate('()=>{const d=document.documentElement;return d.scrollWidth>d.clientWidth;}'))
     b.close()
 
 print('\n=> ' + ('TAT CA PASS' if not fails else 'CO LOI: ' + ', '.join(map(str, fails))))

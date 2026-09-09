@@ -72,7 +72,7 @@ chú `todo`. Duyệt xong thì xoá cờ.
 2. Sửa tên file trong `slides-data.js` (`img:` / `imgs:[...]` / `shots:[...]`)
 3. Ctrl+F5 lại trình duyệt
 
-**Ảnh chụp điện thoại phải nén trước khi commit** — xem mục 6.
+**Ảnh chụp điện thoại phải nén trước khi commit** — xem mục 8.
 
 ---
 
@@ -123,7 +123,7 @@ CSS cùng tên.
 ### Thêm kiểu mới
 
 1. Viết hàm dựng trong `T = {...}` ở `app.js`
-2. Thêm khối CSS **có tiền tố riêng** (xem bẫy ở mục 7)
+2. Thêm khối CSS **có tiền tố riêng** (xem bẫy ở mục 9)
 3. Auto-fit tự lo phần chống tràn
 
 ---
@@ -132,7 +132,8 @@ CSS cùng tên.
 
 | Phím | Việc |
 |---|---|
-| `→` `Space` `PageDown` | slide sau |
+| `Space` `PageDown` | hiện thêm một phần; hết phần thì sang slide sau |
+| `→` | sang thẳng slide sau, hiện trọn nội dung |
 | `←` `PageUp` | slide trước |
 | `Home` `End` | slide đầu / cuối |
 | `Esc` | mở / đóng lưới slide |
@@ -145,7 +146,74 @@ Bấm vào ảnh trong slide để phóng to. Bấm vào video để dừng / ch
 
 ---
 
-## 5. Cấu trúc và kiến trúc
+## 5. Hiện dần từng phần khi present
+
+Bấm `Space` để hiện thêm một phần của slide, giống build trong PowerPoint. Hết
+phần thì `Space` sang slide sau và dừng ở trạng thái chưa hiện gì, chờ bấm tiếp.
+Remote trình chiếu gửi `PageDown` nên cũng đi từng bước.
+
+`→` là lối thoát: nhảy thẳng sang slide sau và hiện trọn nội dung. Mở link, nhảy
+từ lưới ESC, đổi bộ, hay lùi bằng `←` cũng hiện trọn — khách tự mở link không bao
+giờ thấy slide trống.
+
+Số phần còn lại nằm trong thẻ cam cạnh số slide trên thanh công cụ.
+
+### Slide nào được chia phần
+
+Bảng `RV` trong `js/app.js` khai mỗi loại slide một selector CSS. Các phần tử
+khớp selector sẽ hiện lần lượt theo đúng thứ tự trong DOM. Loại không có tên
+trong bảng thì hiện trọn một lần: bìa, chuyển mục, ảnh toàn slide, video, hỏi
+đáp, cảm ơn, công thức giá vốn, nền tảng.
+
+Hiện có **31 slide** chia phần — Plus 16, Pro 15. Slide chỉ khớp một phần tử thì
+bỏ qua, chia phần cho đúng một mục là vô nghĩa.
+
+Muốn kiểu slide mới cũng chia phần thì thêm một dòng vào `RV`, không phải sửa
+hàm dựng.
+
+### Ẩn bằng độ mờ, không phải `display:none`
+
+Phần chưa tới lượt vẫn chiếm chỗ trong luồng, chỉ `opacity:0`. Bỏ hẳn khỏi luồng
+thì auto-fit đo chiều cao lúc slide còn trống, tưởng vừa khung, tới lúc hiện nốt
+là tràn.
+
+`opacity` phải để `!important` — vài selector sẵn có đặc hiệu cao hơn, ví dụ
+`.val .rail .r` vốn đặt `opacity:.5` cho mục chưa tới lượt.
+
+---
+
+## 6. Xem trên điện thoại
+
+Dưới **900px** bề ngang và cao từ **521px** trở lên, trang bỏ khung cứng
+1280×720: slide chảy theo bề ngang màn rồi cuộn dọc, mọi lưới nhiều cột dồn về
+một cột, chữ trở về đúng cỡ đọc được.
+
+| Trên iPhone 14 dọc | Trước | Sau |
+|---|---|---|
+| Chữ thân bài | 4.1 px | 14 px |
+| Tiêu đề slide | 9.7 px | 23 px |
+
+Cột "trước" là cỡ chữ thật nhân tỉ lệ thu nhỏ của khung — khung 1280 ép vào màn
+393 thì tỉ lệ chỉ còn 0.286.
+
+Màn thấp dưới 521px là điện thoại đang xoay ngang. Ở đó giữ nguyên khung slide
+vừa màn, vì cuộn dọc trên màn cao 393px khó chịu hơn là nhìn slide nhỏ. Ngưỡng
+này khai hai chỗ và phải khớp nhau: `MOB_W` với `MOB_H` trong `app.js`, và
+`@media` trong `style.css`.
+
+Vài chỗ không reflow được thì thu nhỏ nguyên khối theo biến `--ms` do `app.js`
+đặt: slide bìa, banner Giới thiệu, dải ba thiết bị của bộ Pro. Riêng bìa có mục
+lục thì chữ chỉ 16.5px, thu nhỏ nguyên khối còn 5px — nó mang thêm lớp
+`softcover` và được cho chảy dọc như slide thường.
+
+Trên điện thoại **không chia phần** và **tắt auto-fit**: người xem cuộn chứ không
+bấm, và slide cứ cao bao nhiêu thì cuộn bấy nhiêu.
+
+Đây là chỗ duy nhất trong `style.css` được phép sinh thanh cuộn.
+
+---
+
+## 7. Cấu trúc và kiến trúc
 
 ```
 index.html            khung ứng dụng: thanh công cụ, sân khấu, lưới slide, lightbox
@@ -177,6 +245,21 @@ với font vào chỗ.
 **Slide bị auto-fit thu nhỏ là dấu hiệu bố cục sai, không phải giải pháp.** Thấy
 `zoom=0.xx` trong kết quả kiểm tra thì sửa bố cục cho vừa, đừng để auto-fit gánh.
 
+### Chuyển động
+
+Ba lớp chồng lên nhau, tổng một slide dưới 800ms:
+
+1. Cả slide trượt vào — `@keyframes sl`, 340ms, hướng theo biến `--dx`.
+2. Điểm nhấn trong khung tự chạy — gạch cam vẽ ra từ trái, ảnh máy và khung
+   trình duyệt nảy nhẹ vào chỗ, tiêu đề trồi lên sau một nhịp ngắn.
+3. Các phần nội dung hiện dần theo `Space` (mục 5), cách nhau 45ms, trần tổng
+   độ trễ 360ms.
+
+Chỗ nào cha đã nằm trong bảng `RV` thì con **không** thêm chuyển động riêng —
+nó chạy lúc cha còn đang ẩn nên người xem không thấy gì.
+
+Máy người xem bật giảm chuyển động thì tắt hết, chỉ giữ mờ dần 120ms.
+
 ### Khung ảnh chụp máy
 
 Ảnh chụp điện thoại tỉ lệ cố định `1272/2772` (hằng số `SHOT_R`). Hàm `frameH()`
@@ -192,7 +275,7 @@ sẽ tràn mất phần đầu ảnh.
 
 ---
 
-## 6. Ảnh và dung lượng
+## 8. Ảnh và dung lượng
 
 ### Nén ảnh chụp điện thoại trước khi commit
 
@@ -221,14 +304,14 @@ im.resize((round(w*1800/h), 1800), Image.LANCZOS).save(
 
 | | |
 |---|---|
-| `assets/slides/pro` | 7.3 MB |
-| `assets/slides/plus` | 4.7 MB |
+| `assets/slides/pro` | 7.5 MB |
+| `assets/slides/plus` | 4.8 MB |
 | `assets/video` | 3.7 MB |
-| Tổng repo | ~17 MB, 72 file |
+| Tổng repo | ~17 MB, 74 file |
 
 ---
 
-## 7. Bẫy đã trả giá — đọc trước khi sửa CSS
+## 9. Bẫy đã trả giá — đọc trước khi sửa CSS
 
 ### Trùng tên class — dính 3 lần
 
@@ -284,6 +367,44 @@ def f(m):
 txt = re.sub(r"\{ n:\d+,", f, txt)
 ```
 
+### Grid tự bỏ canh giữa khi item rộng hơn khung — cắt mất 80px
+
+`.stagewrap` từng dùng `place-items:center` với `.stage` cứng 1280px. Cửa sổ hẹp
+hơn 1280 thì trình duyệt tự bỏ canh giữa và đẩy item về mép trái, slide lệch sang
+phải rồi bị `overflow:hidden` xén. Không báo lỗi, không sinh thanh cuộn, chỉ mất
+một dải bên phải.
+
+Dính ở **mọi bề ngang 820–1279px**: iPad dọc, điện thoại xoay ngang, cửa sổ
+laptop thu nhỏ. Bộ kiểm cũ chỉ chạy 1280 trở lên nên không bắt được.
+
+Sửa bằng toạ độ thay vì trông vào alignment: `.stage` đặt `position:absolute;
+left:50%; top:50%`, còn `app.js` ghép `translate(-50%,-50%)` vào trước `scale`.
+Đã thêm hai cỡ màn `1024×768` và `852×393` vào `check_app.py`.
+
+### Bản gộp mất ảnh vì regex chỉ bắt một dạng ghép đường dẫn
+
+`build_bundle.py` đổi `${d.dir}${s.img}` thành tra bảng, nhưng hàm `framed()`
+ghép bằng `${dir}${f}` — biến cục bộ, không phải `d.dir`. Regex trượt, nên **10
+slide có khung máy** mất sạch ảnh trong bản gửi rời, còn bản web thì vẫn đủ.
+
+Giờ regex bắt theo thuộc tính `src="${X}${Y}"` và `poster=` nên phủ mọi dạng
+ghép. Thêm hàm dựng mới thì không phải nhớ sửa lại.
+
+Bài học: sửa xong nội dung phải **build bản gộp rồi mở thử**, đừng tin bản web
+chạy được là bản gộp cũng chạy được.
+
+### Selector con trực tiếp bắt luôn chân slide
+
+`.slide.bare>div` áp cho cả `<div class="s-foot">`, làm chân slide hiện lên ở
+trang bìa và bị `flex:1` kéo giãn ra giữa trang. Mọi selector `>div` trên
+`.slide` phải loại trừ: `:not(.s-foot):not(.todo)`.
+
+### Chụp ảnh kiểm tra đừng dùng `full_page`
+
+Trang có thanh công cụ `position:sticky`. Ảnh `full_page` của Playwright ra
+trắng nửa trên, nhìn cứ tưởng slide hỏng — mất một vòng truy tìm vô ích. Chụp
+thẳng phần tử: `pg.locator('#stage').screenshot(...)`.
+
 ### PowerShell nuốt dấu ngoặc kép
 
 `gh api ... --jq '"..."'` hỏng vì PowerShell ăn mất dấu nháy. Dùng
@@ -291,7 +412,7 @@ txt = re.sub(r"\{ n:\d+,", f, txt)
 
 ---
 
-## 8. Kiểm tra trước khi push
+## 10. Kiểm tra trước khi push
 
 Thư mục `tools/` có 2 script Playwright. Cài một lần:
 
@@ -304,16 +425,18 @@ Không cần `playwright install` — script dùng Chrome sẵn có trong máy.
 | Lệnh | Kiểm gì |
 |---|---|
 | `python tools/check_slides.py` | render toàn bộ 51 slide, báo slide nào tràn khung, slide nào bị auto-fit thu nhỏ, lỗi console |
-| `python tools/check_app.py` | điều hướng, lưới ESC, lightbox, chuyển bộ, phím X, và **không sinh thanh cuộn ở 4 cỡ màn hình** |
+| `python tools/check_app.py` | điều hướng, lưới ESC, lightbox, chuyển bộ, phím X, hiện dần từng phần, và **không sinh thanh cuộn ở 6 cỡ màn hình** |
+| `python tools/check_mobile.py` | rà cả 51 slide ở bố cục dọc khổ iPhone 14: tràn ngang, chữ dưới 10.5px, ảnh hỏng |
 
-Ảnh chụp từng slide lưu vào `tools/shots/`, xem lại để soi bố cục.
+Ảnh chụp từng slide lưu vào `tools/shots/`, xem lại để soi bố cục. Bộ mobile chụp
+khi thêm tham số: `python tools/check_mobile.py shot` — ảnh vào `tools/shots-mobile/`.
 
-**Đây là chốt duy nhất giữa code sửa và trang chạy thật.** Các lỗi trong mục 7 đều
+**Đây là chốt duy nhất giữa code sửa và trang chạy thật.** Các lỗi trong mục 9 đều
 do 2 script này bắt được, không phải nhìn mắt thường mà thấy.
 
 ---
 
-## 9. Đưa lên mạng
+## 11. Đưa lên mạng
 
 Cloudflare Pages đã nối sẵn với repo. Sửa xong chỉ cần push, khoảng một phút sau
 trang tự cập nhật:
@@ -343,7 +466,7 @@ luồng Pages đúng thì có ô "Build output directory".
 
 ---
 
-## 10. Xuất một file để gửi rời
+## 12. Xuất một file để gửi rời
 
 Dùng khi người nhận không có mạng. Có link web rồi thì gửi link tiện hơn.
 
@@ -351,7 +474,7 @@ Dùng khi người nhận không có mạng. Có link web rồi thì gửi link 
 python build_bundle.py
 ```
 
-Ra `iPOS-Inventory-Present.html` (~21 MB) — nhúng cả font, ảnh, video dưới dạng
+Ra `iPOS-Inventory-Present.html` (~22 MB) — nhúng cả font, ảnh, video dưới dạng
 base64, mở là chạy, không cần thư mục `assets`.
 
 ```bash
@@ -361,5 +484,5 @@ python build_bundle.py -o "D:\gui-khach.html"
 ```
 
 File này **không đi theo git** (`.gitignore` loại nó) vì mỗi lần build là một bản
-21 MB mới, commit vào sẽ phình repo rất nhanh. Nó cũng là bản chụp tại thời điểm
+22 MB mới, commit vào sẽ phình repo rất nhanh. Nó cũng là bản chụp tại thời điểm
 build, sửa nội dung xong phải chạy lại.

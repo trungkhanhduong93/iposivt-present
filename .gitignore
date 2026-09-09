@@ -11,5 +11,6 @@ desktop.ini
 *.tmp
 *.bak
 
-# Ảnh chụp do tools/check_slides.py sinh ra khi kiểm tra
+# Ảnh chụp do tools/check_slides.py và tools/check_mobile.py sinh ra khi kiểm tra
 tools/shots/
+tools/shots-mobile/

@@ -65,8 +65,15 @@ const xf = o => (o && o.x ? ' xflag' : '');
 const SHOT_R = 1272 / 2772;
 const COL_H = 500;          // chiều cao trống thật của .s-body ở slide có tiêu đề
 const PAD   = 12;           // viền trắng của khung máy (.pf padding 6px hai bên)
+/* Ngưỡng đổi sang bố cục dọc — phải khớp @media trong style.css.
+   Màn thấp dưới 521px là điện thoại đang xoay ngang: ở đó cuộn dọc rất khó chịu,
+   giữ nguyên khung slide vừa màn thì xem dễ hơn. */
+const MOB_W = 900;
+const MOB_H = 521;
+const isMob = () => innerWidth < MOB_W && innerHeight >= MOB_H;
 function frameH (n, colW, colH, gap) {
-  if (n < 2) return '';
+  /* Bố cục dọc không còn khung 1280×720 nên chiều cao tính sẵn sẽ sai — để CSS lo. */
+  if (n < 2 || isMob()) return '';
   const w = (colW - (n - 1) * gap) / n;      // bề ngang tối đa cho một khung
   const h = (w - PAD) / SHOT_R + PAD;        // PAD là viền trắng, phải trừ ra rồi cộng lại
   // Cao hơn chỗ trống thì đừng ép — để CSS height:100% lo, không thì tràn mất đầu ảnh.
@@ -625,11 +632,41 @@ platform (s, d) {
 
 function note (t) { return `<div class="note"><i>${IC.info}</i><span>${md(t)}</span></div>`; }
 
+/* ── Hiện dần từng phần khi present ──────────────────────────────────────────
+   Mỗi loại slide khai một selector; các phần tử khớp hiện lần lượt theo đúng
+   thứ tự trong DOM. Loại nào không có tên ở đây thì hiện trọn một lần —
+   bìa, chuyển mục, ảnh toàn slide, video, hỏi đáp, cảm ơn.
+   Space đi từng bước. Mũi tên phải bỏ qua các bước còn lại và sang slide sau. */
+const RV = {
+  agenda    : '.agenda .it',
+  cards3    : '.defs .c, .defs .fx',
+  bullets   : '.bl li',
+  hero      : '.hero li',
+  modgrid   : '.mgrid .m',
+  device    : '.dev .lst .it, .dev .note',
+  webshot   : '.vid .lst .it, .vid .note',
+  webgrid   : '.wg .pts .p',
+  pillars   : '.pil .c',
+  value     : '.val .rail .r',
+  compare   : '.cmp .rw',
+  profiles  : '.prof .p',
+  depts     : '.dept .d',
+  trio      : '.trio .c',
+  orderflow : '.oflow .s, .oflow .terms>div',
+  production: '.prod .chk, .prod .cols .c',
+  twolane   : '.twol .lane',
+  pipeline  : '.pipe .row>*'
+};
+const RV_GAP = 45;    // ms giữa hai phần tử khi cả slide hiện trọn một lượt
+const RV_CAP = 360;   // trần độ trễ, giữ tổng thời gian vào slide dưới 800ms
+
 /* ── Ứng dụng ────────────────────────────────────────────────────────────── */
 const App = {
   key: 'plus',
   i: 0,
   showx: false,
+  step: 0,        // số phần đã hiện của slide đang xem
+  nsteps: 0,      // tổng số phần chia được của slide đó
 
   get deck () { return DECKS[this.key]; },
   get slide () { return this.deck.slides[this.i]; },
@@ -650,16 +687,16 @@ const App = {
     };
     this.readHash();
     this.bind();
-    this.render();
     this.resize();
+    this.render('all');
   },
 
   bind () {
     addEventListener('resize', () => this.resize());
     $('#toPlus').onclick = () => this.setDeck('plus');
     $('#toPro').onclick  = () => this.setDeck('pro');
-    this.el.prev.onclick = () => this.go(-1);
-    this.el.next.onclick = () => this.go(1);
+    this.el.prev.onclick = () => this.go(-1, 'all');
+    this.el.next.onclick = () => this.go(1,  'all');
     $('#gridBtn').onclick = () => this.toggleGrid();
     $('#gclose').onclick  = () => this.toggleGrid(false);
     $('#fsBtn').onclick   = () => this.fullscreen();
@@ -674,10 +711,13 @@ const App = {
       if (this.el.help.classList.contains('open') && e.key !== 'Escape') return;
 
       switch (e.key) {
-        case 'ArrowRight': case 'PageDown': case ' ': e.preventDefault(); this.go(1);  break;
-        case 'ArrowLeft':  case 'PageUp':            e.preventDefault(); this.go(-1); break;
-        case 'Home':   e.preventDefault(); this.to(0); break;
-        case 'End':    e.preventDefault(); this.to(this.deck.slides.length - 1); break;
+        /* Space và PageDown hiện thêm một phần — remote trình chiếu gửi PageDown */
+        case ' ': case 'PageDown': e.preventDefault(); this.advance(); break;
+        /* Mũi tên là lối thoát nhanh: sang thẳng slide và hiện trọn nội dung */
+        case 'ArrowRight': e.preventDefault(); this.go(1,  'all'); break;
+        case 'ArrowLeft':  case 'PageUp': e.preventDefault(); this.go(-1, 'all'); break;
+        case 'Home':   e.preventDefault(); this.to(0, 'all'); break;
+        case 'End':    e.preventDefault(); this.to(this.deck.slides.length - 1, 'all'); break;
         case 'Escape':
           if (this.el.lb.classList.contains('open'))   this.el.lb.classList.remove('open');
           else if (this.el.help.classList.contains('open')) this.el.help.classList.remove('open');
@@ -695,10 +735,10 @@ const App = {
     this.el.stage.addEventListener('touchstart', e => { x0 = e.changedTouches[0].clientX; }, { passive: true });
     this.el.stage.addEventListener('touchend', e => {
       const dx = e.changedTouches[0].clientX - x0;
-      if (Math.abs(dx) > 55) this.go(dx < 0 ? 1 : -1);
+      if (Math.abs(dx) > 55) this.go(dx < 0 ? 1 : -1, 'all');
     }, { passive: true });
 
-    addEventListener('hashchange', () => { this.readHash(); this.render(); });
+    addEventListener('hashchange', () => { this.readHash(); this.render('all'); });
   },
 
   readHash () {
@@ -716,21 +756,54 @@ const App = {
 
   setDeck (k) {
     if (this.key === k) return;
-    this.key = k; this.i = 0; this.render();
+    this.key = k; this.i = 0; this.render('all');
   },
 
-  go (d) { this.to(this.i + d); },
+  go (d, mode) { this.to(this.i + d, mode); },
 
-  to (n) {
+  to (n, mode) {
     const max = this.deck.slides.length - 1;
     n = Math.min(Math.max(n, 0), max);
     if (n === this.i) return;
     this.dir = n > this.i ? 1 : -1;
     this.i = n;
-    this.render();
+    this.render(mode);
   },
 
-  render () {
+  /* Space: hiện thêm một phần. Hết phần thì sang slide sau, để đó chờ bấm tiếp. */
+  advance () {
+    if (this.step < this.nsteps) {
+      this.step++;
+      this.paintReveal(false);
+      return;
+    }
+    this.to(this.i + 1, 'start');
+  },
+
+  /* Bật lớp hiện cho các phần đã tới lượt. Ẩn bằng độ mờ chứ không bỏ khỏi
+     luồng, để auto-fit vẫn đo được chiều cao thật của cả slide. */
+  paintReveal (stagger) {
+    const el = this.el.stage.firstElementChild;
+    if (!el) return;
+    $$('[data-rv]', el).forEach(n => {
+      const k = +n.getAttribute('data-rv');
+      const on = k <= this.step;
+      n.style.transitionDelay = (on && stagger)
+        ? Math.min((k - 1) * RV_GAP, RV_CAP) + 'ms' : '0ms';
+      n.classList.toggle('rvon', on);
+    });
+    this.paintCount();
+  },
+
+  paintCount () {
+    const d = this.deck, s = this.slide;
+    const left = (this.nsteps && this.step < this.nsteps)
+      ? `<u>${this.step}/${this.nsteps}</u>` : '';
+    this.el.cnt.innerHTML = `${String(s.n).padStart(2, '0')}` +
+      `<i> / ${String(d.slides.length).padStart(2, '0')}</i>${left}`;
+  },
+
+  render (mode) {
     const d = this.deck, s = this.slide;
     document.body.dataset.deck = this.key;
     $('#toPlus').classList.toggle('on', this.key === 'plus');
@@ -740,9 +813,13 @@ const App = {
     const inner = build ? build(s, d, d) : `<div class="s-body"><div>Chưa có mẫu cho type "${esc(s.type)}"</div></div>`;
     const solo = /nodeco/.test(inner);
     const bare = s.type === 'cover' || s.type === 'end';
+    /* Bìa có mục lục thì chữ nhỏ: thu nhỏ nguyên khối trên điện thoại sẽ còn 5px,
+       phải cho nó chảy dọc như slide thường. CSS đọc lớp này. */
+    const soft = bare && !!s.agenda;
 
     const el = document.createElement('div');
-    el.className = 'slide in' + (solo ? ' nodeco' : '') + (bare ? ' bare' : '');
+    el.className = 'slide in' + (solo ? ' nodeco' : '') + (bare ? ' bare' : '')
+                 + (soft ? ' softcover' : '');
     el.style.setProperty('--dx', (this.dir === -1 ? '-18px' : '18px'));
     el.innerHTML = inner +
       (s.todo ? `<div class="todo">${esc(s.todo)}</div>` : '') + `
@@ -768,7 +845,20 @@ const App = {
       });
     });
 
-    this.el.cnt.innerHTML = `${String(s.n).padStart(2, '0')}<i> / ${String(d.slides.length).padStart(2, '0')}</i>`;
+    /* Đánh số thứ tự cho các phần chia bước được của slide này.
+       Dưới một phần tử thì chia bước vô nghĩa, bỏ qua. Trên mobile cũng bỏ:
+       người xem cuộn chứ không bấm. */
+    const sel = isMob() ? null : RV[s.type];
+    let rv = sel ? $$(sel, el) : [];
+    if (rv.length < 2) rv = [];
+    rv.forEach((n, k) => n.setAttribute('data-rv', k + 1));
+    this.nsteps = rv.length;
+    this.step = (mode === 'start' && rv.length) ? 0 : rv.length;
+    /* Chờ một khung hình để trình duyệt ghi nhận trạng thái ẩn, không thì
+       lớp hiện đặt cùng lúc và chuyển động không chạy. */
+    requestAnimationFrame(() => this.paintReveal(mode !== 'start'));
+
+    this.paintCount();
     this.el.prog.style.width = ((this.i + 1) / d.slides.length * 100) + '%';
     this.el.prev.disabled = this.i === 0;
     this.el.next.disabled = this.i === d.slides.length - 1;
@@ -779,6 +869,9 @@ const App = {
 
   /* Thu nhỏ nội dung nếu tràn khung — bảo đảm không bao giờ có thanh cuộn */
   autofit (el) {
+    /* Mobile không còn khung cố định để tràn ra — slide cứ cao bao nhiêu thì
+       cuộn bấy nhiêu, thu nhỏ chỉ làm chữ bé lại vô ích. */
+    if (this.mob) return;
     const run = () => {
       const boxes = [];
       const body = $('.s-body', el);
@@ -803,9 +896,24 @@ const App = {
   },
 
   resize () {
+    const mob = isMob();
+    if (mob !== this.mob) {
+      this.mob = mob;
+      document.body.classList.toggle('mob', mob);
+      /* Đổi chế độ thì phải dựng lại: chia bước và chiều cao khung máy khác nhau */
+      if (this.el.stage.firstElementChild) this.render('all');
+    }
+    if (mob) {
+      /* Slide chảy theo bề ngang màn. Riêng slide bìa toạ độ cứng không reflow
+         được, CSS đọc --ms để thu nhỏ nguyên khối. */
+      this.el.stage.style.transform = '';
+      document.documentElement.style.setProperty('--ms', (innerWidth / W).toFixed(4));
+      return;
+    }
+    document.documentElement.style.removeProperty('--ms');
     const wrap = $('.stagewrap');
     const s = Math.min(wrap.clientWidth / (W + 96), wrap.clientHeight / (H + 34));
-    this.el.stage.style.transform = `scale(${Math.max(s, .1)})`;
+    this.el.stage.style.transform = `translate(-50%,-50%) scale(${Math.max(s, .1)})`;
   },
 
   toggleX () {
@@ -832,7 +940,7 @@ const App = {
       </button>`;
     }).join('');
     $$('.t', this.el.gb).forEach(b => {
-      b.onclick = () => { this.to(+b.dataset.i); this.toggleGrid(false); };
+      b.onclick = () => { this.to(+b.dataset.i, 'all'); this.toggleGrid(false); };
     });
   },
 
