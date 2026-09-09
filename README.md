@@ -130,8 +130,9 @@ khối CSS cùng tên trong `css/style.css`.
 | `video` | Video chạy như ảnh động | `video` `poster` `note` |
 | `webshot` | Ảnh chụp màn Web nằm ngang + ghi chú phải | `img` `items` `note` `frame` |
 | `packs` | Ba thẻ gói kèm logo sản phẩm + hai thẻ lưu ý bên dưới | `packs[{logo,from,to,c}]` `notes[{h,ic,items}]` |
+| `intro` | Mở đầu một phần: chữ trái, ảnh lệch phải trên nền màu | `kicker` `title` `lead` `chips` `note` `img` |
 | `webgrid` | Khung trình duyệt + điểm nhấn (`dir:'row'` hoặc `'col'`) | `img` `items` `dir` `cols` |
-| `pillars` | Thẻ số lớn, số cột linh hoạt | `items[{n,t,c}]` `cols` |
+| `pillars` | Thẻ số lớn, số cột linh hoạt | `items[{n,t,c}]` `cols` `fit` |
 | `value` | Rail 3 giá trị + ảnh minh hoạ | `active` `imgs` `frame` `art` |
 | `compare` | Bảng so sánh có tick / x | `cols` `rows[{t,v}]` |
 | `profiles` | Chân dung khách hàng + tranh | `items[{t,s,sx}]` `img` |
@@ -152,6 +153,15 @@ khối CSS cùng tên trong `css/style.css`.
 
 Giữ lại vì có thể tái dùng. Muốn dọn thì xoá cả hàm dựng trong `app.js` lẫn khối
 CSS cùng tên.
+
+### Ảnh ngang thì đừng nhét vào khung dọc
+
+`webgrid dir:'col'` xếp ảnh trên, điểm nhấn dưới. Ảnh chụp màn Web tỉ lệ khoảng
+2:1 vào đó sẽ co lại rất nhỏ và để trống hẳn hai bên — đã phải sửa bốn slide vì
+lỗi này. Ảnh ngang thì dùng `webshot frame:1`: ảnh chiếm cột trái rộng, ghi chú
+dồn cột phải 320px.
+
+`webgrid dir:'col'` chỉ hợp khi ảnh **cao** hoặc gần vuông.
 
 ### Ảnh chụp màn Web thì bọc khung trình duyệt
 

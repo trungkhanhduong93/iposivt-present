@@ -405,7 +405,7 @@ video (s, d) {
 
 pillars (s) {
   return head(s.kicker || (s.num ? `PHẦN ${esc(s.num)}` : ''), s.title, '', 'up') +
-    `<div class="s-body"><div class="pil" style="--pc:${s.cols || s.items.length}">
+    `<div class="s-body"><div class="pil${s.fit ? ' fit' : ''}" style="--pc:${s.cols || s.items.length}">
       ${s.items.map((p, i) => `<div class="c"${p.c ? ` style="--mc:${p.c}"` : ''}>
         <b>${esc(p.n || String(i + 1).padStart(2, '0'))}</b><p>${md(p.t)}</p>
         ${s.items.length <= 3 ? '<span class="dot"></span>' : ''}</div>`).join('')}
@@ -651,12 +651,35 @@ platform (s, d) {
 
 function note (t) { return `<div class="note"><i>${IC.info}</i><span>${md(t)}</span></div>`; }
 
+/* Slide mở đầu một phần nội dung: chữ dồn trái, ảnh chụp màn đặt lệch sang
+   phải trên nền màu của bộ, thò một phần ra ngoài mép để tạo chiều sâu.
+   Khác hẳn khuôn ảnh-trên-chữ-dưới nên vào phần mới thấy rõ nhịp. */
+T.intro = function (s, d) {
+  const chips = (s.chips || []).map(c => `<span>${md(c)}</span>`).join('');
+  return `<div class="intro nodeco">
+    <div class="tx">
+      ${s.kicker ? `<div class="num">${md(s.kicker)}</div>` : ''}
+      <h1>${md(s.title)}</h1>
+      <div class="ln"></div>
+      <p>${md(s.lead)}</p>
+      ${chips ? `<div class="chips">${chips}</div>` : ''}
+      ${s.note ? `<div class="foot">${md(s.note)}</div>` : ''}
+    </div>
+    <div class="art">
+      <span class="orb a"></span><span class="orb b"></span>
+      <div class="brw"><div class="bar3"><i></i><i></i><i></i></div>
+        <img src="${d.dir}${s.img}" alt="" data-zoom></div>
+    </div>
+  </div>`;
+};
+
 /* Hàng trên: ba thẻ gói, mỗi thẻ một logo sản phẩm nên nhìn là nhận ra ngay.
    Hàng dưới: hai thẻ lưu ý cho khách cũ. Gộp hai ý vào một slide cho đỡ trống. */
 T.packs = function (s, d) {
   const cards = s.packs.map(p => `<div class="pk"${p.c ? ` style="--mc:${p.c}"` : ''}>
       <div class="lg"><img src="assets/${p.logo}" alt=""></div>
-      <div class="tx"><span>${md(p.from)}</span><b>${md(p.to)}</b></div>
+      <div class="tx"><span>${md(p.from)}</span>
+        <b><i class="ar">➜</i>${md(p.to)}</b></div>
     </div>`).join('');
   const notes = (s.notes || []).map(n => `<div class="d">
       <h3><i>${IC[n.ic] || IC.box}</i>${esc(n.h)}</h3>

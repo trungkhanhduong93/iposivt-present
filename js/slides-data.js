@@ -696,11 +696,13 @@ v3: {
     ] },
 
   /* 2 ─ Tổng quan -------------------------------------------------------- */
-  { n:3, type:'hero',
-    title:'TỔNG QUAN',
-    img:'tong-quan.webp', frame:1,
-    body:'V3 là bản nâng cấp lớn nhất của IVT: menu sắp lại theo dòng chảy nghiệp vụ kho, bộ lọc làm mới, gói bản quyền chuẩn hoá thành ba bậc **Standard – Plus – Pro**, và Trợ lý iOne lo phần nhập mua và kiểm kê.',
-    body2:'Trang chủ V3 tách bạch khu **Quản trị** và **Cần theo dõi**, số liệu kho hiển thị ngay khi mở.' },
+  { n:3, type:'intro',
+    kicker:'TỔNG QUAN',
+    title:'Bản nâng cấp lớn nhất của IVT',
+    img:'tong-quan.webp',
+    lead:'Menu sắp lại theo dòng chảy nghiệp vụ kho, bộ lọc làm mới, gói bản quyền chuẩn hoá thành ba bậc **Standard – Plus – Pro**, và Trợ lý iOne lo phần nhập mua và kiểm kê.',
+    chips:['Menu theo nghiệp vụ','Bộ lọc mới','Ba gói bản quyền','Trợ lý iOne'],
+    note:'Trang chủ V3 tách bạch khu **Quản trị** và **Cần theo dõi**, số liệu kho hiển thị ngay khi mở.' },
 
   /* 3 ─ Bốn thay đổi lớn nhất -------------------------------------------- */
   { n:4, type:'pillars', cols:2,
@@ -733,19 +735,19 @@ v3: {
     ] },
 
   /* 6 ─ Gói mới · quy tắc mua, nâng, hạ ---------------------------------- */
-  { n:6, type:'webgrid', dir:'col', cols:2,
+  { n:6, type:'webshot', frame:1,
     crumb:['GÓI BẢN QUYỀN {{V3}}','Với khách hàng'],
     title:'MUA MỚI, NÂNG VÀ HẠ GÓI',
     img:'goi-ban-quyen.webp',
     items:[
-      '**Khách mới mặc định gói Standard**, 30 ngày đầu mở full tính năng gói Pro để trải nghiệm',
-      '**Mua mới gói Pro ngay trên sản phẩm.** Thanh toán xong, hệ thống tự tạo phiếu triển khai cho iAcc',
-      '**Nâng gói bất cứ lúc nào.** Ngày còn lại quy ra tiền, chia theo đơn giá gói mới để cộng ngày',
-      '**Hạ gói Pro xuống Plus** khi hạn bản quyền còn dưới 60 ngày. Nâng và hạ đều theo ~~chính sách gia hạn sản phẩm~~'
+      { t:'Khách mới mặc định gói Standard', s:'30 ngày đầu mở full tính năng gói Pro' },
+      { t:'Mua mới gói Pro ngay trên sản phẩm', s:'Hệ thống tự tạo phiếu triển khai cho iAcc' },
+      { t:'Nâng gói bất cứ lúc nào', s:'Ngày còn lại quy ra tiền, cộng sang gói mới' },
+      { t:'Hạ gói Pro xuống Plus', s:'Khi hạn bản quyền còn dưới 60 ngày' }
     ] },
 
   /* 7 ─ Gói mới · với sale ----------------------------------------------- */
-  { n:7, type:'pillars', cols:2,
+  { n:7, type:'pillars', cols:2, fit:1,
     crumb:['GÓI BẢN QUYỀN {{V3}}','Với sale'],
     title:'THAY ĐỔI KHI BÁN HÀNG',
     items:[
@@ -800,24 +802,25 @@ v3: {
     note:'Popup **Quy trình sản xuất** cho thấy toàn cảnh luồng Nguyên liệu ➜ Sơ chế ➜ Bán thành phẩm ➜ Chế biến ➜ Món bán, kèm giải thích khi nào dùng Sơ chế, khi nào dùng Chế biến.' },
 
   /* 11 ─ Bộ lọc · bản cũ ------------------------------------------------- */
-  { n:11, type:'webgrid', dir:'col',
+  { n:11, type:'webshot', frame:1,
     crumb:['BỘ LỌC {{V3}}','Trước — bản cũ'],
     title:'MỌI ĐIỀU KIỆN BÀY HẾT RA ĐẦU TRANG',
     img:'bo-loc-cu.webp',
     items:[
-      'Chiếm **ba hàng** trước khi nhìn thấy dữ liệu, phải cuộn mới tới bảng'
+      { t:'Chiếm ba hàng đầu trang', s:'Phải cuộn qua hết mới nhìn thấy dữ liệu' },
+      { t:'Điều kiện nào cũng bày ra', s:'Dùng hay không dùng đều chiếm chỗ như nhau' }
     ] },
 
   /* 12 ─ Bộ lọc · V3 ----------------------------------------------------- */
-  { n:12, type:'webgrid', dir:'col', cols:2,
+  { n:12, type:'webshot', frame:1,
     crumb:['BỘ LỌC {{V3}}','Sau — V3'],
     title:'GỌN VÀ NHANH HƠN',
     img:'s13.png',
     items:[
-      'Điều kiện **thường dùng** nằm ngay trên thanh công cụ',
-      'Điều kiện **nâng cao** thu vào một chỗ, mở ra khi cần',
-      'Ít click hơn để ra được đúng dữ liệu muốn xem',
-      'Trạng thái lọc luôn hiển thị rõ, ~~không bị xem thiếu dữ liệu~~'
+      { t:'Điều kiện thường dùng ra ngoài', s:'Nằm ngay trên thanh công cụ' },
+      { t:'Điều kiện nâng cao thu một chỗ', s:'Mở ra khi cần dùng tới' },
+      { t:'Ít click hơn', s:'Ra đúng dữ liệu muốn xem nhanh hơn' },
+      { t:'Trạng thái lọc luôn hiện rõ', s:'Không còn bị xem thiếu dữ liệu' }
     ] },
 
   /* 13 ─ Trợ lý iOne ----------------------------------------------------- */
@@ -856,15 +859,15 @@ v3: {
     note:'Các nhóm báo cáo **A–H** nằm trên một hàng tab, báo cáo trong nhóm trải ngang theo mã A01, A02…' },
 
   /* 16 ─ Chuyển đổi có thời gian thích nghi ------------------------------ */
-  { n:16, type:'webgrid', dir:'col', cols:2,
+  { n:16, type:'webshot', frame:1,
     crumb:['CHUYỂN ĐỔI {{V3}}','Thời gian thích nghi'],
     title:'30 NGÀY ĐẦU VẪN QUAY LẠI BẢN CŨ ĐƯỢC',
     img:'quay-lai-ban-cu.webp',
     items:[
-      'Quay lại phiên bản cũ **bất cứ lúc nào** nếu đội ngũ cần thêm thời gian làm quen',
-      'Dữ liệu **dùng chung**, không mất mát khi chuyển qua lại',
-      'Lối một: menu tài khoản ➜ **Quay lại giao diện v2**',
-      'Lối hai: nút **Quay lại bản cũ** trong popup Có gì mới'
+      { t:'Quay lại bản cũ bất cứ lúc nào', s:'Trong 30 ngày đầu, nếu đội ngũ cần thêm thời gian làm quen' },
+      { t:'Dữ liệu dùng chung', s:'Không mất mát khi chuyển qua lại hai bản' },
+      { t:'Lối một', s:'Menu tài khoản ➜ Quay lại giao diện v2' },
+      { t:'Lối hai', s:'Nút Quay lại bản cũ trong popup Có gì mới' }
     ] },
 
   /* 17 ─ Chốt lại -------------------------------------------------------- */
