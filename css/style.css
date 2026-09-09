@@ -509,7 +509,11 @@ body[data-deck="pro"] .mgrid .m.hi{background:linear-gradient(140deg,var(--orang
 .brw .bar3 i:nth-child(2){background:#f5cf8e}
 .brw .bar3 i:nth-child(3){background:#a8dcae}
 .brw img{width:100%;height:auto;max-width:100%;object-fit:contain;cursor:zoom-in;display:block}
-.wg.col .brw img{height:calc(100% - 28px);width:auto;max-width:100%;margin:0 auto}
+/* Ảnh trong khung trình duyệt phải co vừa phần còn lại, không thì bị khung
+   cắt mất đáy. max-height theo % không ăn ở đây nên dùng flex cho chắc. */
+.wg.col .brw{display:flex;flex-direction:column;min-height:0}
+.wg.col .brw img{flex:1;min-height:0;width:100%;height:auto;max-width:100%;
+  object-fit:contain;object-position:center top}
 .wg .pts{display:grid;gap:12px;align-content:center}
 .wg .pts.c2{grid-template-columns:1fr 1fr}
 .wg .pts .p{display:flex;gap:13px;align-items:flex-start;padding:14px 17px;border-radius:14px;
@@ -767,8 +771,11 @@ body[data-deck="pro"] .qa .ln{background:#fff}
 .dept .d h3 i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.9;
   stroke-linecap:round;stroke-linejoin:round}
 .dept .d ul{list-style:none;display:flex;flex-direction:column;gap:5px;padding-left:2px}
-.dept .d li{display:flex;gap:9px;font-size:14.2px;line-height:1.55;color:var(--body)}
-.dept .d li::before{content:'';flex:0 0 5px;height:5px;border-radius:50%;background:var(--orange);margin-top:8px}
+/* Chấm đầu dòng vẽ bằng toạ độ, KHÔNG dùng flex: chữ có <strong> hay <em> mà
+   để flex thì mỗi mẩu inline thành một ô riêng, câu vỡ vụn từng khúc. */
+.dept .d li{position:relative;padding-left:15px;font-size:14.2px;line-height:1.55;color:var(--body)}
+.dept .d li::before{content:'';position:absolute;left:0;top:8px;width:5px;height:5px;
+  border-radius:50%;background:var(--orange)}
 
 /* ── Bản đồ chức năng (Pro s5) ─────────────────────────────────────────── */
 .mod{display:grid;grid-template-columns:300px minmax(0,1fr);gap:38px;width:100%;
@@ -987,6 +994,39 @@ body[data-deck="pro"] .qa .ln{background:#fff}
   border-radius:12px;cursor:zoom-in}
 .plat .row .ph img{filter:drop-shadow(0 12px 26px rgba(14,26,43,.18))}
 .plat .row .wb img{box-shadow:var(--sh-2)}
+
+/* ── Ba thẻ gói kèm logo + hai thẻ lưu ý (slide gói bản quyền) ──────────── */
+.pks{display:flex;flex-direction:column;gap:20px;width:100%;min-height:0;
+  align-self:stretch;justify-content:center}
+.pks .row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.pks .pk{--mc:var(--acc);display:flex;align-items:center;gap:16px;padding:20px 20px 18px;
+  border-radius:16px;background:#fff;border:1px solid var(--line);box-shadow:var(--sh-1);
+  position:relative;overflow:hidden}
+.pks .pk::before{content:'';position:absolute;left:0;right:0;top:0;height:4px;
+  background:linear-gradient(90deg,var(--mc),color-mix(in srgb,var(--mc) 45%,#fff))}
+/* Khung logo cố định để ba logo khác tỉ lệ vẫn thẳng hàng và cùng cỡ mắt nhìn */
+.pks .pk .lg{flex:0 0 112px;height:64px;display:flex;align-items:center;justify-content:center}
+.pks .pk .lg img{max-width:100%;max-height:100%;width:auto;object-fit:contain}
+.pks .pk .tx{display:flex;flex-direction:column;gap:4px;min-width:0}
+.pks .pk .tx span{font-size:13.5px;color:var(--muted);line-height:1.3}
+.pks .pk .tx b{font-size:19.5px;font-weight:700;color:var(--ink);letter-spacing:-.3px;
+  line-height:1.25}
+.pks .dept{gap:14px}
+.pks .dept .d{padding:16px 18px}
+
+/* ── Ảnh chụp Web đặt trong khung trình duyệt ──────────────────────────── */
+/* Hero: khung dính mép dưới của dải ảnh, nền dịu theo màu bộ cho đỡ trơ */
+.hero .pic.fr{background:linear-gradient(165deg,var(--acc-t) 0%,#fff 72%);
+  max-height:474px;padding:30px 58px 0;display:flex;align-items:flex-end;justify-content:center}
+.hero .pic.fr .brw{width:100%;max-width:1010px;border-radius:14px 14px 0 0;border-bottom:0;
+  box-shadow:0 -3px 34px rgba(14,26,43,.16)}
+.hero .pic.fr .brw img{width:100%;height:auto;display:block}
+
+/* Slide ảnh Web ngang: bỏ khung trắng cũ, dùng thẳng khung trình duyệt */
+.vid .fr.shot.brwrap{background:transparent;border:0;box-shadow:none;padding:0;
+  display:flex;align-items:center;justify-content:center}
+.vid .fr.shot.brwrap .brw{max-height:100%;display:flex;flex-direction:column;min-height:0}
+.vid .fr.shot.brwrap .brw img{max-height:100%;width:auto;max-width:100%;object-fit:contain}
 
 /* ── Nội dung bổ sung (bật/tắt bằng phím X) ────────────────────────────── */
 .xflag{position:relative}

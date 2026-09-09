@@ -208,13 +208,18 @@ hero (s, d) {
   const body = s.items
     ? `<ul>${s.items.map(t => `<li><i></i><span>${md(t)}</span></li>`).join('')}</ul>`
     : `<p>${md(s.body)}</p>` + (s.body2 ? `<p>${md(s.body2)}</p>` : '');
+  /* frame:1 — ảnh chụp Web thô, bọc thêm khung trình duyệt cho ra dáng */
+  const shot = s.frame
+    ? `<div class="brw"><div class="bar3"><i></i><i></i><i></i></div>
+         <img src="${d.dir}${s.img}" alt="" data-zoom></div>`
+    : `<img src="${d.dir}${s.img}" alt="">`;
   const pic = s.devices
     ? `<div class="pic dvb"><div class="dvband">
          <div class="dv scr"><img src="${d.dir}${s.devices[1]}" alt="" data-zoom></div>
          <div class="dv ph l"><img src="${d.dir}${s.devices[0]}" alt="" data-zoom></div>
          <div class="dv ph r"><img src="${d.dir}${s.devices[2]}" alt="" data-zoom></div>
        </div></div>`
-    : `<div class="pic"><img src="${d.dir}${s.img}" alt=""></div>`;
+    : `<div class="pic${s.frame ? ' fr' : ''}">${shot}</div>`;
   return `<div class="hero nodeco">
     ${pic}
     <div class="tx" data-fit>
@@ -371,8 +376,12 @@ device (s, d) {
 
 /* Ảnh chụp màn Web nằm ngang: ảnh chiếm phần lớn slide, ghi chú dồn sang phải */
 webshot (s, d) {
+  const shot = s.frame
+    ? `<div class="brw"><div class="bar3"><i></i><i></i><i></i></div>
+         <img src="${d.dir}${s.img}" alt="" data-zoom></div>`
+    : `<img src="${d.dir}${s.img}" alt="" data-zoom>`;
   return head(kick(s), s.title, '', 'up') + `<div class="s-body"><div class="vid">
-    <div class="fr shot"><img src="${d.dir}${s.img}" alt="" data-zoom></div>
+    <div class="fr shot${s.frame ? ' brwrap' : ''}">${shot}</div>
     <div class="side" data-fit>
       ${s.items ? `<div class="lst">${s.items.map((it, i) => `
         <div class="it"><b>${i + 1}</b><div class="tx"><span>${md(it.t)}</span>
@@ -641,6 +650,23 @@ platform (s, d) {
 };
 
 function note (t) { return `<div class="note"><i>${IC.info}</i><span>${md(t)}</span></div>`; }
+
+/* Hàng trên: ba thẻ gói, mỗi thẻ một logo sản phẩm nên nhìn là nhận ra ngay.
+   Hàng dưới: hai thẻ lưu ý cho khách cũ. Gộp hai ý vào một slide cho đỡ trống. */
+T.packs = function (s, d) {
+  const cards = s.packs.map(p => `<div class="pk"${p.c ? ` style="--mc:${p.c}"` : ''}>
+      <div class="lg"><img src="assets/${p.logo}" alt=""></div>
+      <div class="tx"><span>${md(p.from)}</span><b>${md(p.to)}</b></div>
+    </div>`).join('');
+  const notes = (s.notes || []).map(n => `<div class="d">
+      <h3><i>${IC[n.ic] || IC.box}</i>${esc(n.h)}</h3>
+      <ul>${n.items.map(t => `<li>${md(t)}</li>`).join('')}</ul>
+    </div>`).join('');
+  return head(kick(s), s.title, '', 'up') + `<div class="s-body"><div class="pks">
+    <div class="row">${cards}</div>
+    ${notes ? `<div class="dept">${notes}</div>` : ''}
+  </div></div>`;
+};
 
 /* ── Hiện dần từng phần khi present ──────────────────────────────────────────
    Mỗi loại slide khai một selector; các phần tử khớp hiện lần lượt theo đúng

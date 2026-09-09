@@ -7,7 +7,7 @@ tự scale vừa màn hình, **không bao giờ sinh thanh cuộn**.
 |---|---|
 | Bản chạy | **https://iposivt-present.pages.dev** |
 | Repo | https://github.com/trungkhanhduong93/iposivt-present |
-| Số slide | Plus **28** · Pro **23** · Cập nhật V3 **19** |
+| Số slide | Plus **28** · Pro **23** · Cập nhật V3 **18** |
 | Mở tại máy | bấm đúp `index.html` |
 
 Gửi kèm số slide được: `iposivt-present.pages.dev/#pro-13` mở thẳng slide Quy trình kiểm kê.
@@ -122,13 +122,14 @@ khối CSS cùng tên trong `css/style.css`.
 | `cards3` | Thẻ định nghĩa + dải công thức | `cards` `formula` |
 | `section` | Slide chuyển mục nền gradient, số cỡ lớn | `num` `title` `lead` |
 | `bullets` | Tiêu đề trái + gạch đầu dòng phải, kèm tranh nếu có | `items` `art` `small` |
-| `hero` | Ảnh banner trên, chữ dưới | `img` `body` `items` `devices` |
+| `hero` | Ảnh banner trên, chữ dưới | `img` `body` `items` `devices` `frame` |
 | `heroshots` | Banner dựng bằng HTML từ nhiều ảnh máy | `shots[{f,t}]` `brand` `badge` |
 | `imagefull` | Một ảnh chiếm cả slide | `img` |
 | `modgrid` | Lưới thẻ phân hệ, span trên 12 cột, mỗi thẻ một màu | `groups[{h,ic,span,c,items}]` |
 | `device` | Ảnh máy + danh sách mục + ghi chú | `imgs` `items` `note` `side` `colw` `grid` |
 | `video` | Video chạy như ảnh động | `video` `poster` `note` |
-| `webshot` | Ảnh chụp màn Web nằm ngang + ghi chú phải | `img` `items` `note` |
+| `webshot` | Ảnh chụp màn Web nằm ngang + ghi chú phải | `img` `items` `note` `frame` |
+| `packs` | Ba thẻ gói kèm logo sản phẩm + hai thẻ lưu ý bên dưới | `packs[{logo,from,to,c}]` `notes[{h,ic,items}]` |
 | `webgrid` | Khung trình duyệt + điểm nhấn (`dir:'row'` hoặc `'col'`) | `img` `items` `dir` `cols` |
 | `pillars` | Thẻ số lớn, số cột linh hoạt | `items[{n,t,c}]` `cols` |
 | `value` | Rail 3 giá trị + ảnh minh hoạ | `active` `imgs` `frame` `art` |
@@ -151,6 +152,22 @@ khối CSS cùng tên trong `css/style.css`.
 
 Giữ lại vì có thể tái dùng. Muốn dọn thì xoá cả hàm dựng trong `app.js` lẫn khối
 CSS cùng tên.
+
+### Ảnh chụp màn Web thì bọc khung trình duyệt
+
+`frame:1` trên `hero`, `webshot` hay dùng `webgrid` sẽ bọc ảnh trong khung
+`.brw` — thanh ba chấm tròn ở trên, bo góc, đổ bóng. Ảnh chụp thô dán thẳng vào
+slide trông như ảnh minh hoạ tạm; qua khung thì ra dáng sản phẩm.
+
+Trong khung, ảnh phải để **flex co vừa** phần còn lại:
+
+```css
+.wg.col .brw{display:flex;flex-direction:column;min-height:0}
+.wg.col .brw img{flex:1;min-height:0;object-fit:contain}
+```
+
+`max-height` theo phần trăm không ăn ở đây, ảnh sẽ phóng full bề ngang rồi bị
+khung cắt mất đáy — đã dính một lần ở slide Quay lại bản cũ.
 
 ### Thêm kiểu mới
 

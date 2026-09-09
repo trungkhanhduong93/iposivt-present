@@ -78,9 +78,12 @@ with sync_playwright() as p:
     pg.click('#pinOk'); pg.wait_for_timeout(900)
     r = pg.evaluate(ST)
     ok('ma dung thi mo bo noi bo', not r['open'] and r['deck'] == 'v3' and r['hash'] == '#v3-1', r)
-    ok('bo noi bo dung du 19 trang',
-       pg.evaluate('()=>DECKS.v3.slides.length') == 19,
-       pg.evaluate('()=>DECKS.v3.slides.length'))
+    # mo khoa xong phai thay dung bo noi bo, luoi slide du o cho moi trang
+    n = pg.evaluate('()=>DECKS.v3.slides.length')
+    pg.keyboard.press('Escape'); pg.wait_for_timeout(600)
+    cells = pg.evaluate('()=>document.querySelectorAll("#gb .t").length')
+    ok('luoi slide bo noi bo du %d o' % n, cells == n, cells)
+    pg.keyboard.press('Escape'); pg.wait_for_timeout(400)
 
     # da mo roi thi chuyen qua lai tu do trong phien
     pg.keyboard.press('1'); pg.wait_for_timeout(500)
