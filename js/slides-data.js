@@ -159,7 +159,7 @@ plus: {
   { n:12, type:'video',
     crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Trang chủ','Tại Web'],
     title:'TRANG CHỦ',
-    video:'slide11.mp4',
+    video:'slide12plus.mp4',
     note:'Quản lý setup danh mục đầu vào, Merchant có thể nhanh chóng theo dõi các chỉ số phân tích quan trọng, hay những thông tin Tồn kho để ~~ra quyết định đặt hàng kịp thời~~.' },
 
   /* 12 ─ Danh mục App --------------------------------------------------- */
