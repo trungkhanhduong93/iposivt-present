@@ -566,7 +566,7 @@ pro: {
   /* 17 ─ Trợ lý iOne (Trum bổ sung 09/09/2026, nội dung từ tài liệu V3) -- */
   { n:17, type:'trio',
     crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Trợ lý AI'],
-    title:'TRỢ LÝ <b>iONE</b> LÀM HỘ PHẦN VIỆC TAY',
+    title:'TRỢ LÝ <b>iONE</b> HỖ TRỢ NHẬP LIỆU',
     items:[
       { f:'ione-1.jpg', t:'Quét ảnh tạo phiếu nhập mua',
         s:'Chụp hoá đơn hoặc phiếu giao hàng của nhà cung cấp, Trợ lý đọc và điền sẵn dòng hàng, số lượng, đơn giá.' },
@@ -654,6 +654,249 @@ pro: {
     ],
     more:{ h:'iPOS.vn Offices:',
            t:'Quang Ninh, Hai Phong, Bac Ninh, Thanh Hoa, Nghe An, Hue, Khanh Hoa, Dak Lak, Dong Nai, Binh Duong, Vung Tau, Can Tho' } }
+
+  ]
+},
+/* ══════════════════════════════════════════════════════════════════════════
+   V3 — 18 slide · nội bộ iPOS, mở bằng mã PIN
+   Nguồn: "IVT V3 Introduction" (bài giới thiệu nội bộ, 09/04/2026).
+   Giữ nguyên cả phần chính sách sale nên deck này không dành cho khách.
+   ══════════════════════════════════════════════════════════════════════════ */
+v3: {
+  id: 'v3',
+  name: 'Cập nhật V3',
+  short: 'V3',
+  tagline: 'Bản nâng cấp lớn nhất của iPOS Inventory',
+  gated: 1,
+  dir: 'assets/slides/v3/',
+  vdir: 'assets/video/',
+  slides: [
+
+  /* 1 ─ Bìa: chữ chìm + ba thiết bị xếp lớp, dựng bằng HTML --------------- */
+  { n:1, type:'cover', variant:'devices',
+    logo:'logo-ipos.png',
+    watermark:'iPOS IVT V3',
+    lines:['CẬP NHẬT V3'],
+    badge:'V3',
+    /* thứ tự: điện thoại trái · màn hình giữa · điện thoại phải */
+    devices:['ione-quet-anh.webp','tong-quan.webp','ione-chat.webp'] },
+
+  /* 2 ─ Nội dung ---------------------------------------------------------- */
+  { n:2, type:'agenda',
+    kicker:'MỤC LỤC',
+    title:'Nội dung',
+    items:[
+      { t:'Ba gói bản quyền mới' },
+      { t:'Menu gom theo nhóm nghiệp vụ' },
+      { t:'Quy trình hoá nghiệp vụ' },
+      { t:'Bộ lọc mới' },
+      { t:'Trợ lý iOne' },
+      { t:'Dùng Kho ngay trên FABi' },
+      { t:'Giao diện báo cáo mới' },
+      { t:'Chuyển đổi có thời gian thích nghi' }
+    ] },
+
+  /* 2 ─ Tổng quan -------------------------------------------------------- */
+  { n:3, type:'hero',
+    title:'TỔNG QUAN',
+    img:'tong-quan.webp',
+    body:'V3 là bản nâng cấp lớn nhất của IVT: menu sắp lại theo dòng chảy nghiệp vụ kho, bộ lọc làm mới, gói bản quyền chuẩn hoá thành ba bậc **Standard – Plus – Pro**, và Trợ lý iOne lo phần nhập mua và kiểm kê.',
+    body2:'Trang chủ V3 tách bạch khu **Quản trị** và **Cần theo dõi**, số liệu kho hiển thị ngay khi mở.' },
+
+  /* 3 ─ Bốn thay đổi lớn nhất -------------------------------------------- */
+  { n:4, type:'pillars', cols:4,
+    kicker:'CÓ GÌ MỚI',
+    title:'BỐN THAY ĐỔI LỚN NHẤT',
+    items:[
+      { n:'01', c:'#12988c', t:'**Gói bản quyền** chuẩn hoá thành ba bậc Standard, Plus và Pro' },
+      { n:'02', c:'#1b6fe0', t:'**Menu** gom theo nhóm nghiệp vụ thay cho danh sách phiếu dài' },
+      { n:'03', c:'#e0673d', t:'**Bộ lọc** gọn lại, điều kiện thường dùng nằm ngay trên thanh công cụ' },
+      { n:'04', c:'#6d3fd4', t:'**Trợ lý iOne** làm hộ phần nhập mua và kiểm kê' }
+    ] },
+
+  /* 4 ─ Gói mới · chuyển đổi tự động ------------------------------------- */
+  { n:5, type:'pillars',
+    crumb:['GÓI BẢN QUYỀN {{V3}}','Với khách hàng'],
+    title:'CHUYỂN ĐỔI TỰ ĐỘNG, KHÔNG CẦN THAO TÁC',
+    items:[
+      { n:'LITE', c:'#1b6fe0', t:'Đang dùng Lite ➜ **Gói Plus**' },
+      { n:'PRO',  c:'#b0741f', t:'Đang dùng Pro ➜ **Gói Pro**' },
+      { n:'KHÁC', c:'#7c8a9c', t:'Các trường hợp khác ➜ **Gói Standard**' }
+    ] },
+
+  /* 5 ─ Gói mới · khách cũ cần làm gì ------------------------------------ */
+  { n:6, type:'depts',
+    crumb:['GÓI BẢN QUYỀN {{V3}}','Với khách hàng'],
+    title:'KHÁCH CŨ CẦN LƯU Ý GÌ',
+    items:[
+      { h:'KHÁCH IVT PRO CŨ', ic:'check', items:[
+        'Giữ nguyên link web và app đang dùng',
+        'Không cần tải lại hay đổi đường truy cập' ] },
+      { h:'KHÁCH IVT LITE CŨ', ic:'swap', items:[
+        'Cần tải app iPOS IVT Pro mới để dùng thay app cũ',
+        'Link web cũ ivtlite.ipos.vn sẽ không dùng được: hệ thống nhảy thông báo hướng dẫn tải app mới rồi điều hướng sang ivt.ipos.vn',
+        'Khách vào từ CMS FABi được hệ thống tự chuyển sang link web mới' ] }
+    ] },
+
+  /* 6 ─ Gói mới · quy tắc mua, nâng, hạ ---------------------------------- */
+  { n:7, type:'webgrid', dir:'col', cols:2,
+    crumb:['GÓI BẢN QUYỀN {{V3}}','Với khách hàng'],
+    title:'MUA MỚI, NÂNG VÀ HẠ GÓI',
+    img:'goi-ban-quyen.webp',
+    items:[
+      '**Khách mới mặc định gói Standard**, 30 ngày đầu mở full tính năng gói Pro để trải nghiệm',
+      '**Mua mới gói Pro ngay trên sản phẩm.** Thanh toán xong, hệ thống tự tạo phiếu triển khai cho iAcc',
+      '**Nâng gói bất cứ lúc nào.** Ngày còn lại quy ra tiền, chia theo đơn giá gói mới để cộng ngày',
+      '**Hạ gói Pro xuống Plus** khi hạn bản quyền còn dưới 60 ngày. Nâng và hạ đều theo ~~chính sách gia hạn sản phẩm~~'
+    ] },
+
+  /* 7 ─ Gói mới · với sale ----------------------------------------------- */
+  { n:8, type:'bullets',
+    crumb:['GÓI BẢN QUYỀN {{V3}}','Với sale'],
+    title:'THAY ĐỔI KHI BÁN HÀNG',
+    art:'goi-ban-quyen.webp',
+    items:[
+      '**Chính sách bán hàng giữ nguyên.** Không thay đổi gì so với chính sách hiện hành đang áp dụng cho sale, hoa hồng tương ứng gói mới.',
+      '**Chuyển đổi gói theo logic gia hạn** và ~~không tính KPI~~. Trước đây là 2 sản phẩm nên tính mua mới và có KPI.'
+    ] },
+
+  /* 8 ─ Menu · bảng nhóm nghiệp vụ --------------------------------------- */
+  { n:9, type:'modgrid',
+    crumb:['MENU {{V3}}','Gom theo nhóm nghiệp vụ'],
+    title:'CHỨC NĂNG GOM VỀ ĐÚNG NHÓM',
+    groups:[
+      { h:'Đặt hàng', ic:'cart', span:3, c:'#12988c',
+        items:['Giữ nguyên như bản cũ'] },
+      { h:'Mua hàng', ic:'truck', span:3, c:'#1b6fe0',
+        items:['Nhập mua','Xuất trả','Công nợ NCC'] },
+      { h:'Bán hàng', ic:'shop', span:3, c:'#e0673d',
+        items:['Xuất bán Pos','Xuất bán','Nhập trả','Công nợ KH'] },
+      { h:'Điều chuyển', ic:'swap', span:3, c:'#6d3fd4',
+        items:['Xuất điều chuyển','Nhập điều chuyển','Nhập thu hồi'] },
+      { h:'Sản xuất', ic:'chef', span:3, c:'#c2408f',
+        items:['Xuất sơ chế','Nhập sơ chế','Xuất chế biến','Nhập chế biến'] },
+      { h:'Hỏng huỷ', ic:'trash', span:3, c:'#c9391f',
+        items:['Xuất huỷ'] },
+      { h:'Nhập xuất khác', ic:'box', span:3, c:'#1d8fb5',
+        items:['Xuất khác','Nhập khác'] },
+      { h:'Kiểm kê · Công nợ', ic:'clip', span:3, c:'#c98a12',
+        items:['Kiểm kê giữ nguyên','Công nợ NCC · KH · nội bộ'] }
+    ] },
+
+  /* 9 ─ Menu · ảnh và các thay đổi khác ---------------------------------- */
+  { n:10, type:'device',
+    crumb:['MENU {{V3}}','Gom theo nhóm nghiệp vụ'],
+    title:'MENU ĐIỀU HƯỚNG MỚI',
+    imgs:['menu.webp'], colw:330,
+    items:[
+      { t:'Bỏ menu Giá vốn', s:'Tính giá vốn chuyển về menu Kế toán' },
+      { t:'Cài đặt ➜ Thiết lập quy về một nơi', s:'Công nợ đầu kỳ, Quy tắc giá vốn, Định mức tồn kho, Nhân viên (trước là Tài khoản), Kế hoạch tự động' },
+      { t:'Thêm menu Kết nối', s:'Mở đầu với kết nối Misa Amis để đồng bộ dữ liệu sang phần mềm kế toán' }
+    ],
+    note:'Tìm nhanh hơn, và ~~nhân viên mới học nhanh hơn~~ vì chức năng nằm đúng chỗ người ta nghĩ tới.' },
+
+  /* 10 ─ Quy trình hoá nghiệp vụ ----------------------------------------- */
+  { n:11, type:'webshot',
+    crumb:['QUY TRÌNH HOÁ {{V3}}','Nghiệp vụ sản xuất'],
+    title:'MỖI NGHIỆP VỤ CÓ THÊM PHẦN QUY TRÌNH',
+    img:'quy-trinh-san-xuat.webp',
+    items:[
+      { t:'Bắt đầu với nghiệp vụ Sản xuất', s:'Luồng nhiều bước và dễ nhầm nhất: sơ chế, chế biến, thành phẩm' },
+      { t:'Các nghiệp vụ còn lại làm dần', s:'Quy trình hoá tiếp trong các bản cập nhật sau' }
+    ],
+    note:'Popup **Quy trình sản xuất** cho thấy toàn cảnh luồng Nguyên liệu ➜ Sơ chế ➜ Bán thành phẩm ➜ Chế biến ➜ Món bán, kèm giải thích khi nào dùng Sơ chế, khi nào dùng Chế biến.' },
+
+  /* 11 ─ Bộ lọc · bản cũ ------------------------------------------------- */
+  { n:12, type:'webgrid', dir:'col',
+    crumb:['BỘ LỌC {{V3}}','Trước — bản cũ'],
+    title:'MỌI ĐIỀU KIỆN BÀY HẾT RA ĐẦU TRANG',
+    img:'bo-loc-cu.webp',
+    items:[
+      'Chiếm **ba hàng** trước khi nhìn thấy dữ liệu, phải cuộn mới tới bảng'
+    ] },
+
+  /* 12 ─ Bộ lọc · V3 ----------------------------------------------------- */
+  { n:13, type:'webgrid', dir:'col', cols:2,
+    crumb:['BỘ LỌC {{V3}}','Sau — V3'],
+    title:'GỌN VÀ NHANH HƠN',
+    img:'bo-loc-moi.webp',
+    items:[
+      'Điều kiện **thường dùng** nằm ngay trên thanh công cụ',
+      'Điều kiện **nâng cao** thu vào một chỗ, mở ra khi cần',
+      'Ít click hơn để ra được đúng dữ liệu muốn xem',
+      'Trạng thái lọc luôn hiển thị rõ, ~~không bị xem thiếu dữ liệu~~'
+    ] },
+
+  /* 13 ─ Trợ lý iOne ----------------------------------------------------- */
+  { n:14, type:'trio',
+    crumb:['TRỢ LÝ {{V3}}','iOne'],
+    title:'TRỢ LÝ iOne LÀM HỘ PHẦN VIỆC TAY',
+    items:[
+      { f:'ione-quet-anh.webp', t:'Quét ảnh tạo phiếu nhập mua',
+        s:'Chụp hoá đơn hoặc phiếu giao hàng của nhà cung cấp, Trợ lý đọc và điền sẵn dòng hàng, số lượng, đơn giá.' },
+      { f:'ione-chat.webp', t:'Chat để lập phiếu nhập mua',
+        s:'Gõ yêu cầu bằng tiếng Việt tự nhiên, Trợ lý dựng phiếu nháp để bạn kiểm tra và lưu.' },
+      { f:'ione-giong-noi.webp', t:'Kiểm kê bằng giọng nói',
+        s:'Đọc tên hàng và số lượng khi đang đứng trong kho — không cần rời tay khỏi hàng để nhập máy.' }
+    ] },
+
+  /* 14 ─ Kho trên FABi --------------------------------------------------- */
+  { n:15, type:'device',
+    crumb:['MỞ RỘNG {{V3}}','App Manager và CMS FABi'],
+    title:'DÙNG KHO NGAY TRÊN FABi',
+    imgs:['fabi-app.webp','fabi-cms.webp'], colw:440,
+    items:[
+      { t:'Trên app FABi Manager', s:'Vào Ứng dụng ➜ Kho & Cung ứng' },
+      { t:'Trên CMS FABi', s:'Vào thẳng menu Kho & Cung ứng trên thanh menu chung' }
+    ],
+    note:'Đầy đủ như App và Web IVT riêng lẻ — ~~không cần đăng nhập hệ thống khác~~.' },
+
+  /* 15 ─ Báo cáo mới ----------------------------------------------------- */
+  { n:16, type:'webshot',
+    crumb:['BÁO CÁO {{V3}}','Giao diện mới trên Web'],
+    title:'DANH SÁCH BÁO CÁO TỔ CHỨC LẠI',
+    img:'bao-cao.webp',
+    items:[
+      { t:'Nhóm theo đúng tính chất và mối tương quan', s:'Quản trị kho, đặt hàng, sản xuất, giá thành, công nợ, phân tích, đối soát, kiểm soát' },
+      { t:'Trải báo cáo theo chiều ngang', s:'Kèm một dòng giải thích ý nghĩa từng báo cáo' }
+    ],
+    note:'Các nhóm báo cáo **A–H** nằm trên một hàng tab, báo cáo trong nhóm trải ngang theo mã A01, A02…' },
+
+  /* 16 ─ Chuyển đổi có thời gian thích nghi ------------------------------ */
+  { n:17, type:'webgrid', dir:'col', cols:2,
+    crumb:['CHUYỂN ĐỔI {{V3}}','Thời gian thích nghi'],
+    title:'30 NGÀY ĐẦU VẪN QUAY LẠI BẢN CŨ ĐƯỢC',
+    img:'quay-lai-ban-cu.webp',
+    items:[
+      'Quay lại phiên bản cũ **bất cứ lúc nào** nếu đội ngũ cần thêm thời gian làm quen',
+      'Dữ liệu **dùng chung**, không mất mát khi chuyển qua lại',
+      'Lối một: menu tài khoản ➜ **Quay lại giao diện v2**',
+      'Lối hai: nút **Quay lại bản cũ** trong popup Có gì mới'
+    ] },
+
+  /* 17 ─ Chốt lại -------------------------------------------------------- */
+  { n:18, type:'pillars',
+    kicker:'CHỐT LẠI',
+    title:'V3 ĐỔI GÌ CHO NGƯỜI DÙNG',
+    items:[
+      { n:'01', c:'#12988c', t:'Tìm chức năng nhanh hơn vì menu theo đúng dòng chảy nghiệp vụ' },
+      { n:'02', c:'#1b6fe0', t:'Ít thao tác hơn để ra đúng dữ liệu cần xem' },
+      { n:'03', c:'#6d3fd4', t:'Bớt việc nhập tay nhờ Trợ lý iOne và quy trình có hướng dẫn' }
+    ] },
+
+  /* 18 ─ Hỗ trợ ---------------------------------------------------------- */
+  { n:19, type:'thanks',
+    title:'Cần hỗ trợ?',
+    sub:'Chuyển đổi gói hoặc đào tạo nhân sự trên V3 — liên hệ chuyên viên phụ trách, hoặc mở mục Hỗ trợ ngay trên thanh công cụ.',
+    company:'iPOS.vn Joint Stock Company',
+    contact:['Tel: 1900 4766','www.iPOS.vn'],
+    offices:[
+      { city:'TP Hà Nội',      addr:'Tầng 11, Tòa tháp Hòa Bình, 106 Hoàng Quốc Việt, P. Nghĩa Đô, Q. Cầu Giấy' },
+      { city:'TP Đà Nẵng',     addr:'Số 80 Núi Thành, phường Hòa Thuận Đông, quận Hải Châu, Thành phố Đà Nẵng' },
+      { city:'TP Hồ Chí Minh', addr:'Tầng 12, Tòa nhà Lottery Tower, 77 Trần Nhân Tôn, Phường 9, Quận 5' }
+    ],
+    more:{ h:'Tài liệu nội bộ:',
+           t:'Bản này giữ cả phần chính sách sale nên chỉ dùng để đào tạo nội bộ iPOS' } }
 
   ]
 }

@@ -16,16 +16,17 @@ BASE = ROOT.joinpath('index.html').as_uri()
 OUT  = ROOT / 'tools' / 'shots'
 OUT.mkdir(parents=True, exist_ok=True)
 
-# đếm số slide thẳng từ dữ liệu, khỏi phải sửa tay mỗi lần thêm slide
+# đếm số slide mỗi bộ, tự bắt mọi bộ có trong dữ liệu — thêm bộ mới không phải sửa
 data = (ROOT / 'js' / 'slides-data.js').read_text(encoding='utf-8')
+DECKS = re.findall(r'^([a-z0-9]+): \{$', data, re.M)
 COUNT = {}
-for deck in ('plus', 'pro'):
-    seg = data[data.index(deck + ': {'):]
-    seg = seg[:seg.index('pro: {')] if deck == 'plus' else seg
-    COUNT[deck] = len(re.findall(r'\{ n:\d+,', seg))
+for i, d in enumerate(DECKS):
+    a = data.index('\n%s: {' % d)
+    b = data.index('\n%s: {' % DECKS[i + 1]) if i + 1 < len(DECKS) else len(data)
+    COUNT[d] = len(re.findall(r'\{ n:\d+,', data[a:b]))
 
 targets = sys.argv[1].split(',') if len(sys.argv) > 1 else \
-    [f'{d}-{i}' for d in ('plus', 'pro') for i in range(1, COUNT[d] + 1)]
+    [f'{d}-{i}' for d in DECKS for i in range(1, COUNT[d] + 1)]
 
 PROBE = """() => {
   const over = [];
@@ -58,6 +59,8 @@ with sync_playwright() as p:
         sys.exit('khong mo duoc trinh duyet nao')
 
     pg = browser.new_page(viewport={'width': 1500, 'height': 900})
+    # bo V3 co cong ma — mo san de bo kiem vao duoc
+    pg.add_init_script("try{sessionStorage.setItem('ivt-open-v3','1')}catch(e){}")
     pg.on('pageerror', lambda e: errs.append(str(e)))
     pg.on('console', lambda m: errs.append(m.text) if m.type == 'error' else None)
 

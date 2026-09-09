@@ -54,6 +54,9 @@
   --sh-2:0 6px 18px rgba(14,26,43,.09),0 22px 48px rgba(14,26,43,.10);
 }
 body[data-deck="pro"]{ --acc:var(--orange); --acc-d:var(--orange-d); --acc-t:var(--orange-t); --acc-b:var(--orange-b); }
+/* Bộ V3 lấy xanh ngọc để phân biệt hẳn với Plus xanh dương và Pro cam */
+body[data-deck="v3"]{ --teal:#12988c; --teal-d:#0f6d64; --teal-t:#eef9f7; --teal-b:#bfe4de;
+  --acc:var(--teal); --acc-d:var(--teal-d); --acc-t:var(--teal-t); --acc-b:var(--teal-b); }
 
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;overflow:hidden}
@@ -80,10 +83,13 @@ em.hl{font-style:normal;color:var(--orange-d);font-weight:600}
 .bar .brand span{font-size:13px}
 .seg{display:flex;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
   border-radius:9px;padding:2.5px;gap:2px}
-.seg button{font:inherit;font-size:12px;font-weight:600;color:#a9bbd2;background:none;border:0;
+.seg button{font:inherit;font-size:11.5px;font-weight:600;color:#a9bbd2;background:none;border:0;
   padding:5px 13px;border-radius:6.5px;cursor:pointer;transition:.16s;white-space:nowrap}
 .seg button:hover{color:#fff}
+.seg button i{font-style:normal}
 .seg button.on{background:var(--blue);color:#fff;box-shadow:0 1px 6px rgba(27,111,224,.5)}
+.seg button[data-deck="pro"].on{background:var(--orange);box-shadow:0 1px 6px rgba(245,135,31,.5)}
+.seg button[data-deck="v3"].on{background:#12988c;box-shadow:0 1px 6px rgba(18,152,140,.5)}
 body[data-deck="pro"] .seg button.on{background:var(--orange);box-shadow:0 1px 6px rgba(245,135,31,.5)}
 .bar .sp{flex:1}
 .bar .cnt{font-variant-numeric:tabular-nums;font-weight:600;color:#e5eefb;letter-spacing:.4px}
@@ -113,6 +119,7 @@ body[data-deck="pro"] .seg button.on{background:var(--orange);box-shadow:0 1px 6
   color:#dce7f5;cursor:pointer;display:grid;place-items:center;transition:.18s;backdrop-filter:blur(6px)}
 .arrow:hover{background:var(--blue);border-color:var(--blue);color:#fff}
 body[data-deck="pro"] .arrow:hover{background:var(--orange);border-color:var(--orange)}
+body[data-deck="v3"] .arrow:hover{background:#12988c;border-color:#12988c}
 .arrow:disabled{opacity:.22;cursor:default;background:rgba(255,255,255,.05)}
 .arrow.prev{left:16px} .arrow.next{right:16px}
 .arrow svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:2.4;
@@ -123,6 +130,7 @@ body[data-deck="pro"] .arrow:hover{background:var(--orange);border-color:var(--o
 .prog i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--blue-l));
   transition:width .3s cubic-bezier(.4,0,.2,1)}
 body[data-deck="pro"] .prog i{background:linear-gradient(90deg,var(--orange-d),var(--orange))}
+body[data-deck="v3"] .prog i{background:linear-gradient(90deg,#0f6d64,#2fc0b1)}
 
 /* =============================================================================
    SLIDE — bộ khung chung
@@ -230,6 +238,12 @@ body[data-deck="pro"] .prog i{background:linear-gradient(90deg,var(--orange-d),v
 .cvd .hd h1{font-size:50px;font-weight:700;letter-spacing:-1.7px;color:#0b3f8f;
   line-height:1.16;padding-bottom:3px;text-align:center}
 .cvd .hd .rule{width:96px;height:5px;border-radius:3px;background:var(--orange);margin:0}
+/* Bìa bộ V3 dùng chung khuôn với bìa Pro, chỉ đổi màu thẻ và chữ chìm */
+body[data-deck="v3"] .cvd{background:linear-gradient(150deg,#eaf7f5,#f4fbfa 55%,#eef9f7)}
+body[data-deck="v3"] .cvd .wm{color:rgba(18,152,140,.10)}
+body[data-deck="v3"] .cvd .hd h1{color:#0f5a55}
+body[data-deck="v3"] .cvd .hd h1 .pro{background:linear-gradient(180deg,#0f7a72,#17a89a);
+  box-shadow:0 5px 15px rgba(15,122,114,.28);color:#fff}
 /* Thẻ "Pro" lấy đúng kiểu badge vàng trong logo-ivt-pro.png */
 .cvd .hd h1 .pro{display:inline-block;vertical-align:12px;margin-left:16px;
   padding:7px 24px 9px;border-radius:999px;font-size:31px;font-weight:700;
@@ -259,11 +273,6 @@ body[data-deck="pro"] .prog i{background:linear-gradient(90deg,var(--orange-d),v
 .dvband .ph.l{width:162px;left:112px;bottom:-50px;transform:rotate(-3deg)}
 .dvband .ph.r{width:175px;right:120px;bottom:-26px;transform:rotate(3deg)}
 
-/* Ảnh minh hoạ ở bìa Pro: hiện đủ hình thay vì cắt */
-/* Gradient lấy đúng từ pixel nền của ảnh nên không lộ mép ảnh */
-.cvp .ph.contain{background:linear-gradient(180deg,#dfedf8 0%,#e0eef7 25%,
-  #ecf5fc 50%,#eff6fc 74%,#f4f9fd 100%)}
-.cvp .ph.contain img{object-fit:contain;object-position:right center}
 .cvd .dv{position:absolute;background:#fff;
   box-shadow:0 22px 48px rgba(9,44,78,.19),0 4px 10px rgba(9,44,78,.10)}
 .cvd .dv img{width:100%;height:auto;display:block;cursor:zoom-in;max-width:none}
@@ -278,6 +287,11 @@ body[data-deck="pro"] .prog i{background:linear-gradient(90deg,var(--orange-d),v
 .cvp{position:absolute;inset:0;display:flex;flex-direction:column;background:#fff}
 .cvp .ph{flex:0 0 390px;position:relative;overflow:hidden}
 .cvp .ph img{width:100%;height:100%;object-fit:cover}
+/* Ảnh minh hoạ ở bìa Pro: hiện đủ hình thay vì cắt */
+/* Gradient lấy đúng từ pixel nền của ảnh nên không lộ mép ảnh */
+.cvp .ph.contain{background:linear-gradient(180deg,#dfedf8 0%,#e0eef7 25%,
+  #ecf5fc 50%,#eff6fc 74%,#f4f9fd 100%)}
+.cvp .ph.contain img{object-fit:contain;object-position:right center}
 .cvp .ph .lg{position:absolute;left:34px;top:26px;height:40px;filter:brightness(0) invert(1);opacity:.95}
 .cvp .bt{flex:1;display:grid;grid-template-columns:390px 1fr;gap:34px;padding:36px 58px 52px;align-items:center}
 .cvp h1{font-size:52px;font-weight:700;letter-spacing:-1.4px;color:var(--ink);line-height:1.16;
@@ -423,6 +437,8 @@ body[data-deck="pro"] .sect .ln{background:#fff}
 /* Trong đoạn văn thì thẻ phải nhỏ lại, không thì phá nhịp dòng */
 .hero p .tbdg,.hero li .tbdg{font-size:11.5px;padding:3px 9px 4px;vertical-align:1px;margin:0 2px}
 .tbdg.plus{background:#0560a6;box-shadow:0 3px 9px rgba(5,96,166,.24)}
+.tbdg.v3{background:linear-gradient(180deg,#0f7a72,#17a89a);
+  box-shadow:0 3px 9px rgba(15,122,114,.26)}
 .tbdg.pro{background:linear-gradient(180deg,#9c7220 0%,#ac8129 46%,#cdb46e 100%);
   box-shadow:0 3px 9px rgba(138,107,22,.24)}
 
@@ -561,15 +577,15 @@ body[data-deck="pro"] .tree .g>b{background:linear-gradient(120deg,var(--orange-
 .dev .shots .pf img{height:100%;width:auto;max-width:none;max-height:none;
   border-radius:21px;box-shadow:none;background:none;object-fit:contain}
 .dev .side{display:flex;flex-direction:column;gap:12px;justify-content:center;min-height:0}
-.dev .lst{display:grid;gap:8px}
-.dev .lst.c2{grid-template-columns:1fr 1fr}
-.dev .lst .it{display:flex;gap:12px;align-items:flex-start;padding:10px 15px;border-radius:12px;
+.lst{display:grid;gap:8px}
+.lst.c2{grid-template-columns:1fr 1fr}
+.lst .it{display:flex;gap:12px;align-items:flex-start;padding:10px 15px;border-radius:12px;
   background:#fff;border:1px solid var(--line);box-shadow:var(--sh-1)}
-.dev .lst .it b{flex:0 0 24px;height:24px;border-radius:7px;background:var(--acc-t);color:var(--acc-d);
+.lst .it b{flex:0 0 24px;height:24px;border-radius:7px;background:var(--acc-t);color:var(--acc-d);
   display:grid;place-items:center;font-size:11px;font-weight:700;margin-top:1px}
-.dev .lst .it .tx{flex:1;min-width:0}
-.dev .lst .it .tx>span{display:block;font-size:16.4px;font-weight:600;color:var(--ink);line-height:1.4}
-.dev .lst .it .tx>small{display:block;font-size:14.4px;color:var(--muted);margin-top:2px;line-height:1.45}
+.lst .it .tx{flex:1;min-width:0}
+.lst .it .tx>span{display:block;font-size:16.4px;font-weight:600;color:var(--ink);line-height:1.4}
+.lst .it .tx>small{display:block;font-size:14.4px;color:var(--muted);margin-top:2px;line-height:1.45}
 .note{display:flex;gap:12px;padding:12px 16px;border-radius:13px;background:var(--acc-t);
   border:1px solid var(--acc-b);font-size:16.4px;line-height:1.62;color:var(--body)}
 .note i{flex:0 0 17px;height:17px;margin-top:2px;color:var(--acc-d)}
@@ -998,6 +1014,7 @@ body.showx .todo{display:flex}
   background:rgba(255,255,255,.04);transition:.16s;text-align:left}
 .grid .t:hover{border-color:var(--blue);transform:translateY(-2px)}
 body[data-deck="pro"] .grid .t:hover{border-color:var(--orange)}
+body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
 .grid .t.on{border-color:var(--orange);box-shadow:0 0 0 2px rgba(245,135,31,.28)}
 .grid .t .pv{aspect-ratio:16/9;position:relative;background:linear-gradient(135deg,#16273d,#1d3450);
   display:grid;place-items:center;overflow:hidden}
@@ -1020,6 +1037,24 @@ body[data-deck="pro"] .grid .t:hover{border-color:var(--orange)}
   border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.09);color:#fff;
   cursor:pointer;display:grid;place-items:center}
 .lb .x svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round}
+
+/* ── Hộp nhập mã cho bộ nội bộ ─────────────────────────────────────────── */
+.pin{position:fixed;inset:0;z-index:96;background:rgba(6,11,18,.9);display:none;place-items:center}
+.pin.open{display:grid}
+.pin .cd{width:430px;max-width:calc(100vw - 32px);background:#101d2e;
+  border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:26px 30px;color:#d6e2f2}
+.pin h3{font-size:16px;color:#fff;margin-bottom:10px}
+.pin p{font-size:13.5px;line-height:1.6;color:#9fb1c8;margin-bottom:16px}
+.pin p b{color:#dbe6f4}
+.pin input{width:100%;font:600 17px var(--fs);letter-spacing:3px;text-align:center;
+  padding:12px 14px;border-radius:11px;border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.06);color:#fff;outline:none}
+.pin input:focus{border-color:#17a89a;box-shadow:0 0 0 3px rgba(23,168,154,.22)}
+.pin input::placeholder{letter-spacing:.4px;font-weight:500;color:#6f8099}
+.pin .err{min-height:18px;margin-top:9px;font-size:12.5px;color:#ff8a80}
+.pin .cl{margin-top:12px;display:flex;justify-content:flex-end;gap:10px}
+.pin .tbtn.go{background:#12988c;border-color:#12988c;color:#fff}
+.pin .tbtn.go:hover{background:#17a89a}
 
 /* ── Trợ giúp phím ─────────────────────────────────────────────────────── */
 .help{position:fixed;inset:0;z-index:95;background:rgba(6,11,18,.9);display:none;place-items:center}
@@ -1103,7 +1138,8 @@ body[data-deck="pro"] .grid .t:hover{border-color:var(--orange)}
   /* Dinh o dau trang, phia sau la trang giay trang cuon qua — nen phai dac */
   .bar{position:sticky;top:0;z-index:60;height:44px;gap:9px;padding:0 11px;
     background:#0f1a29;border-bottom:1px solid rgba(255,255,255,.1)}
-  .bar .brand span,.tbtn span{display:none}
+  /* Ba nut khong du cho tren man hep: bo phan dau cua nhan */
+  .bar .brand span,.tbtn span,.seg button i{display:none}
   .bar .brand img{height:17px}
   .bar .cnt{font-size:12.5px}
   .seg button{padding:5px 11px}

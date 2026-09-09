@@ -1,13 +1,13 @@
-# iPOS Inventory — Web Present (Plus & Pro)
+# iPOS Inventory — Web Present (Plus · Pro · V3)
 
-Bộ trình chiếu web thay cho 2 file PowerPoint. Khung 16:9 cố định **1280×720**,
+Bộ trình chiếu web thay cho các file PowerPoint. Khung 16:9 cố định **1280×720**,
 tự scale vừa màn hình, **không bao giờ sinh thanh cuộn**.
 
 | | |
 |---|---|
 | Bản chạy | **https://iposivt-present.pages.dev** |
 | Repo | https://github.com/trungkhanhduong93/iposivt-present |
-| Số slide | Plus **28** · Pro **23** |
+| Số slide | Plus **28** · Pro **23** · Cập nhật V3 **19** |
 | Mở tại máy | bấm đúp `index.html` |
 
 Gửi kèm số slide được: `iposivt-present.pages.dev/#pro-13` mở thẳng slide Quy trình kiểm kê.
@@ -20,6 +20,7 @@ Gửi kèm số slide được: `iposivt-present.pages.dev/#pro-13` mở thẳng
 |---|---|
 | **Plus** | `TRAINING IVT LITE - NHAN VIEN.pptx` (26 slide) + phần Trum bổ sung |
 | **Pro** | `Demo IVT Pro.pptx` (20 slide) + phần Trum bổ sung |
+| **Cập nhật V3** | bài giới thiệu nội bộ `IVT V3 Introduction` (09/04/2026) |
 
 Chữ trong `js/slides-data.js` là **nguyên văn từ PPTX**, kể cả chữ nằm trong
 SmartArt — 33 khối SmartArt đã bóc ra và dựng lại bằng HTML nên zoom vẫn nét.
@@ -103,7 +104,7 @@ chuyển mục và slide mở đầu phần dùng `PHẦN 0X`, slide chi tiết 
 2. Sửa tên file trong `slides-data.js` (`img:` / `imgs:[...]` / `shots:[...]`)
 3. Ctrl+F5 lại trình duyệt
 
-**Ảnh chụp điện thoại phải nén trước khi commit** — xem mục 8.
+**Ảnh chụp điện thoại phải nén trước khi commit** — xem mục 9.
 
 ---
 
@@ -154,7 +155,7 @@ CSS cùng tên.
 ### Thêm kiểu mới
 
 1. Viết hàm dựng trong `T = {...}` ở `app.js`
-2. Thêm khối CSS **có tiền tố riêng** (xem bẫy ở mục 9)
+2. Thêm khối CSS **có tiền tố riêng** (xem bẫy ở mục 10)
 3. Auto-fit tự lo phần chống tràn
 
 ---
@@ -170,7 +171,7 @@ CSS cùng tên.
 | `Esc` | mở / đóng lưới slide |
 | `F` | toàn màn hình |
 | `X` | hiện đánh dấu nội dung bổ sung + ghi chú |
-| `1` `2` | chuyển bộ Plus / Pro |
+| `1` `2` `3` | chuyển bộ Plus / Pro / Cập nhật V3 |
 | `?` | bảng phím tắt |
 
 Phím tắt chỉ dùng ở chế độ một slide một màn. Dưới 900px là chế độ xấp trang,
@@ -250,7 +251,49 @@ Cuộn hết cỡ vẫn còn ba trang cuối nằm dưới mép trên, nên có 
 
 ---
 
-## 7. Cấu trúc và kiến trúc
+## 7. Bộ Cập nhật V3 và cổng mã
+
+Bộ thứ ba dựng từ bài giới thiệu nội bộ về phiên bản V3. Nó **giữ cả phần chính
+sách bán hàng, KPI và hoa hồng** nên chỉ dành cho nội bộ iPOS — vì vậy bấm vào
+nút của bộ này sẽ hỏi mã trước.
+
+```js
+v3: {
+  gated: 1,          // có cờ này thì app hỏi mã trước khi mở
+  ...
+}
+```
+
+Mã lưu trong `app.js` dưới dạng **băm SHA-256** (`PIN_HASH`) nên không nằm thẳng
+trong mã nguồn. Mở một lần cho mỗi tab, nhớ trong `sessionStorage`; đóng tab là
+phải nhập lại. Mở link thẳng như `#v3-5` cũng hỏi mã, nhập xong vào đúng slide 5.
+
+### Đây KHÔNG phải bảo mật
+
+Trang là web tĩnh: toàn bộ nội dung slide nằm trong `js/slides-data.js` mà ai
+xem mã nguồn cũng đọc được. Cổng mã chỉ chặn người xem tình cờ, không chặn được
+người biết kỹ thuật. Cần chặn thật thì bật **Cloudflare Access** (Zero Trust,
+bản free cho 50 user) cho cả trang.
+
+Đổi mã thì thay `PIN_HASH` bằng băm mới:
+
+```bash
+python -c "import hashlib;print(hashlib.sha256('MA_MOI'.encode()).hexdigest())"
+```
+
+Ba bộ kiểm tự mở khoá bộ này bằng `add_init_script` để chạy được, nên đừng đổi
+tên khoá `ivt-open-v3` mà quên sửa chúng.
+
+### Màu nhận diện
+
+Mỗi bộ một màu, đổi qua biến `--acc` theo `body[data-deck="…"]`: Plus xanh
+dương, Pro cam, V3 **xanh ngọc** `#12988c`. Thẻ `{{V3}}` trong chữ dùng gradient
+cùng tông. Nhãn nút trên thanh công cụ có phần rút gọn được: `<i>IVT </i>Plus`,
+phần trong `<i>` bị ẩn khi màn hẹp để ba nút không tràn ngang.
+
+---
+
+## 8. Cấu trúc và kiến trúc
 
 ```
 index.html            khung ứng dụng: thanh công cụ, sân khấu, lưới slide, lightbox
@@ -258,6 +301,7 @@ css/style.css         thiết kế — token màu ở :root, mỗi kiểu slide 
 js/slides-data.js     TOÀN BỘ nội dung — chỗ duy nhất cần sửa khi đổi nội dung
 js/app.js             bộ dựng slide + điều hướng + auto-fit chống tràn
 assets/slides/plus/   ảnh bộ Plus        assets/slides/pro/  ảnh bộ Pro
+assets/slides/v3/     ảnh bộ Cập nhật V3 (WebP, từ bài giới thiệu nội bộ)
 assets/video/         video demo         assets/fonts/       Be Vietnam Pro nhúng sẵn
 build_bundle.py       gộp thành một file .html tự chứa
 tools/                script kiểm tra bằng Playwright
@@ -347,7 +391,7 @@ sẽ tràn mất phần đầu ảnh.
 
 ---
 
-## 8. Ảnh và dung lượng
+## 9. Ảnh và dung lượng
 
 ### Nén ảnh chụp điện thoại trước khi commit
 
@@ -383,7 +427,7 @@ im.resize((round(w*1800/h), 1800), Image.LANCZOS).save(
 
 ---
 
-## 9. Bẫy đã trả giá — đọc trước khi sửa CSS
+## 10. Bẫy đã trả giá — đọc trước khi sửa CSS
 
 ### Trùng tên class — dính 3 lần
 
@@ -526,7 +570,7 @@ thẳng phần tử: `pg.locator('#stage').screenshot(...)`.
 
 ---
 
-## 10. Kiểm tra trước khi push
+## 11. Kiểm tra trước khi push
 
 Thư mục `tools/` có 2 script Playwright. Cài một lần:
 
@@ -541,17 +585,18 @@ Không cần `playwright install` — script dùng Chrome sẵn có trong máy.
 | `python tools/check_slides.py` | render toàn bộ 51 slide, báo slide nào tràn khung, slide nào bị auto-fit thu nhỏ, lỗi console |
 | `python tools/check_app.py` | điều hướng, lưới ESC, lightbox, chuyển bộ, phím X, hiện dần từng phần, và **không sinh thanh cuộn ở 6 cỡ màn hình** |
 | `python tools/check_mobile.py` | chế độ xấp trang khổ iPhone 14: đủ số trang, tỉ lệ 16:9, không tràn ngang, số trang chạy đúng khi cuộn, ảnh hỏng |
+| `python tools/check_gate.py` | cổng mã của bộ nội bộ: bấm nút và mở link thẳng đều phải hỏi mã, mã sai bị chặn, mã đúng vào đúng slide |
 
 Ảnh chụp từng slide lưu vào `tools/shots/`, xem lại để soi bố cục. Bộ điện thoại
 chụp khi thêm tham số: `python tools/check_mobile.py shot` — ảnh vào
 `tools/shots-mobile/`.
 
-**Đây là chốt duy nhất giữa code sửa và trang chạy thật.** Các lỗi trong mục 9 đều
+**Đây là chốt duy nhất giữa code sửa và trang chạy thật.** Các lỗi trong mục 10 đều
 do 2 script này bắt được, không phải nhìn mắt thường mà thấy.
 
 ---
 
-## 11. Đưa lên mạng
+## 12. Đưa lên mạng
 
 Cloudflare Pages đã nối sẵn với repo. Sửa xong chỉ cần push, khoảng một phút sau
 trang tự cập nhật:
@@ -581,7 +626,7 @@ luồng Pages đúng thì có ô "Build output directory".
 
 ---
 
-## 12. Xuất một file để gửi rời
+## 13. Xuất một file để gửi rời
 
 Dùng khi người nhận không có mạng. Có link web rồi thì gửi link tiện hơn.
 

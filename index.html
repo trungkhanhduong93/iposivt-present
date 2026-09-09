@@ -20,8 +20,9 @@
     </div>
 
     <div class="seg">
-      <button id="toPlus" class="on" title="Phím 1">IVT Plus</button>
-      <button id="toPro"            title="Phím 2">IVT Pro</button>
+      <button id="toPlus" data-deck="plus" class="on" title="Phím 1"><i>IVT </i>Plus</button>
+      <button id="toPro"  data-deck="pro"            title="Phím 2"><i>IVT </i>Pro</button>
+      <button id="toV3"   data-deck="v3"             title="Phím 3"><i>Cập nhật </i>V3</button>
     </div>
 
     <span class="sp"></span>
@@ -77,6 +78,22 @@
   <button class="x"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
 </div>
 
+<!-- Mã mở bộ nội bộ -->
+<div class="pin" id="pin">
+  <div class="cd">
+    <h3>Nội dung nội bộ iPOS</h3>
+    <p>Bộ <b>Cập nhật V3</b> giữ cả phần chính sách bán hàng nên chỉ dành cho nội bộ.
+       Nhập mã để mở.</p>
+    <input id="pinInput" type="password" inputmode="numeric" autocomplete="off"
+           placeholder="Mã nội bộ" aria-label="Mã nội bộ">
+    <div class="err" id="pinErr"></div>
+    <div class="cl">
+      <button class="tbtn" id="pinCancel"><span>Huỷ</span></button>
+      <button class="tbtn go" id="pinOk"><span>Mở</span></button>
+    </div>
+  </div>
+</div>
+
 <!-- Phím tắt -->
 <div class="help" id="help">
   <div class="cd">
@@ -88,7 +105,7 @@
       <tr><td><kbd>Esc</kbd></td><td>Mở / đóng lưới slide</td></tr>
       <tr><td><kbd>F</kbd></td><td>Toàn màn hình</td></tr>
       <tr><td><kbd>X</kbd></td><td>Hiện đánh dấu nội dung bổ sung &amp; ghi chú việc cần làm</td></tr>
-      <tr><td><kbd>1</kbd><kbd>2</kbd></td><td>Chuyển bộ Plus / Pro</td></tr>
+      <tr><td><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd></td><td>Chuyển bộ Plus / Pro / Cập nhật V3</td></tr>
       <tr><td><kbd>?</kbd></td><td>Bảng này</td></tr>
     </table>
     <div class="cl"><button class="tbtn" id="hclose"><span>Đóng</span></button></div>

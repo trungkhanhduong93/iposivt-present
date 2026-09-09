@@ -12,11 +12,16 @@ sys.stdout.reconfigure(encoding='utf-8')
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 BASE = ROOT.joinpath('index.html').as_uri()
 
+# đếm số slide mỗi bộ, tự bắt mọi bộ có trong dữ liệu — thêm bộ mới không phải sửa
 data = (ROOT / 'js' / 'slides-data.js').read_text(encoding='utf-8')
-seg_plus = data[data.index('plus: {'):data.index('pro: {')]
-seg_pro  = data[data.index('pro: {'):]
-N_PLUS = len(re.findall(r'\{ n:\d+,', seg_plus))
-N_PRO  = len(re.findall(r'\{ n:\d+,', seg_pro))
+DECKS = re.findall(r'^([a-z0-9]+): \{$', data, re.M)
+COUNT = {}
+for i, d in enumerate(DECKS):
+    a = data.index('\n%s: {' % d)
+    b = data.index('\n%s: {' % DECKS[i + 1]) if i + 1 < len(DECKS) else len(data)
+    COUNT[d] = len(re.findall(r'\{ n:\d+,', data[a:b]))
+N_PLUS = COUNT['plus']
+N_PRO = COUNT['pro']
 
 fails = []
 def ok(name, cond, extra=''):
@@ -27,6 +32,8 @@ def ok(name, cond, extra=''):
 with sync_playwright() as p:
     b = p.chromium.launch(channel='chrome')
     pg = b.new_page(viewport={'width': 1500, 'height': 900})
+    # bo V3 co cong ma — mo san de bo kiem vao duoc
+    pg.add_init_script("try{sessionStorage.setItem('ivt-open-v3','1')}catch(e){}")
     pg.on('pageerror', lambda e: fails.append('PAGEERROR ' + str(e)))
     pg.goto(BASE); pg.wait_for_timeout(600)
     h = lambda: pg.evaluate('()=>location.hash')

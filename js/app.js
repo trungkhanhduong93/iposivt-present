@@ -54,7 +54,7 @@ function md (s) {
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/~~(.+?)~~/g, '<em class="hl">$1</em>')
     /* {{Plus}} / {{Pro}} -> thẻ badge, lấy màu từ logo sản phẩm */
-    .replace(/\{\{(Plus|Pro)\}\}/g,
+    .replace(/\{\{(Plus|Pro|V3)\}\}/g,
       (m, g) => '<span class="tbdg ' + g.toLowerCase() + '">' + g + '</span>');
 }
 const xf = o => (o && o.x ? ' xflag' : '');
@@ -66,6 +66,12 @@ const SHOT_R = 1272 / 2772;
 const COL_H = 500;          // chiều cao trống thật của .s-body ở slide có tiêu đề
 const PAD   = 12;           // viền trắng của khung máy (.pf padding 6px hai bên)
 /* Ngưỡng đổi sang chế độ xấp trang — phải khớp @media trong style.css. */
+/* Bộ nội bộ mở bằng mã. Chỉ lưu bản băm để mã không nằm thẳng trong mã nguồn.
+   Đây là rào cản nhẹ, KHÔNG phải bảo mật: trang tĩnh nên người thạo kỹ thuật
+   vẫn đọc được dữ liệu slide. Muốn chặn thật thì bật Cloudflare Access. */
+const PIN_HASH = 'aba1b56fdf9b7abaad8fa4e9afa71a056e3ebfad0c9e88991cd75dd0b4d42f58';
+const PIN_KEY = 'ivt-open-';
+
 const MOB_W = 900;
 const isMob = () => innerWidth < MOB_W;
 function frameH (n, colW, colH, gap) {
@@ -679,6 +685,7 @@ const App = {
   boot () {
     this.el = {
       stage : $('#stage'),
+      pin   : $('#pin'),
       cnt   : $('#cnt'),
       prog  : $('#prog i'),
       prev  : $('#prev'),
@@ -694,12 +701,21 @@ const App = {
     this.bind();
     this.resize();
     this.render('all');
+    /* Link thẳng vào bộ nội bộ: dựng bộ mặc định xong mới hỏi mã */
+    if (this.wantDeck) this.askPin(this.wantDeck);
   },
 
   bind () {
     addEventListener('resize', () => this.resize());
-    $('#toPlus').onclick = () => this.setDeck('plus');
-    $('#toPro').onclick  = () => this.setDeck('pro');
+    $$('.seg button').forEach(b => { b.onclick = () => this.setDeck(b.dataset.deck); });
+    $('#pinCancel').onclick = () => this.closePin();
+    $('#pinOk').onclick     = () => this.tryPin();
+    $('#pinInput').onkeydown = e => {
+      if (e.key === 'Enter') { e.preventDefault(); this.tryPin(); }
+      if (e.key === 'Escape') { e.preventDefault(); this.closePin(); }
+      e.stopPropagation();                 // đừng để phím lọt ra ngoài lật slide
+    };
+    this.el.pin.onclick = e => { if (e.target === this.el.pin) this.closePin(); };
     this.el.prev.onclick = () => this.go(-1, 'all');
     this.el.next.onclick = () => this.go(1,  'all');
     $('#gridBtn').onclick = () => this.toggleGrid();
@@ -713,6 +729,7 @@ const App = {
     addEventListener('keydown', e => {
       const t = e.target.tagName;
       if (t === 'INPUT' || t === 'TEXTAREA') return;
+      if (this.el.pin.classList.contains('open')) return;
       if (this.el.help.classList.contains('open') && e.key !== 'Escape') return;
 
       switch (e.key) {
@@ -733,6 +750,7 @@ const App = {
         case '?': case '/': this.el.help.classList.add('open'); break;
         case '1': this.setDeck('plus'); break;
         case '2': this.setDeck('pro');  break;
+        case '3': this.setDeck('v3');   break;
       }
     });
 
@@ -747,8 +765,14 @@ const App = {
   },
 
   readHash () {
-    const m = /^#(plus|pro)(?:-(\d+))?$/.exec(location.hash || '');
+    const m = /^#(plus|pro|v3)(?:-(\d+))?$/.exec(location.hash || '');
     if (!m) return;
+    /* Mở thẳng link của bộ nội bộ mà chưa có mã thì hỏi mã, chưa đổi bộ vội */
+    if (DECKS[m[1]].gated && !this.opened(m[1])) {
+      this.wantDeck = m[1];
+      this.wantSlide = parseInt(m[2] || '1', 10);   // nhớ đúng slide người ta gõ
+      return;
+    }
     this.key = m[1];
     const n = parseInt(m[2] || '1', 10);
     this.i = Math.min(Math.max(n - 1, 0), this.deck.slides.length - 1);
@@ -760,8 +784,54 @@ const App = {
   },
 
   setDeck (k) {
-    if (this.key === k) return;
+    if (!DECKS[k] || this.key === k) return;
+    if (DECKS[k].gated && !this.opened(k)) return this.askPin(k);
     this.key = k; this.i = 0; this.render('all');
+  },
+
+  /* ── Cổng mã cho bộ nội bộ ──────────────────────────────────────────────
+     Mở một lần cho mỗi tab: đóng tab là phải nhập lại. */
+  opened (k) {
+    try { return sessionStorage.getItem(PIN_KEY + k) === '1'; } catch (e) { return false; }
+  },
+
+  askPin (k) {
+    this.wantDeck = k;
+    $('#pinErr').textContent = '';
+    const inp = $('#pinInput');
+    inp.value = '';
+    this.el.pin.classList.add('open');
+    setTimeout(() => inp.focus(), 30);
+  },
+
+  closePin () {
+    this.el.pin.classList.remove('open');
+    $('#pinErr').textContent = '';
+    this.wantDeck = null;
+  },
+
+  async tryPin () {
+    const k = this.wantDeck;
+    const v = $('#pinInput').value.trim();
+    if (!v) return;
+    let hex = '';
+    try {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v));
+      hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+    } catch (e) { hex = ''; }
+    if (hex !== PIN_HASH) {
+      $('#pinErr').textContent = 'Mã chưa đúng, thử lại.';
+      $('#pinInput').select();
+      return;
+    }
+    try { sessionStorage.setItem(PIN_KEY + k, '1'); } catch (e) {}
+    const want = this.wantSlide;
+    this.closePin();
+    this.key = k;
+    const max = DECKS[k].slides.length - 1;
+    this.i = Math.min(Math.max((want || 1) - 1, 0), max);
+    this.wantSlide = null;
+    this.render('all');
   },
 
   go (d, mode) { this.to(this.i + d, mode); },
@@ -921,8 +991,7 @@ const App = {
   render (mode) {
     const d = this.deck, s = this.slide;
     document.body.dataset.deck = this.key;
-    $('#toPlus').classList.toggle('on', this.key === 'plus');
-    $('#toPro').classList.toggle('on', this.key === 'pro');
+    $$('.seg button').forEach(b => b.classList.toggle('on', b.dataset.deck === this.key));
 
     if (this.mob) {
       this.renderPages();

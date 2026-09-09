@@ -42,7 +42,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('-o', '--out', default=os.path.join(ROOT, 'iPOS-Inventory-Present.html'))
     ap.add_argument('--no-video', action='store_true', help='bo 2 video demo cho nhe file')
-    ap.add_argument('--deck', choices=['plus', 'pro'], help='chi giu mot bo')
+    ap.add_argument('--deck', choices=['plus', 'pro', 'v3'], help='chi giu mot bo')
     a = ap.parse_args()
 
     html = read(os.path.join(ROOT, 'index.html'))
@@ -85,7 +85,11 @@ def main():
             if uri:
                 lookup['assets/' + fn] = uri
                 total += os.path.getsize(os.path.join(ROOT, 'assets', fn))
-    for deck_dir in ('assets/slides/plus', 'assets/slides/pro', 'assets/video'):
+    # tự bắt mọi thư mục ảnh trong assets/slides — thêm bộ mới không phải sửa
+    sl = os.path.join(ROOT, 'assets', 'slides')
+    slide_dirs = sorted('assets/slides/' + d for d in os.listdir(sl)
+                        if os.path.isdir(os.path.join(sl, d)))
+    for deck_dir in slide_dirs + ['assets/video']:
         d = os.path.join(ROOT, deck_dir.replace('/', os.sep))
         if not os.path.isdir(d):
             continue
@@ -100,9 +104,11 @@ def main():
                 total += os.path.getsize(os.path.join(d, fn))
 
     if a.deck:
-        drop = 'pro' if a.deck == 'plus' else 'plus'
-        lookup = {k: v for k, v in lookup.items() if ('/%s/' % drop) not in k}
-        data += "\ndelete DECKS['%s'];\n" % drop
+        drops = [d for d in ('plus', 'pro', 'v3') if d != a.deck]
+        lookup = {k: v for k, v in lookup.items()
+                  if not any(('/%s/' % d) in k for d in drops)}
+        for d in drops:
+            data += "\ndelete DECKS['%s'];\n" % d
 
     import json
     shim = ('<script>window.__ASSETS__=' + json.dumps(lookup) + ';</script>')
