@@ -54,7 +54,7 @@ function md (s) {
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/~~(.+?)~~/g, '<em class="hl">$1</em>')
     /* {{Plus}} / {{Pro}} -> thẻ badge, lấy màu từ logo sản phẩm */
-    .replace(/\{\{(Plus|Pro|V3)\}\}/g,
+    .replace(/\{\{(Standard|Plus|Pro|V3)\}\}/g,
       (m, g) => '<span class="tbdg ' + g.toLowerCase() + '">' + g + '</span>');
 }
 const xf = o => (o && o.x ? ' xflag' : '');
@@ -116,6 +116,7 @@ cover (s, d) {
       </div>
     </div>`;
   }
+  if (s.variant === 'matrix') return T.cover_matrix(s, d);
   /* Bìa Pro: chữ chìm cỡ lớn + 3 thiết bị xếp lớp (điện thoại · màn hình · điện thoại) */
   if (s.variant === 'devices') {
     const [l, mid, r] = s.devices;
@@ -177,6 +178,74 @@ cards3 (s) {
       `<div class="c"><h3>${esc(c.h)}</h3><p>${md(c.t)}</p></div>`).join('')}</div>
     <div class="fx"><h3>${esc(s.formula.h)}</h3><p>${md(s.formula.t)}</p></div>
   </div></div>`;
+},
+
+/* ── Bộ so sánh tính năng ──────────────────────────────────────────────────
+   Ba kiểu dùng chung một bảng màu: Standard xám, Plus xanh, Pro vàng. Cột nào
+   cũng tô nền nhạt riêng để mắt dò dọc theo cột mà không lạc sang cột bên. */
+
+/* Bìa: không dùng ảnh chụp, dựng thẳng bằng HTML nên phóng bao nhiêu cũng nét */
+cover_matrix (s) {
+  return `<div class="cvm nodeco">
+    <span class="orb a"></span><span class="orb b"></span>
+    <img class="lg" src="assets/logo-ipos.png" alt="iPOS.vn">
+    <div class="tx">
+      <div class="k">${esc(s.kicker || 'BẢNG SO SÁNH TÍNH NĂNG')}</div>
+      <h1>${s.lines.map(t => esc(t)).join('<br>')}</h1>
+      <div class="rule"></div>
+      <p>${md(s.lead)}</p>
+    </div>
+    <div class="col">${s.packs.map(p => `<div class="p ${p.k}">
+      <img src="assets/${p.logo}" alt="">
+      <div class="n"><b>${esc(p.n)}</b><span>tính năng</span></div>
+      <p>${md(p.t)}</p></div>`).join('')}</div>
+  </div>`;
+},
+
+/* Trang mở: ba gói dành cho ai, kèm cách đọc bảng ở dưới */
+mxsum (s) {
+  /* Thanh độ phủ lấy gói cao nhất làm mốc — con số 34/46/99 đọc lên thì trừu
+     tượng, nhìn thanh dài ngắn mới thấy ngay khoảng cách giữa ba gói. */
+  const max = Math.max(...s.packs.map(p => +p.n));
+  return head(kick(s, 'So sánh tính năng'), s.title, s.sub, 'up') +
+    `<div class="s-body"><div class="mxs">
+      <div class="row">${s.packs.map(p => `<div class="c ${p.k}">
+        <div class="tp"><img src="assets/${p.logo}" alt="">
+          <div class="n"><b>${esc(p.n)}</b><span>/ ${esc(s.total)}</span></div></div>
+        <div class="cov"><i style="width:${Math.round(+p.n / max * 100)}%"></i></div>
+        <p>${md(p.t)}</p>
+        <ul>${(p.li || []).map(x => `<li>${md(x)}</li>`).join('')}</ul>
+      </div>`).join('')}</div>
+      ${(s.legend || []).length ? `<div class="lgd">${s.legend.map(l =>
+        `<span class="${l.k}"><i></i>${md(l.t)}</span>`).join('')}</div>` : ''}
+    </div></div>`;
+},
+
+/* Bảng tính năng. Dòng nhóm phân hệ xen giữa, mỗi dòng lệch một nhịp rất ngắn
+   để bảng chạy xuống chứ không bật ra cả mảng — bảng dài nhìn mới theo kịp. */
+matrix (s) {
+  const mk = v => v ? `<span class="mk y">${IC.check}</span>`
+                    : `<span class="mk n"></span>`;
+  let i = 0;
+  const rows = s.rows.map(r => {
+    const d = ` style="--i:${Math.min(++i, 15)}"`;
+    if (r.g) return `<div class="gr"${d}><span>${md(r.g)}</span></div>`;
+    return `<div class="rw"${d}>
+      <div class="no">${esc(r.c || '')}</div>
+      <div class="ft"><b>${md(r.t)}</b>${r.d ? `<i>${md(r.d)}</i>` : ''}</div>
+      ${r.v.map((v, k) => `<div class="c c${k}">${mk(v)}</div>`).join('')}
+    </div>`;
+  }).join('');
+  return head(kick(s, 'So sánh tính năng'), s.title, '', 'up') +
+    `<div class="s-body"><div class="mx">
+      <div class="hd">
+        <div class="no"></div><div class="ft">TÍNH NĂNG</div>
+        <div class="c c0"><span class="bdg">STANDARD</span></div>
+        <div class="c c1"><span class="bdg">PLUS</span></div>
+        <div class="c c2"><span class="bdg">PRO</span></div>
+      </div>
+      <div class="bd">${rows}</div>
+    </div>${s.note ? `<div class="mxnt">${md(s.note)}</div>` : ''}</div>`;
 },
 
 section (s) {
@@ -715,7 +784,8 @@ const RV = {
   production: '.prod .chk, .prod .cols .c',
   twolane   : '.twol .lane',
   pipeline  : '.pipe .row>*',
-  packs     : '.pks .pk, .pks .dept .d'
+  packs     : '.pks .pk, .pks .dept .d',
+  mxsum     : '.mxs .row .c, .mxs .lgd span'
 };
 const RV_LEAD = 380;  // chờ khung chữ đầu slide vào xong rồi mới tới nội dung
 /* Mốc mọi chuyển động của một slide đã dừng hẳn: độ trễ lớn nhất của phần hiện
@@ -801,9 +871,13 @@ const App = {
         case 'f': case 'F': this.fullscreen(); break;
         case 'x': case 'X': this.toggleX();    break;
         case '?': case '/': this.el.help.classList.add('open'); break;
-        case '1': this.setDeck('plus'); break;
-        case '2': this.setDeck('pro');  break;
-        case '3': this.setDeck('v3');   break;
+        /* Phím số bám theo thứ tự khai báo trong DECKS — thêm bộ mới thì
+           không phải sửa chỗ này nữa. */
+        case '1': case '2': case '3': case '4': case '5': {
+          const k = Object.keys(DECKS)[+e.key - 1];
+          if (k) this.setDeck(k);
+          break;
+        }
       }
     });
 
@@ -818,7 +892,10 @@ const App = {
   },
 
   readHash () {
-    const m = /^#(plus|pro|v3)(?:-(\d+))?$/.exec(location.hash || '');
+    /* Tên bộ lấy thẳng từ DECKS — ghi cứng ở đây thì thêm bộ mới là link chết
+       lặng lẽ, mở #cmp-1 vẫn ra bộ Plus mà không báo lỗi gì. */
+    const m = new RegExp('^#(' + Object.keys(DECKS).join('|') + ')(?:-(\\d+))?$')
+      .exec(location.hash || '');
     if (!m) return;
     /* Mở thẳng link của bộ nội bộ mà chưa có mã thì hỏi mã, chưa đổi bộ vội */
     if (DECKS[m[1]].gated && !this.opened(m[1])) {

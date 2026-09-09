@@ -1,4 +1,4 @@
-# iPOS Inventory — Web Present (Plus · Pro · V3)
+# iPOS Inventory — Web Present (Plus · Pro · So sánh · V3)
 
 Bộ trình chiếu web thay cho các file PowerPoint. Khung 16:9 cố định **1280×720**,
 tự scale vừa màn hình, **không bao giờ sinh thanh cuộn**.
@@ -7,7 +7,7 @@ tự scale vừa màn hình, **không bao giờ sinh thanh cuộn**.
 |---|---|
 | Bản chạy | **https://iposivt-present.pages.dev** |
 | Repo | https://github.com/trungkhanhduong93/iposivt-present |
-| Số slide | Plus **28** · Pro **23** · Cập nhật V3 **18** |
+| Số slide | Plus **28** · Pro **23** · So sánh tính năng **18** · Cập nhật V3 **18** |
 | Mở tại máy | bấm đúp `index.html` |
 
 Gửi kèm số slide được: `iposivt-present.pages.dev/#pro-13` mở thẳng slide Quy trình kiểm kê.
@@ -20,6 +20,7 @@ Gửi kèm số slide được: `iposivt-present.pages.dev/#pro-13` mở thẳng
 |---|---|
 | **Plus** | `TRAINING IVT LITE - NHAN VIEN.pptx` (26 slide) + phần Trum bổ sung |
 | **Pro** | `Demo IVT Pro.pptx` (20 slide) + phần Trum bổ sung |
+| **So sánh tính năng** | `So-sanh-IVT-Standard-Plus-Pro.html` — bảng đối chiếu 99 tính năng |
 | **Cập nhật V3** | bài giới thiệu nội bộ `IVT V3 Introduction` (09/04/2026) |
 
 Chữ trong `js/slides-data.js` là **nguyên văn từ PPTX**, kể cả chữ nằm trong
@@ -117,7 +118,9 @@ khối CSS cùng tên trong `css/style.css`.
 
 | type | Dùng cho | Trường chính |
 |---|---|---|
-| `cover` | Bìa. 4 biến thể: `left` (nền tranh, chữ trái), `devices` (chữ chìm + 3 thiết bị), `split` (chữ trái, tranh phải), `pro` (ảnh trên, mục lục dưới) | `variant` `img` `lines` `badge` |
+| `cover` | Bìa. 5 biến thể: `left` (nền tranh, chữ trái), `devices` (chữ chìm + 3 thiết bị), `split` (chữ trái, tranh phải), `pro` (ảnh trên, mục lục dưới), `matrix` (chữ trái, ba thẻ gói phải, không dùng ảnh) | `variant` `img` `lines` `badge` `packs` |
+| `matrix` | Bảng đối chiếu tính năng ba gói, có dòng tên phân hệ xen giữa | `rows[{c,t,d,v}]` `rows[{g}]` `note` |
+| `mxsum` | Ba thẻ gói kèm thanh độ phủ, dùng cho trang mở và trang chọn gói | `packs` `total` `legend` |
 | `agenda` | Mục lục dạng lưới 2 cột | `items[{t,x}]` |
 | `cards3` | Thẻ định nghĩa + dải công thức | `cards` `formula` |
 | `section` | Slide chuyển mục nền gradient, số cỡ lớn | `num` `title` `lead` |
@@ -198,7 +201,7 @@ khung cắt mất đáy — đã dính một lần ở slide Quay lại bản c�
 | `Esc` | mở / đóng lưới slide |
 | `F` | toàn màn hình |
 | `X` | hiện đánh dấu nội dung bổ sung + ghi chú |
-| `1` `2` `3` | chuyển bộ Plus / Pro / Cập nhật V3 |
+| `1` `2` `3` `4` | chuyển bộ Plus / Pro / So sánh / Cập nhật V3 |
 | `?` | bảng phím tắt |
 
 Phím tắt chỉ dùng ở chế độ một slide một màn. Dưới 900px là chế độ xấp trang,
@@ -327,12 +330,41 @@ nhật `PIN_HASH`.
 ### Màu nhận diện
 
 Mỗi bộ một màu, đổi qua biến `--acc` theo `body[data-deck="…"]`: Plus xanh
-dương, Pro cam, V3 **xanh ngọc** `#12988c`. Thẻ `{{V3}}` trong chữ dùng gradient
-cùng tông. Nhãn nút trên thanh công cụ có phần rút gọn được: `<i>IVT </i>Plus`,
-phần trong `<i>` bị ẩn khi màn hẹp để ba nút không tràn ngang.
+dương, Pro cam, So sánh **xanh than** `#3f5573`, V3 **xanh ngọc** `#12988c`. Thẻ
+`{{V3}}` trong chữ dùng gradient cùng tông. Nhãn nút trên thanh công cụ có phần
+rút gọn được: `<i>IVT </i>Plus`, phần trong `<i>` bị ẩn khi màn hẹp.
+
+Riêng bộ So sánh thì bảng nói về cả ba gói cùng lúc nên **không** lấy `--acc`:
+màu cột là màu của gói, cố định ở `--st` xám, `--pl` xanh, `--pr` vàng.
 
 ---
 
+
+## 7b. Bộ So sánh tính năng — sinh tự động
+
+Bộ này **không viết tay**. `tools/gen_compare.py` đọc thẳng
+`../So-sanh-IVT-Standard-Plus-Pro.html`, bóc mảng `DATA` (99 tính năng, 12 phân
+hệ, 8 nhóm báo cáo) rồi ghi phần `cmp:` vào `js/slides-data.js`.
+
+```bash
+python tools/gen_compare.py
+```
+
+Sửa nội dung thì sửa ở script rồi chạy lại, **đừng sửa tay trong
+`slides-data.js`** — lần chạy sau sẽ ghi đè.
+
+Script tự cắt slide theo chiều cao ước lượng: dòng thường 34px, thêm 17px cho
+mỗi hàng chữ mô tả bị xuống dòng, ngân sách 442px cho vùng bảng. Khối nào vượt
+thì cắt thành "phần 1, phần 2" và **chia đều** — hạ dần ngưỡng tới mức thấp nhất
+mà vẫn giữ nguyên số slide. Cắt tham lam không thôi thì slide cuối còn trơ một
+dòng.
+
+Bộ này công khai, không có `gated` nên không hỏi mã.
+
+**Số slide không cố định.** Thêm tính năng vào file gốc là số slide đổi theo, nên
+đừng ghi cứng con số ở chỗ khác.
+
+---
 ## 8. Cấu trúc và kiến trúc
 
 ```
@@ -342,9 +374,11 @@ js/slides-data.js     TOÀN BỘ nội dung — chỗ duy nhất cần sửa khi
 js/app.js             bộ dựng slide + điều hướng + auto-fit chống tràn
 assets/slides/plus/   ảnh bộ Plus        assets/slides/pro/  ảnh bộ Pro
 assets/slides/v3/     ảnh bộ Cập nhật V3 (WebP, từ bài giới thiệu nội bộ)
+                      bộ So sánh không có ảnh riêng — dựng thẳng bằng HTML
 assets/video/         video demo         assets/fonts/       Be Vietnam Pro nhúng sẵn
 build_bundle.py       gộp thành một file .html tự chứa
 tools/                script kiểm tra bằng Playwright
+tools/gen_compare.py  sinh lại bộ So sánh từ file HTML gốc
 ```
 
 ### Cách khung hình hoạt động
@@ -504,18 +538,30 @@ im.resize((round(w*1800/h), 1800), Image.LANCZOS).save(
 
 ## 10. Bẫy đã trả giá — đọc trước khi sửa CSS
 
-### Trùng tên class — dính 3 lần
+### Trùng tên class — dính 5 lần
 
 Không báo lỗi gì hết, chỉ sai hiển thị nên rất khó lần ra.
 
 | Class | Đụng phải | Hậu quả |
 |---|---|---|
 | `.lb` | lightbox (`display:none`) | nhãn biến mất không dấu vết |
-| `.bar` | thanh công cụ (`flex:0 0 46px`) | gạch phân số dày 46px thay vì 2.5px |
+| `.bar` | thanh công cụ (`flex:0 0 46px`) | gạch phân số dày 46px, thanh độ phủ dày 46px |
+| `.pks` | ba thẻ gói (`flex-direction:column`) | ba thẻ bìa xếp dọc, tràn hết slide |
 | `.pl` `.tl` | class có sẵn | cả slide render đen thui |
 
 **Luôn grep tên trong `style.css` trước khi đặt.** Mỗi kiểu slide mới phải có tiền
 tố riêng: `.twol`, `.pipe`, `.cfm`, `.mgrid`, `.brw`…
+
+
+### Tên bộ ghi cứng ở ba chỗ — link chết lặng lẽ
+
+Thêm bộ thứ tư xong, mở `#cmp-1` vẫn ra bộ Plus, **không lỗi, không cảnh báo**.
+Regex đọc hash trong `readHash()` ghi cứng `(plus|pro|v3)`, không khớp thì hàm
+`return` sớm rồi `writeHash()` ghi đè lại hash cũ.
+
+Nay cả ba chỗ đều sinh từ `Object.keys(DECKS)`: regex đọc hash, phím số chọn bộ,
+và vòng lặp của script kiểm tra. Thêm bộ mới chỉ cần khai báo trong `DECKS` và
+thêm một nút trong `index.html`.
 
 ### Grid hàng `auto` làm `max-height:100%` của ảnh vô tác dụng — dính 2 lần
 

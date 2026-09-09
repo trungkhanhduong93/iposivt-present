@@ -54,6 +54,9 @@
   --sh-2:0 6px 18px rgba(14,26,43,.09),0 22px 48px rgba(14,26,43,.10);
 }
 body[data-deck="pro"]{ --acc:var(--orange); --acc-d:var(--orange-d); --acc-t:var(--orange-t); --acc-b:var(--orange-b); }
+/* Bộ so sánh nói về cả ba gói nên không mượn màu gói nào — lấy xanh than */
+body[data-deck="cmp"]{ --slate:#3f5573; --slate-d:#2b3d57; --slate-t:#f0f3f8; --slate-b:#c9d5e6;
+  --acc:var(--slate); --acc-d:var(--slate-d); --acc-t:var(--slate-t); --acc-b:var(--slate-b); }
 /* Bộ V3 lấy xanh ngọc để phân biệt hẳn với Plus xanh dương và Pro cam */
 body[data-deck="v3"]{ --teal:#12988c; --teal-d:#0f6d64; --teal-t:#eef9f7; --teal-b:#bfe4de;
   --acc:var(--teal); --acc-d:var(--teal-d); --acc-t:var(--teal-t); --acc-b:var(--teal-b); }
@@ -89,8 +92,10 @@ em.hl{font-style:normal;color:var(--orange-d);font-weight:600}
 .seg button i{font-style:normal}
 .seg button.on{background:var(--blue);color:#fff;box-shadow:0 1px 6px rgba(27,111,224,.5)}
 .seg button[data-deck="pro"].on{background:var(--orange);box-shadow:0 1px 6px rgba(245,135,31,.5)}
+.seg button[data-deck="cmp"].on{background:#3f5573;box-shadow:0 1px 6px rgba(63,85,115,.5)}
 .seg button[data-deck="v3"].on{background:#12988c;box-shadow:0 1px 6px rgba(18,152,140,.5)}
 body[data-deck="pro"] .seg button.on{background:var(--orange);box-shadow:0 1px 6px rgba(245,135,31,.5)}
+body[data-deck="cmp"] .seg button.on{background:#3f5573;box-shadow:0 1px 6px rgba(63,85,115,.5)}
 .bar .sp{flex:1}
 .bar .cnt{font-variant-numeric:tabular-nums;font-weight:600;color:#e5eefb;letter-spacing:.4px}
 .bar .cnt i{font-style:normal;color:#6f8099;font-weight:500}
@@ -119,6 +124,7 @@ body[data-deck="pro"] .seg button.on{background:var(--orange);box-shadow:0 1px 6
   color:#dce7f5;cursor:pointer;display:grid;place-items:center;transition:.18s;backdrop-filter:blur(6px)}
 .arrow:hover{background:var(--blue);border-color:var(--blue);color:#fff}
 body[data-deck="pro"] .arrow:hover{background:var(--orange);border-color:var(--orange)}
+body[data-deck="cmp"] .arrow:hover{background:#3f5573;border-color:#3f5573}
 body[data-deck="v3"] .arrow:hover{background:#12988c;border-color:#12988c}
 .arrow:disabled{opacity:.22;cursor:default;background:rgba(255,255,255,.05)}
 .arrow.prev{left:16px} .arrow.next{right:16px}
@@ -130,6 +136,7 @@ body[data-deck="v3"] .arrow:hover{background:#12988c;border-color:#12988c}
 .prog i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--blue-l));
   transition:width .3s cubic-bezier(.4,0,.2,1)}
 body[data-deck="pro"] .prog i{background:linear-gradient(90deg,var(--orange-d),var(--orange))}
+body[data-deck="cmp"] .prog i{background:linear-gradient(90deg,#2b3d57,#5a739b)}
 body[data-deck="v3"] .prog i{background:linear-gradient(90deg,#0f6d64,#2fc0b1)}
 
 /* =============================================================================
@@ -1145,6 +1152,150 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
 .help .cl{margin-top:18px;text-align:right}
 
 /* =============================================================================
+   BỘ SO SÁNH TÍNH NĂNG  ·  Standard xám · Plus xanh · Pro vàng
+   Ba màu này cố định, KHÔNG lấy theo --acc của bộ đang xem: bảng nói về cả ba
+   gói cùng lúc nên màu phải là màu của gói, không phải màu của deck.
+   ========================================================================== */
+:root{
+  --st:#5b6675;  --st-t:#f3f5f8;  --st-b:#dfe4ec;
+  --pl:#0560a6;  --pl-t:#edf5fd;  --pl-b:#cfe2f6;
+  --pr:#a97f27;  --pr-t:#fff8ec;  --pr-b:#f0dcb4;
+}
+
+/* -- Bia: chu trai, ba the goi ben phai --------------------------------- */
+.cvm{position:absolute;inset:0;display:grid;grid-template-columns:56% 44%;
+  align-items:center;gap:38px;padding:0 66px;overflow:hidden;
+  background:linear-gradient(145deg,#f7f9fc 0%,#eef2f8 55%,#e7edf6 100%)}
+.cvm .orb{position:absolute;border-radius:50%;pointer-events:none}
+.cvm .orb.a{width:560px;height:560px;right:-190px;top:-230px;
+  background:radial-gradient(circle,rgba(63,85,115,.14),transparent 68%)}
+.cvm .orb.b{width:360px;height:360px;left:-140px;bottom:-160px;
+  background:radial-gradient(circle,rgba(5,96,166,.12),transparent 68%)}
+.cvm .lg{position:absolute;left:66px;top:46px;height:32px;width:auto}
+.cvm .tx{position:relative;z-index:1;padding-top:24px}
+.cvm .k{font-size:12.5px;font-weight:700;letter-spacing:3px;color:#3f5573}
+.cvm h1{margin-top:15px;font-size:46px;font-weight:700;line-height:1.12;
+  letter-spacing:-1.4px;color:var(--ink)}
+.cvm .rule{width:84px;height:5px;border-radius:3px;background:var(--orange);margin-top:20px}
+.cvm p{margin-top:18px;font-size:17.5px;line-height:1.6;color:var(--body)}
+
+/* Ba the xep doc ben phai: vua lap cho trong, vua la muc luc nhanh cua ca bo */
+.cvm .col{position:relative;z-index:1;display:flex;flex-direction:column;gap:13px}
+.cvm .col .p{display:grid;grid-template-columns:104px auto;grid-template-rows:auto auto;
+  column-gap:16px;row-gap:5px;align-items:center;background:#fff;
+  border:1px solid var(--line);border-left:4px solid var(--st);border-radius:14px;
+  padding:15px 18px 16px;box-shadow:var(--sh-1)}
+.cvm .col .p.pl{border-left-color:var(--pl)}
+.cvm .col .p.pr{border-left-color:var(--pr)}
+.cvm .col .p img{grid-row:1;height:23px;width:104px;object-fit:contain;object-position:left}
+.cvm .col .n{grid-row:1;display:flex;align-items:baseline;gap:6px}
+.cvm .col .n b{font-size:27px;font-weight:700;color:var(--ink);letter-spacing:-.8px;
+  line-height:1}
+.cvm .col .n span{font-size:12.5px;color:var(--muted)}
+.cvm .col .p p{grid-column:1/3;grid-row:2;margin:0;font-size:14px;line-height:1.5;
+  color:var(--body)}
+
+/* -- Trang mo: ba goi danh cho ai --------------------------------------- */
+.mxs{display:flex;flex-direction:column;justify-content:center;width:100%;
+  align-self:stretch;gap:18px}
+/* Thẻ chỉ cao bằng nội dung rồi cả khối căn giữa: kéo thẻ cao hết khung thì
+   ruột thẻ hở một mảng trắng giữa đoạn mô tả và danh sách. */
+.mxs .row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.mxs .c{background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:22px 22px 20px;box-shadow:var(--sh-1);display:flex;flex-direction:column;
+  gap:14px;border-top:4px solid var(--st)}
+.mxs .c.pl{border-top-color:var(--pl)}
+.mxs .c.pr{border-top-color:var(--pr)}
+.mxs .tp{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.mxs .tp img{height:26px;width:auto;object-fit:contain}
+.mxs .n{display:flex;align-items:baseline;gap:5px}
+.mxs .n b{font-size:31px;font-weight:700;color:var(--ink);letter-spacing:-1px;line-height:1}
+.mxs .n span{font-size:13px;color:var(--muted)}
+.mxs .c p{font-size:17.5px;line-height:1.55;color:var(--body)}
+.mxs .c ul{list-style:none;display:flex;flex-direction:column;gap:9px;
+  padding-top:14px;border-top:1px solid var(--line)}
+.mxs .c li{position:relative;padding-left:19px;font-size:15.5px;line-height:1.5;
+  color:var(--body)}
+.mxs .c li::before{content:'';position:absolute;left:0;top:8px;width:7px;height:7px;
+  border-radius:50%;background:var(--st)}
+.mxs .c.pl li::before{background:var(--pl)}
+.mxs .c.pr li::before{background:var(--pr)}
+/* Thanh do phu: dai ngan theo so tinh nang cua goi.
+   KHONG dat ten .bar — thanh cong cu tren dau trang da chiem ten do roi. */
+.mxs .cov{height:7px;padding:0;border-radius:4px;background:#eef1f6;overflow:hidden}
+.mxs .cov i{display:block;height:100%;border-radius:4px;background:var(--st)}
+.mxs .c.pl .cov i{background:var(--pl)}
+.mxs .c.pr .cov i{background:linear-gradient(90deg,#9c7220,#cdb46e)}
+.mxs .lgd{display:flex;flex-wrap:wrap;gap:10px 24px;padding:14px 20px;
+  background:#f7f9fc;border:1px solid var(--line);border-radius:13px}
+.mxs .lgd span{display:flex;align-items:center;gap:9px;font-size:14.5px;color:var(--body)}
+.mxs .lgd i{width:14px;height:14px;border-radius:4px;background:var(--st-t);
+  border:1px solid var(--st-b);flex:0 0 auto}
+.mxs .lgd .pl i{background:var(--pl-t);border-color:var(--pl-b)}
+.mxs .lgd .pr i{background:var(--pr-t);border-color:var(--pr-b)}
+.mxs .lgd .no i{background:#fff;border-color:var(--line)}
+
+/* -- Bang tinh nang ----------------------------------------------------- */
+.mx{display:flex;flex-direction:column;width:100%;align-self:stretch;min-height:0;
+  border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;
+  box-shadow:var(--sh-1)}
+.mx .hd,.mx .rw{display:grid;grid-template-columns:74px minmax(0,1fr) 132px 132px 132px}
+.mx .hd{background:#f5f7fa;border-bottom:1px solid var(--line)}
+.mx .hd>div{padding:11px 16px;display:flex;align-items:center;font-size:12px;
+  font-weight:700;letter-spacing:1.2px;color:var(--muted)}
+.mx .hd .c{justify-content:center;padding:9px 10px}
+.mx .hd .c0{background:var(--st-t)}
+.mx .hd .c1{background:var(--pl-t)}
+.mx .hd .c2{background:var(--pr-t)}
+.mx .hd .bdg{padding:6px 15px 7px;border-radius:999px;color:#fff;font-size:11.5px;
+  letter-spacing:1.1px;background:var(--st)}
+.mx .hd .c1 .bdg{background:var(--pl)}
+.mx .hd .c2 .bdg{background:linear-gradient(180deg,#9c7220,#ac8129 46%,#cdb46e)}
+
+/* Than bang chia deu cho trong: bang ngan thi dong gian ra cho do tro, bang
+   dai thi co lai toi muc toi thieu roi moi nho auto-fit. */
+.mx .bd{flex:1;display:flex;flex-direction:column;min-height:0}
+/* flex-basis:auto — dòng có thêm dòng mô tả phải tự cao lên. Để 'flex:1 1 0'
+   thì mọi dòng chia đều nhau và dòng mô tả bị kẹp, chữ chồng lên dòng dưới. */
+.mx .rw{flex:1 1 auto;min-height:33px;border-bottom:1px solid var(--line)}
+.mx .rw:last-child{border-bottom:0}
+.mx .rw>div{padding:6px 16px;display:flex;align-items:center;min-width:0}
+.mx .no{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.mx .ft{flex-direction:column;align-items:flex-start !important;justify-content:center;gap:2px}
+.mx .ft b{font-size:16.5px;font-weight:600;color:var(--ink);line-height:1.3}
+.mx .ft i{font-style:normal;font-size:12.5px;line-height:1.4;color:var(--muted)}
+.mx .rw .c{justify-content:center}
+.mx .rw .c0{background:var(--st-t)}
+.mx .rw .c1{background:var(--pl-t)}
+.mx .rw .c2{background:var(--pr-t)}
+
+/* Dong ten phan he, keo ngang het bang */
+.mx .gr{padding:7px 16px;background:linear-gradient(90deg,#eaeff7,#f7f9fc);
+  border-bottom:1px solid var(--line);font-size:12.5px;font-weight:700;
+  letter-spacing:1.4px;color:#3f5573;text-transform:uppercase;
+  display:flex;align-items:center}
+
+.mx .mk{width:23px;height:23px;border-radius:50%;display:grid;place-items:center}
+.mx .mk svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:3.4;
+  stroke-linecap:round;stroke-linejoin:round}
+.mx .c0 .mk.y{background:var(--st);box-shadow:0 2px 6px rgba(91,102,117,.30)}
+.mx .c1 .mk.y{background:var(--pl);box-shadow:0 2px 6px rgba(5,96,166,.28)}
+.mx .c2 .mk.y{background:linear-gradient(180deg,#9c7220,#c4a24d);
+  box-shadow:0 2px 6px rgba(169,127,39,.28)}
+.mx .mk.n{width:14px;height:2px;border-radius:2px;background:#c3ccda;box-shadow:none}
+
+.mxnt{margin-top:13px;padding:11px 17px;border-left:3px solid var(--acc-b);
+  background:var(--acc-t);border-radius:0 10px 10px 0;font-size:15px;line-height:1.55;
+  color:var(--body)}
+
+/* Bang chay xuong theo dong, moi dong lech mot nhip rat ngan - bang dai ma bat
+   ra ca mang thi mat khong biet bat dau tu dau. */
+.slide.in .mx .hd{animation:rvup var(--d-fast) var(--t-sub) var(--ease) both}
+.slide.in .mx .rw,.slide.in .mx .gr{
+  animation:rvup var(--d-fast) calc(var(--t-body) + var(--i,0)*34ms) var(--ease) both}
+.slide.in .mxnt{animation:rvup var(--d-base) 900ms var(--ease) both}
+
+/* =============================================================================
    CHUYỂN ĐỘNG KHI TRÌNH CHIẾU
 
    Một thang nhịp duy nhất cho cả ba bộ. Thứ tự vào bám đúng thứ tự mắt đọc:
@@ -1261,11 +1412,15 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
   /* Dinh o dau trang, phia sau la trang giay trang cuon qua — nen phai dac */
   .bar{position:sticky;top:0;z-index:60;height:44px;gap:9px;padding:0 11px;
     background:#0f1a29;border-bottom:1px solid rgba(255,255,255,.1)}
-  /* Ba nut khong du cho tren man hep: bo phan dau cua nhan */
+  /* Bốn nút chọn bộ không đủ chỗ trên màn hẹp: bỏ phần đầu của nhãn, bóp đệm,
+     và cho thanh co lại được. Thiếu min-width:0 thì thanh cứ nở ra và cả trang
+     tràn ngang vài pixel — trang giấy hết vừa bề ngang màn. */
   .bar .brand span,.tbtn span,.seg button i{display:none}
   .bar .brand img{height:17px}
   .bar .cnt{font-size:12.5px}
-  .seg button{padding:5px 11px}
+  .bar{min-width:0}
+  .seg{min-width:0;overflow:hidden}
+  .seg button{padding:5px 8px;font-size:11px;white-space:nowrap}
 
   .stagewrap{display:block;overflow:visible;min-height:0}
   .arrow{display:none}                    /* cuộn thay cho lật, nút chiếm chỗ */

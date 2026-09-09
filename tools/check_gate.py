@@ -57,9 +57,12 @@ with sync_playwright() as p:
 
     ok('mo mac dinh van la bo Plus', pg.evaluate(ST)['deck'] == 'plus')
 
-    # hai bo cong khai khong bi chan
+    # ba bo cong khai khong bi chan
     pg.click('#toPro'); pg.wait_for_timeout(500)
     ok('bo Pro vao thang khong hoi ma', pg.evaluate(ST)['deck'] == 'pro')
+    pg.click('#toCmp'); pg.wait_for_timeout(500)
+    r = pg.evaluate(ST)
+    ok('bo So sanh vao thang khong hoi ma', r['deck'] == 'cmp' and not r['open'], r)
     pg.click('#toPlus'); pg.wait_for_timeout(400)
 
     # bam nut bo noi bo -> hien o nhap ma, chua doi bo
@@ -86,10 +89,11 @@ with sync_playwright() as p:
     pg.keyboard.press('Escape'); pg.wait_for_timeout(400)
 
     # da mo roi thi chuyen qua lai tu do trong phien
+    # phim so bam theo thu tu khai bao trong DECKS: 1 plus, 2 pro, 3 cmp, 4 v3
     pg.keyboard.press('1'); pg.wait_for_timeout(500)
-    pg.keyboard.press('3'); pg.wait_for_timeout(600)
+    pg.keyboard.press('4'); pg.wait_for_timeout(600)
     r = pg.evaluate(ST)
-    ok('mo roi thi phim 3 vao thang', r['deck'] == 'v3' and not r['open'], r)
+    ok('mo roi thi phim 4 vao thang', r['deck'] == 'v3' and not r['open'], r)
     ctx.close()
 
     # tab moi: phai nhap lai

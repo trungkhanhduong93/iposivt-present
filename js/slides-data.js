@@ -658,6 +658,341 @@ pro: {
   ]
 },
 /* ══════════════════════════════════════════════════════════════════════════
+   SO SÁNH TÍNH NĂNG — công khai, không cần mã
+   Nguồn: "So-sanh-IVT-Standard-Plus-Pro.html" (bảng đối chiếu 99 tính năng).
+   FILE NÀY SINH TỰ ĐỘNG phần bộ so sánh — sửa nội dung thì sửa ở
+   tools/gen_compare.py rồi chạy lại, đừng sửa tay ở đây.
+   Chia slide theo khối nghiệp vụ; khối nào cao quá khung 500px thì bộ sinh tự
+   cắt tiếp thành "phần 1, phần 2" để chữ khỏi bị auto-fit thu nhỏ.
+   ══════════════════════════════════════════════════════════════════════════ */
+cmp: {
+  id: 'cmp',
+  name: 'So sánh tính năng',
+  short: 'SO SÁNH',
+  tagline: 'Standard · Plus · Pro — 99 tính năng theo từng phân hệ',
+  dir: 'assets/slides/plus/',
+  vdir: 'assets/video/',
+  slides: [
+
+  /* 1 ─ Bìa: dựng bằng HTML, không dùng ảnh chụp ------------------------- */
+  { n:1, type:'cover', variant:'matrix',
+    kicker:'BẢNG SO SÁNH TÍNH NĂNG',
+    lines:['SO SÁNH TÍNH NĂNG','STANDARD · PLUS · PRO'],
+    lead:'Danh sách đầy đủ tính năng theo từng phân hệ của phần mềm iPOS Inventory.',
+    packs:[
+      { k:'st', logo:'logo-ivt-standard.png', n:'34',
+        t:'Nghiệp vụ kho cơ bản: mua hàng, bán POS, kiểm kê' },
+      { k:'pl', logo:'logo-ivt-plus.png',     n:'46',
+        t:'Mở rộng: công thức chế biến, giá thành, hao hụt' },
+      { k:'pr', logo:'logo-ivt-pro.png',      n:'99',
+        t:'Đầy đủ toàn bộ phân hệ và báo cáo' }
+    ] },
+
+  /* 2 ─ Ba gói dành cho ai, kèm cách đọc bảng ---------------------------- */
+  { n:2, type:'mxsum',
+    crumb:['SO SÁNH TÍNH NĂNG','Ba gói'],
+    title:'BA GÓI, MỘT PHẦN MỀM',
+    sub:'Cùng một hệ thống, khác nhau ở số phân hệ được mở.',
+    total:'99 tính năng',
+    packs:[
+      { k:'st', logo:'logo-ivt-standard.png', n:'34',
+        t:'Nghiệp vụ kho cơ bản: mua hàng, bán POS, kiểm kê.',
+        li:['Đủ chứng từ nhập, xuất, kiểm kê nền tảng',
+            'Mười lăm báo cáo quản trị kho và đối soát',
+            'Đối soát KTV và iACC ngay từ gói thấp nhất'] },
+      { k:'pl', logo:'logo-ivt-plus.png', n:'46',
+        t:'Mở rộng: công thức chế biến, giá thành, hao hụt nguyên vật liệu.',
+        li:['Thêm 12 tính năng so với Standard',
+            'Công thức chế biến, bảng giá, quy đổi đơn vị',
+            'Báo cáo hao hụt, tỷ lệ trả hàng, giá thành'] },
+      { k:'pr', logo:'logo-ivt-pro.png', n:'99',
+        t:'Đầy đủ toàn bộ phân hệ và báo cáo.',
+        li:['Thêm 53 tính năng so với Plus',
+            'Đặt hàng, sơ chế, chế biến, điều chuyển, nhượng quyền',
+            'Trọn 37 báo cáo của tám nhóm'] }
+    ],
+    legend:[
+      { k:'st', t:'Cột xám là gói **Standard**' },
+      { k:'pl', t:'Cột xanh là gói **Plus**' },
+      { k:'pr', t:'Cột vàng là gói **Pro**' },
+      { k:'no', t:'Dấu tích là có, gạch ngang là không có' }
+    ] },
+
+  /* 3 ─ Thiết lập — phần 1 */
+  { n:3, type:'matrix',
+    crumb:['SO SÁNH TÍNH NĂNG','Thiết lập — phần 1'],
+    title:'THIẾT LẬP — PHẦN 1',
+    rows:[
+      { g:'1 · Thiết lập' },
+      { c:'1.01', t:'Tồn đầu kỳ', v:[1,1,1] },
+      { c:'1.02', t:'Nợ đầu kỳ nhà cung cấp', v:[1,1,1] },
+      { c:'1.03', t:'Nợ đầu kỳ khách hàng', v:[0,0,1] },
+      { c:'1.04', t:'Nợ đầu kỳ nội bộ', v:[0,0,1] },
+      { c:'1.05', t:'Quy tắc giá vốn', v:[1,1,1] },
+      { c:'1.06', t:'Định mức tồn kho', v:[1,1,1] }
+    ],
+    note:'Sáu mục đầu có ở cả ba gói. Nợ đầu kỳ khách hàng, nhân viên, chức vụ và kế hoạch tự động là phần riêng của {{Pro}}.' },
+
+  /* 4 ─ Thiết lập — phần 2 */
+  { n:4, type:'matrix',
+    crumb:['SO SÁNH TÍNH NĂNG','Thiết lập — phần 2'],
+    title:'THIẾT LẬP — PHẦN 2',
+    rows:[
+      { g:'1 · Thiết lập' },
+      { c:'1.07', t:'Hệ thống', d:'Khai báo cấu hình hệ thống · Đặt lại hệ thống: xóa dữ liệu phát sinh, xóa danh mục và khai báo tồn đầu kỳ', v:[1,1,1] },
+      { c:'1.08', t:'Chứng từ', d:'Cấu hình hàng hóa trong chứng từ · Khai báo cấu trúc số phiếu từng loại chứng từ · Khai báo quy tắc gợi ý giá · Cấu hình ẩn giá tiền và ẩn tồn hệ thống · Chỉnh sửa mẫu phiếu in', v:[1,1,1] },
+      { c:'1.09', t:'Nhân viên', v:[0,0,1] },
+      { c:'1.10', t:'Chức vụ', v:[0,0,1] },
+      { c:'1.11', t:'Kế hoạch tự động', v:[0,0,1] }
+    ],
+    note:'Sáu mục đầu có ở cả ba gói. Nợ đầu kỳ khách hàng, nhân viên, chức vụ và kế hoạch tự động là phần riêng của {{Pro}}.' },
+
+  /* 5 ─ Danh mục — phần 1 */
+  { n:5, type:'matrix',
+    crumb:['SO SÁNH TÍNH NĂNG','Danh mục — phần 1'],
+    title:'DANH MỤC HÀNG HOÁ VÀ CÔNG THỨC',
+    rows:[
+      { g:'2 · Phân hệ Danh mục' },
+      { c:'2.01', t:'Danh mục hàng hóa', v:[1,1,1] },
+      { c:'2.02', t:'Danh mục nhóm hàng hóa', v:[1,1,1] },
+      { c:'2.03', t:'Danh mục đơn vị tính', v:[1,1,1] },
+      { c:'2.04', t:'Danh mục quy đổi đơn vị tính', v:[0,1,1] },
+      { c:'2.05', t:'Danh mục công thức sơ chế, chế biến bán thành phẩm', v:[0,0,1] },
+      { c:'2.06', t:'Danh mục công thức chế biến', v:[0,1,1] },
+      { c:'2.07', t:'Danh mục định mức biến thiên', v:[0,0,1] },
+      { c:'2.08', t:'Danh mục kho hàng', v:[1,1,1] },
+      { c:'2.09', t:'Danh mục cung ứng hàng hóa', v:[0,0,1] }
+    ],
+    note:'Công thức chế biến mở từ {{Plus}}; sơ chế bán thành phẩm và định mức biến thiên chỉ có trên {{Pro}}.' },
+
+  /* 6 ─ Danh mục — phần 2 */
+  { n:6, type:'matrix',
+    crumb:['SO SÁNH TÍNH NĂNG','Danh mục — phần 2'],
+    title:'DANH MỤC ĐỐI TÁC VÀ KHO',
+    rows:[
+      { g:'2 · Phân hệ Danh mục' },
+      { c:'2.10', t:'Danh mục khách hàng', v:[0,0,1] },
+      { c:'2.11', t:'Danh mục nhà cung cấp', v:[1,1,1] },
+      { c:'2.12', t:'Danh mục nhóm nhà cung cấp', v:[1,1,1] },
+      { c:'2.13', t:'Danh mục bảng giá', v:[0,1,1] },
+      { c:'2.14', t:'Danh mục chủ nhượng quyền', v:[0,0,1] },
+      { c:'2.15', t:'Danh mục mẫu đặt hàng', v:[0,0,1] },
+      { c:'2.16', t:'Danh mục lý do', v:[0,0,1] },
+      { c:'2.17', t:'Danh mục lô hàng (Quản lý lô, date hàng hóa)', v:[0,0,1] }
+    ],
+    note:'Bảng giá mở từ {{Plus}}. Khách hàng, nhượng quyền, mẫu đặt hàng và quản lý lô date là phần riêng của {{Pro}}.' },
+
+  /* 7 ─ Đặt hàng · Sơ chế · Chế biến — phần 1 */
+  { n:7, type:'matrix',
+    crumb:['SO SÁNH TÍNH NĂNG','Đặt hàng · Sơ chế · Chế biến — phần 1'],
+    title:'ĐẶT HÀNG, SƠ CHẾ VÀ CHẾ BIẾN — PHẦN 1',
+    rows:[
+      { g:'3 · Phân hệ đặt hàng' },
+      { c:'3.01', t:'Kế hoạch đặt hàng nội bộ', v:[0,0,1] },
+      { c:'3.02', t:'Yêu cầu mua hàng', v:[0,0,1] },
+      { c:'3.03', t:'Đặt mua hàng', v:[0,0,1] },
+      { c:'3.04', t:'Đặt hàng nội bộ', v:[0,0,1] },
+      { g:'4 · Phân hệ sơ chế' },
+      { c:'4.01', t:'Khai báo công thức sơ chế nguyên vật liệu', v:[0,0,1] }
+    ],
+    note:'Trọn ba phân hệ này chỉ có trên {{Pro}} — đây là phần khác biệt lớn nhất giữa Pro và hai gói còn lại.' },
+
+  /* 8 ─ Đặt hàng · Sơ chế · Chế biến — phần 2 */
+  { n:8, type:'matrix',
+    crumb:['SO SÁNH TÍNH NĂNG','Đặt hàng · Sơ chế · Chế biến — phần 2'],
+    title:'ĐẶT HÀNG, SƠ CHẾ VÀ CHẾ BIẾN — PHẦN 2',
+    rows:[
+      { g:'4 · Phân hệ sơ chế' },
+      { c:'4.02', t:'Xuất kho sơ chế nguyên vật liệu', v:[0,0,1] },
+      { c:'4.03', t:'Nhập kho sau sơ chế', v:[0,0,1] },
+      { g:'5 · Phân hệ chế biến' },
+      { c:'5.01', t:'Khai báo công thức chế biến bán thành phẩm', v:[0,0,1] },
+      { c:'5.02', t:'Xuất kho chế biến bán thành phẩm', v:[0,0,1] },
+      { c:'5.03', t:'Nhập kho sau chế biến bán thành phẩm', v:[0,0,1] }
+    ],
+    note:'Trọn ba phân hệ này chỉ có trên {{Pro}} — đây là phần khác biệt lớn nhất giữa Pro và hai gói còn lại.' },
+
+  /* 9 ─ Xuất kho */
+  { n:9, type:'matrix',
+    crumb:['SO SÁNH TÍNH NĂNG','Xuất kho'],
+    title:'PHÂN HỆ XUẤT KHO',
+    rows:[
+      { g:'6 · Phân hệ xuất kho' },
+      { c:'6.01', t:'Xuất bán POS', d:'Tự động đồng bộ dữ liệu từ phần mềm bán hàng POS PC/FABi', v:[1,1,1] },
+      { c:'6.02', t:'Xuất bán hàng', d:'Tự động xuất kho nguyên liệu theo công thức chế biến', v:[0,0,1] },
+      { c:'6.03', t:'Xuất điều chuyển', d:'Xuất bán hàng nội bộ · Xuất điều chuyển nội bộ · Xuất trả lại nội bộ', v:[0,0,1] },
+      { c:'6.04', t:'Xuất trả lại nhà cung cấp', v:[0,1,1] },
+      { c:'6.05', t:'Xuất hủy', d:'Cho phép hủy nguyên liệu, thành phẩm', v:[0,1,1] },
+      { c:'6.06', t:'Xuất khác', v:[0,1,1] }
+    ],
+    note:'Xuất bán POS có ở cả ba gói. Trả lại nhà cung cấp, xuất huỷ và xuất khác mở từ {{Plus}}; điều chuyển nội bộ thì cần {{Pro}}.' },
+
+  /* 10 ─ Nhập kho · Kiểm kê */
+  { n:10, type:'matrix',
+    crumb:['SO SÁNH TÍNH NĂNG','Nhập kho · Kiểm kê'],
+    title:'NHẬP KHO VÀ KIỂM KÊ',
+    rows:[
+      { g:'7 · Phân hệ nhập kho' },
+      { c:'7.01', t:'Nhập mua hàng', v:[1,1,1] },
+      { c:'7.02', t:'Nhập điều chuyển', d:'Tự động sinh chứng từ từ Xuất điều chuyển · Nhập mua nội bộ · Nhập điều chuyển · Nhập trả lại', v:[0,0,1] },
+      { c:'7.03', t:'Nhập thu hồi', d:'Nhập thu hồi từ chênh lệch điều chuyển nội bộ', v:[0,0,1] },
+      { c:'7.04', t:'Nhập khác', v:[0,1,1] },
+      { g:'8 · Phân hệ kiểm kê' },
+      { c:'8.01', t:'Kiểm kê', v:[1,1,1] },
+      { c:'8.02', t:'Xuất điều chỉnh', v:[1,1,1] },
+      { c:'8.03', t:'Nhập điều chỉnh', v:[1,1,1] },
+      { c:'8.04', t:'Điều chỉnh giá trị tồn kho', v:[0,1,1] },
+      { c:'8.05', t:'Tình trạng hàng hoá', v:[0,0,1] }
+    ],
+    note:'Nhập mua hàng và kiểm kê là nghiệp vụ nền, gói nào cũng có. Nhập điều chuyển và thu hồi đi kèm phân hệ nội bộ của {{Pro}}.' },
+
+  /* 11 ─ Công nợ · Nhượng quyền · Kế toán */
+  { n:11, type:'matrix',
+    crumb:['SO SÁNH TÍNH NĂNG','Công nợ · Nhượng quyền · Kế toán'],
+    title:'CÔNG NỢ, NHƯỢNG QUYỀN VÀ KẾ TOÁN',
+    rows:[
+      { g:'9 · Phân hệ công nợ' },
+      { c:'9.01', t:'Thanh toán công nợ nội bộ', v:[0,0,1] },
+      { c:'9.02', t:'Thanh toán công nợ khách hàng', v:[0,0,1] },
+      { c:'9.03', t:'Thanh toán công nợ nhà cung cấp', v:[1,1,1] },
+      { c:'9.04', t:'Thanh toán công nợ nhượng quyền', v:[0,0,1] },
+      { g:'10 · Phân hệ nhượng quyền' },
+      { c:'10.01', t:'Khai báo danh mục chủ nhượng quyền', v:[0,0,1] },
+      { g:'11 · Phân hệ kế toán' },
+      { c:'11.01', t:'Tính giá vốn', v:[1,1,1] },
+      { c:'11.02', t:'Kiểm tra chứng từ', v:[0,0,1] },
+      { c:'11.03', t:'Cập nhật giá mua', v:[0,0,1] },
+      { c:'11.04', t:'Khoá sổ kho', v:[0,1,1] }
+    ],
+    note:'Công nợ nhà cung cấp và tính giá vốn có ở cả ba gói. Khoá sổ kho mở từ {{Plus}}.' },
+
+  /* 12 ─ Báo cáo quản trị kho — phần 1 */
+  { n:12, type:'matrix',
+    crumb:['SO SÁNH TÍNH NĂNG','Báo cáo quản trị kho — phần 1'],
+    title:'BÁO CÁO QUẢN TRỊ KHO',
+    rows:[
+      { g:'Nhóm báo cáo quản trị kho' },
+      { c:'12.01.01', t:'Báo cáo kiểm kê', v:[1,1,1] },
+      { c:'12.01.02', t:'Báo cáo tổng hợp xuất', v:[1,1,1] },
+      { c:'12.01.03', t:'Báo cáo chi tiết xuất', v:[1,1,1] },
+      { c:'12.01.04', t:'Báo cáo tổng hợp nhập', v:[1,1,1] },
+      { c:'12.01.05', t:'Báo cáo chi tiết nhập', v:[1,1,1] },
+      { c:'12.01.06', t:'Báo cáo xuất nhập tồn', v:[1,1,1] },
+      { c:'12.01.07', t:'Báo cáo tồn kho hiện tại', v:[1,1,1] },
+      { c:'12.01.08', t:'Báo cáo hao hụt NVL', v:[0,1,1] }
+    ],
+    note:'Bảy báo cáo đầu là bộ tối thiểu để vận hành kho, gói nào cũng có. Báo cáo hao hụt nguyên vật liệu mở từ {{Plus}}.' },
+
+  /* 13 ─ Báo cáo quản trị kho — phần 2 */
+  { n:13, type:'matrix',
+    crumb:['SO SÁNH TÍNH NĂNG','Báo cáo quản trị kho — phần 2'],
+    title:'BÁO CÁO MUA, BÁN VÀ TRẢ HÀNG',
+    rows:[
+      { g:'Nhóm báo cáo quản trị kho' },
+      { c:'12.01.09', t:'Báo cáo tỷ lệ trả hàng', v:[0,1,1] },
+      { c:'12.01.10', t:'Báo cáo tổng hợp mua hàng', v:[1,1,1] },
+      { c:'12.01.11', t:'Báo cáo chi tiết mua hàng', v:[1,1,1] },
+      { c:'12.01.12', t:'Báo cáo tổng hợp bán hàng', v:[0,0,1] },
+      { c:'12.01.13', t:'Báo cáo chi tiết bán hàng', v:[0,0,1] },
+      { c:'12.01.14', t:'Báo cáo tổng hợp trả hàng', v:[0,0,1] },
+      { c:'12.01.15', t:'Báo cáo chi tiết trả hàng', v:[0,0,1] }
+    ],
+    note:'Báo cáo bán hàng và trả hàng đi kèm phân hệ xuất bán của {{Pro}}.' },
+
+  /* 14 ─ Báo cáo đặt hàng · sản xuất */
+  { n:14, type:'matrix',
+    crumb:['SO SÁNH TÍNH NĂNG','Báo cáo đặt hàng · sản xuất'],
+    title:'BÁO CÁO ĐẶT HÀNG VÀ SẢN XUẤT',
+    rows:[
+      { g:'Nhóm báo cáo đặt hàng' },
+      { c:'12.02.01', t:'Báo cáo tổng quan kế hoạch đặt hàng nội bộ', v:[0,0,1] },
+      { c:'12.02.02', t:'Báo cáo chi tiết kế hoạch đặt hàng nội bộ', v:[0,0,1] },
+      { c:'12.02.03', t:'Báo cáo yêu cầu mua hàng', v:[0,0,1] },
+      { c:'12.02.04', t:'Báo cáo đặt mua hàng', v:[0,0,1] },
+      { c:'12.02.05', t:'Báo cáo đặt hàng nội bộ', v:[0,0,1] },
+      { g:'Nhóm báo cáo sản xuất' },
+      { c:'12.03.01', t:'Báo cáo tỷ lệ thu hồi', v:[0,0,1] },
+      { c:'12.03.02', t:'Báo cáo hiệu quả sơ chế', v:[0,0,1] },
+      { c:'12.03.03', t:'Báo cáo hiệu quả chế biến', v:[0,0,1] }
+    ],
+    note:'Tám báo cáo này bám theo phân hệ đặt hàng, sơ chế và chế biến nên chỉ có trên {{Pro}}.' },
+
+  /* 15 ─ Báo cáo giá thành · công nợ · phân tích */
+  { n:15, type:'matrix',
+    crumb:['SO SÁNH TÍNH NĂNG','Báo cáo giá thành · công nợ · phân tích'],
+    title:'BÁO CÁO GIÁ THÀNH, CÔNG NỢ VÀ PHÂN TÍCH',
+    rows:[
+      { g:'Nhóm báo cáo giá thành' },
+      { c:'12.04.01', t:'Báo cáo giá thành sản phẩm', v:[0,1,1] },
+      { c:'12.04.02', t:'Báo cáo giá thành chế biến', v:[0,0,1] },
+      { g:'Nhóm báo cáo công nợ' },
+      { c:'12.05.01', t:'Báo cáo công nợ nội bộ', v:[0,0,1] },
+      { c:'12.05.02', t:'Báo cáo công nợ khách hàng', v:[0,0,1] },
+      { c:'12.05.03', t:'Báo cáo công nợ nhà cung cấp', v:[1,1,1] },
+      { c:'12.05.04', t:'Báo cáo công nợ nhượng quyền', v:[0,0,1] },
+      { g:'Nhóm báo cáo phân tích' },
+      { c:'12.06.01', t:'Báo cáo phân tích tổng quan nhà cung cấp', v:[0,0,1] },
+      { c:'12.06.02', t:'Báo cáo phân tích chi tiết nhà cung cấp', v:[0,0,1] },
+      { c:'12.06.03', t:'Báo cáo phân tích chi tiết nguyên vật liệu', v:[0,0,1] }
+    ],
+    note:'Giá thành sản phẩm và công nợ nhà cung cấp mở từ {{Plus}}. Nhóm phân tích nhà cung cấp và nguyên vật liệu là phần riêng của {{Pro}}.' },
+
+  /* 16 ─ Báo cáo đối soát · kiểm soát */
+  { n:16, type:'matrix',
+    crumb:['SO SÁNH TÍNH NĂNG','Báo cáo đối soát · kiểm soát'],
+    title:'BÁO CÁO ĐỐI SOÁT VÀ KIỂM SOÁT',
+    rows:[
+      { g:'Nhóm báo cáo đối soát' },
+      { c:'12.07.01', t:'Báo cáo NVL tiêu hao KTV', d:'Đối soát nguyên vật liệu tiêu hao với KTV', v:[1,1,1] },
+      { c:'12.07.02', t:'Báo cáo giá thành KTV', d:'Đối soát giá thành với KTV', v:[1,1,1] },
+      { c:'12.07.03', t:'Báo cáo xuất kho iACC', d:'Đối soát chứng từ xuất kho với iACC', v:[1,1,1] },
+      { c:'12.07.04', t:'Báo cáo nhập kho iACC', d:'Đối soát chứng từ nhập kho với iACC', v:[1,1,1] },
+      { g:'Nhóm báo cáo kiểm soát' },
+      { c:'12.08.01', t:'Báo cáo sửa chứng từ', d:'Kiểm soát lịch sử sửa chứng từ', v:[1,1,1] }
+    ],
+    note:'Năm báo cáo đối soát với KTV, iACC và lịch sử sửa chứng từ có ở cả ba gói.' },
+
+  /* 17 ─ Gợi ý chọn gói ------------------------------------------------- */
+  { n:17, type:'mxsum',
+    crumb:['SO SÁNH TÍNH NĂNG','Chọn gói'],
+    title:'CHỌN GÓI NÀO?',
+    sub:'Chọn theo cách vận hành thật của cửa hàng, không chọn theo số tính năng.',
+    total:'99 tính năng',
+    packs:[
+      { k:'st', logo:'logo-ivt-standard.png', n:'34',
+        t:'Một điểm bán, mua hàng và bán POS là chính.',
+        li:['Chưa cần công thức chế biến',
+            'Chỉ cần biết tồn kho và giá vốn',
+            'Kiểm kê định kỳ, đối soát với kế toán'] },
+      { k:'pl', logo:'logo-ivt-plus.png', n:'46',
+        t:'Có bếp, cần tính giá thành và theo dõi hao hụt.',
+        li:['Món có công thức, cần định lượng nguyên liệu',
+            'Muốn biết hao hụt và tỷ lệ trả hàng',
+            'Có bảng giá riêng cho từng nhóm hàng'] },
+      { k:'pr', logo:'logo-ivt-pro.png', n:'99',
+        t:'Chuỗi nhiều điểm bán, có kho tổng, có nhượng quyền.',
+        li:['Điều chuyển nội bộ và công nợ giữa các chi nhánh',
+            'Quy trình đặt hàng, sơ chế, chế biến đầy đủ',
+            'Cần trọn bộ báo cáo phân tích và đối soát'] }
+    ] },
+
+  /* 18 ─ Cảm ơn ---------------------------------------------------------- */
+  { n:18, type:'thanks',
+    title:'Thank you!',
+    company:'iPOS.vn Joint Stock Company',
+    contact:['Tel: 1900 4766','www.iPOS.vn'],
+    offices:[
+      { city:'TP Hà Nội',      addr:'Tầng 11, Tòa tháp Hòa Bình, 106 Hoàng Quốc Việt, P. Nghĩa Đô, Q. Cầu Giấy' },
+      { city:'TP Đà Nẵng',     addr:'Số 80 Núi Thành, phường Hòa Thuận Đông, quận Hải Châu, Thành phố Đà Nẵng' },
+      { city:'TP Hồ Chí Minh', addr:'Tầng 12, Tòa nhà Lottery Tower, 77 Trần Nhân Tôn, Phường 9, Quận 5' }
+    ],
+    more:{ h:'iPOS.vn Offices:',
+           t:'Quang Ninh, Hai Phong, Bac Ninh, Thanh Hoa, Nghe An, Hue, Khanh Hoa, Dak Lak, Dong Nai, Binh Duong, Vung Tau, Can Tho' } }
+
+  ]
+},
+
+/* ══════════════════════════════════════════════════════════════════════════
    V3 — 18 slide · nội bộ iPOS, mở bằng mã PIN
    Nguồn: "IVT V3 Introduction" (bài giới thiệu nội bộ, 09/04/2026).
    Giữ nguyên cả phần chính sách sale nên deck này không dành cho khách.
