@@ -90,6 +90,12 @@ const head = (kicker, title, sub, cls) => `
 const crumb = a => (a || []).map((s, i) =>
   (i ? '<span class="sep">›</span>' : '') + `<span>${md(s)}</span>`).join('');
 
+/* Dòng dẫn đầu slide, dùng chung cho mọi kiểu bố cục để cả deck nhất quán:
+   `crumb` dạng mảng là chuẩn, `kicker` một dòng là dạng rút gọn, cuối cùng mới
+   tới nhãn mặc định của kiểu slide. Mục đầu luôn là tên phân hệ kèm thẻ sản
+   phẩm, các mục sau ngăn nhau bằng dấu ›. */
+const kick = (s, fb) => crumb(s.crumb || (s.kicker ? [s.kicker] : (fb ? [fb] : [])));
+
 const T = {
 
 cover (s, d) {
@@ -154,14 +160,14 @@ cover (s, d) {
 end (s, d) { return `<div class="endimg nodeco"><img src="${d.dir}${s.img}" alt=""></div>`; },
 
 agenda (s) {
-  return head('Mục lục', s.title) + `<div class="s-body"><div class="agenda">
+  return head(kick(s, 'Mục lục'), s.title) + `<div class="s-body"><div class="agenda">
     ${s.items.map((it, i) => `<div class="it${xf(it)}">
       <b>${String(i + 1).padStart(2, '0')}</b><span>${md(it.t)}</span></div>`).join('')}
   </div></div>`;
 },
 
 cards3 (s) {
-  return head('Nghiệp vụ nền tảng', s.title) + `<div class="s-body"><div class="defs">
+  return head(kick(s, 'Nghiệp vụ nền tảng'), s.title) + `<div class="s-body"><div class="defs">
     <div class="row">${s.cards.map(c =>
       `<div class="c"><h3>${esc(c.h)}</h3><p>${md(c.t)}</p></div>`).join('')}</div>
     <div class="fx"><h3>${esc(s.formula.h)}</h3><p>${md(s.formula.t)}</p></div>
@@ -287,7 +293,7 @@ flow (s) {
 
 /* Ba thẻ: ảnh máy phía trên, tiêu đề và mô tả phía dưới */
 trio (s, d) {
-  return head(s.kicker || '', s.title, s.sub, 'up') + `<div class="s-body"><div class="trio">
+  return head(kick(s), s.title, s.sub, 'up') + `<div class="s-body"><div class="trio">
     ${s.items.map((it, i) => `<div class="c">
       <div class="ph"><img src="${d.dir}${it.f}" alt="" data-zoom></div>
       <div class="tx"><b><i>${String(i + 1).padStart(2, '0')}</i>${esc(it.t)}</b>
@@ -303,21 +309,21 @@ webgrid (s, d) {
   const cards = `<div class="pts${s.cols === 2 ? ' c2' : ''}">${s.items.map((it, i) => `
     <div class="p"><b>${String(i + 1).padStart(2, '0')}</b>
       <span>${md(typeof it === 'string' ? it : it.t)}</span></div>`).join('')}</div>`;
-  return head(s.kicker || '', s.title, s.sub, 'up') +
+  return head(kick(s), s.title, s.sub, 'up') +
     `<div class="s-body"><div class="wg ${s.dir || 'row'}">${
       s.dir === 'col' ? shot + cards : cards + shot}</div></div>`;
 },
 
 imagefull (s, d) {
-  return head(s.kicker ? crumb([s.kicker]) : '', s.title, '', 'up') +
+  return head(kick(s), s.title, '', 'up') +
     `<div class="s-body"><div class="imgfull${s.titleX ? ' xflag' : ''}">
       <img src="${d.dir}${s.img}" alt="" data-zoom></div></div>`;
 },
 
 /* Lưới thẻ phân hệ — thay cho kiểu cây, dùng cho slide danh sách tính năng */
 modgrid (s) {
-  return head(s.kicker || (s.num ? `PHẦN ${esc(s.num)}` : ''), s.title, '', 'up') +
-    `<div class="s-body"><div class="mgrid${s.rows === 'auto' ? ' auto' : ''}">
+  return head(s.crumb ? kick(s) : (s.kicker || (s.num ? `PHẦN ${esc(s.num)}` : '')),
+    s.title, '', 'up') + `<div class="s-body"><div class="mgrid${s.rows === 'auto' ? ' auto' : ''}">
       ${s.groups.map((g, i) => `<div class="m${g.hi ? ' hi' : ''}${g.span > 4 ? ' wide' : ''}"
         style="--sp:${g.span || 4}${g.c ? `;--mc:${g.c}` : ''}">
         <span class="no">${String(i + 1).padStart(2, '0')}</span>
@@ -353,14 +359,14 @@ device (s, d) {
       <span>${md(it.t)}</span>${it.s ? `<small>${md(it.s)}</small>` : ''}
     </div></div>`).join('')}</div>`;
   const side = `<div class="side" data-fit>${list}${s.note ? note(s.note) : ''}</div>`;
-  return head(crumb(s.crumb), s.title, '', 'up') +
+  return head(kick(s), s.title, '', 'up') +
     `<div class="s-body"><div class="dev${s.side === 'right' ? ' right' : ''}"
       style="--cw:${cw}px">${s.side === 'right' ? side + shots : shots + side}</div></div>`;
 },
 
 /* Ảnh chụp màn Web nằm ngang: ảnh chiếm phần lớn slide, ghi chú dồn sang phải */
 webshot (s, d) {
-  return head(crumb(s.crumb), s.title, '', 'up') + `<div class="s-body"><div class="vid">
+  return head(kick(s), s.title, '', 'up') + `<div class="s-body"><div class="vid">
     <div class="fr shot"><img src="${d.dir}${s.img}" alt="" data-zoom></div>
     <div class="side" data-fit>
       ${s.items ? `<div class="lst">${s.items.map((it, i) => `
@@ -372,7 +378,7 @@ webshot (s, d) {
 },
 
 video (s, d) {
-  return head(crumb(s.crumb), s.title, '', 'up') + `<div class="s-body"><div class="vid">
+  return head(kick(s), s.title, '', 'up') + `<div class="s-body"><div class="vid">
     <div class="fr">
       <div class="tag"><i></i>VIDEO DEMO</div>
       <video src="${d.vdir}${s.video}" ${s.poster ? `poster="${d.dir}${s.poster}"` : ''}
@@ -478,7 +484,7 @@ qa (s) {
 },
 
 depts (s) {
-  return head('Đối tượng sử dụng', s.title, '', 'up') + `<div class="s-body"><div class="dept">
+  return head(kick(s, 'Đối tượng sử dụng'), s.title, '', 'up') + `<div class="s-body"><div class="dept">
     ${s.items.map(dd => `<div class="d">
       <h3><i>${IC[dd.ic] || IC.box}</i>${esc(dd.h)}</h3>
       <ul>${dd.items.map(t => `<li>${md(t)}</li>`).join('')}</ul>
@@ -497,7 +503,7 @@ modules (s) {
 },
 
 orderflow (s, d) {
-  return head(crumb(s.crumb), s.title, '', 'up') + `<div class="s-body"><div class="oflow">
+  return head(kick(s), s.title, '', 'up') + `<div class="s-body"><div class="oflow">
     <div class="pic"><img src="${d.dir}${s.img}" alt="" data-zoom></div>
     <div class="st" data-fit>${s.steps.map(st => `<div class="s">
       <span class="dot" style="background:${st.c}"></span>
@@ -511,7 +517,7 @@ orderflow (s, d) {
 },
 
 production (s, d) {
-  return head('Bếp trung tâm', s.title, '', 'up') + `<div class="s-body"><div class="prod">
+  return head(kick(s, 'Bếp trung tâm'), s.title, '', 'up') + `<div class="s-body"><div class="prod">
     <div class="chk">
       <h4>${esc(s.check.h)}</h4>
       <div class="row">${s.check.items.map(t =>
@@ -530,7 +536,7 @@ twolane (s) {
   const site = w => `<div class="site">
     <i>${IC[w.ic] || IC.wh}</i><b>${esc(w.t)}</b>
     ${w.s ? `<span>${esc(w.s)}</span>` : ''}</div>`;
-  return head(s.kicker || '', s.title, '', 'up') + `<div class="s-body"><div class="twol">
+  return head(kick(s), s.title, '', 'up') + `<div class="s-body"><div class="twol">
     ${site(s.a)}
     <div class="lanes">${s.lanes.map(l => `<div class="lane" style="--c:${l.c}">
       <div class="lhead"><b>${esc(l.h)}</b><span>${esc(l.s)}</span></div>
@@ -544,7 +550,7 @@ twolane (s) {
 
 /* Chuỗi bước ngang, giữa các bước là chip mô tả hành động */
 pipeline (s) {
-  return head(s.kicker || '', s.title, '', 'up') + `<div class="s-body"><div class="pipe">
+  return head(kick(s), s.title, '', 'up') + `<div class="s-body"><div class="pipe">
     ${s.lead ? `<div class="pipe-lead"><b>${esc(s.lead.h)}</b><span>${esc(s.lead.t)}</span></div>` : ''}
     <div class="row">${s.steps.map((st, i) => `
       ${i ? `<div class="gate"><span class="chip" style="--c:${st.gc}">${esc(st.gate)}</span>
@@ -562,7 +568,7 @@ pipeline (s) {
 
 /* Công thức phân số cỡ lớn */
 costformula (s) {
-  return head(s.kicker || '', s.title, '', 'up') + `<div class="s-body"><div class="cfm">
+  return head(kick(s), s.title, '', 'up') + `<div class="s-body"><div class="cfm">
     <div class="lft">
       <div class="cap">${esc(s.label)}</div>
       <div class="vl">${esc(s.value)}</div>
@@ -621,7 +627,7 @@ platform (s, d) {
     ? `<div class="box"><div class="bar3"><i></i><i></i><i></i></div>
          <img src="${d.dir}${s.web}" alt="" data-zoom></div>`
     : `<img src="${d.dir}${s.web}" alt="" data-zoom>`;
-  return head('Nền tảng công nghệ', s.title, '', 'up') +
+  return head(kick(s, 'Nền tảng công nghệ'), s.title, '', 'up') +
     `<div class="s-body"><div class="plat${s.frame ? ' fr' : ''}">
     <div class="bd">${esc(s.badge)}</div>
     <div class="row"><div class="ph">${ph}</div><div class="wb">${wb}</div></div>

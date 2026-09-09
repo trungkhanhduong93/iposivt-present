@@ -66,6 +66,37 @@ Chỉ đụng **`js/slides-data.js`**. Không cần sửa CSS hay JS.
 Bấm phím **X** khi trình chiếu để hiện viền cam đánh dấu chỗ bổ sung và các ghi
 chú `todo`. Duyệt xong thì xoá cờ.
 
+### Dòng dẫn đầu slide
+
+Mọi slide nội dung đều mở đầu bằng một dòng dẫn theo đúng một mẫu:
+
+```
+TÊN PHÂN HỆ iPOS INVENTORY {{Plus}} › Nhóm nghiệp vụ › Nền tảng
+```
+
+Khai bằng `crumb` dạng mảng, mục đầu **luôn** là tên phân hệ kèm thẻ sản phẩm:
+
+```js
+crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Quản lý kho','Tại App'],
+title:'DANH MỤC',
+```
+
+Tiêu đề là **tên nghiệp vụ của riêng slide đó**, không lặp lại tên sản phẩm —
+tên sản phẩm đã nằm ở dòng dẫn rồi. Hai slide cùng nghiệp vụ mà khác nền tảng
+thì trùng tiêu đề, phân biệt bằng mục cuối `Tại App` / `Tại Web`.
+
+Đừng để mục cuối của dòng dẫn trùng tiêu đề. Gặp ca đó thì lấy tên nhóm rộng
+hơn: slide Công nợ dùng `Quản trị dòng tiền`, slide Cấu hình chuyên sâu dùng
+`Thiết lập nâng cao`.
+
+Hàm `kick()` trong `app.js` dựng dòng dẫn cho **mọi** kiểu slide theo thứ tự ưu
+tiên: `crumb` mảng, rồi `kicker` một dòng, cuối cùng là nhãn mặc định của kiểu
+slide. Thêm kiểu mới thì gọi `kick(s, 'nhãn mặc định')`, đừng viết chuỗi cứng.
+
+Ba loại slide đứng ngoài mẫu này vì không thuộc nhánh chức năng nào: slide
+chuyển mục và slide mở đầu phần dùng `PHẦN 0X`, slide chi tiết giá trị dùng
+`GIÁ TRỊ 0X / 03`, còn bìa và trang cảm ơn không có dòng dẫn.
+
 ### Thay ảnh
 
 1. Bỏ ảnh vào `assets/slides/plus/` hoặc `assets/slides/pro/`

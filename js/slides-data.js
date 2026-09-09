@@ -97,13 +97,13 @@ plus: {
 
   /* 7 ─ Luồng vận hành kho (sơ đồ gốc Trum cung cấp) -------------------- */
   { n:7, type:'imagefull',
-    kicker:'GIỚI THIỆU · MÔ HÌNH VỪA VÀ NHỎ',
+    crumb:['GIỚI THIỆU iPOS INVENTORY {{Plus}}','Mô hình vừa và nhỏ'],
     title:'Luồng vận hành kho tổng quan',
     img:'s7-luong.png' },
 
   /* 8 ─ Sơ đồ tổng thể -------------------------------------------------- */
   { n:8, type:'imagefull',
-    kicker:'GIỚI THIỆU',
+    crumb:['GIỚI THIỆU iPOS INVENTORY {{Plus}}'],
     title:'Bức tranh tổng thể',   titleX:1,
     img:'v3-so-do-tong-the.png' },
 
@@ -130,8 +130,8 @@ plus: {
 
   /* 9 ─ Trang chủ › Quản trị -------------------------------------------- */
   { n:10, type:'device',
-    crumb:['Trang chủ','Quản trị'],
-    title:'TÍNH NĂNG iPOS INVENTORY {{Plus}}',
+    crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Trang chủ','Tại App'],
+    title:'QUẢN TRỊ',
     imgs:['v3-home-quantri.jpg'], frame:1,
     items:[
       { t:'Tổng giá trị tồn kho hiện tại' },
@@ -143,8 +143,8 @@ plus: {
 
   /* 10 ─ Trang chủ › Cần theo dõi --------------------------------------- */
   { n:11, type:'device',
-    crumb:['Trang chủ','Cần theo dõi'],
-    title:'TÍNH NĂNG iPOS INVENTORY {{Plus}}',
+    crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Trang chủ','Tại App'],
+    title:'CẦN THEO DÕI',
     imgs:['v3-home-theodoi.jpg'], frame:1,
     items:[
       { t:'Kiểm kê', s:'7 ngày qua' },
@@ -157,15 +157,15 @@ plus: {
 
   /* 11 ─ Trang chủ web -------------------------------------------------- */
   { n:12, type:'video',
-    crumb:['Trang chủ web'],
-    title:'TÍNH NĂNG iPOS INVENTORY {{Plus}}',
+    crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Trang chủ','Tại Web'],
+    title:'TRANG CHỦ',
     video:'slide11.mp4',
     note:'Quản lý setup danh mục đầu vào, Merchant có thể nhanh chóng theo dõi các chỉ số phân tích quan trọng, hay những thông tin Tồn kho để ~~ra quyết định đặt hàng kịp thời~~.' },
 
   /* 12 ─ Danh mục App --------------------------------------------------- */
   { n:13, type:'device',
-    crumb:['Quản lý kho','Danh mục tại APP'],
-    title:'TÍNH NĂNG iPOS INVENTORY {{Plus}}',
+    crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Quản lý kho','Tại App'],
+    title:'DANH MỤC',
     imgs:['v3-danhmuc.jpg'], frame:1,
     grid:2,
     items:[
@@ -178,15 +178,15 @@ plus: {
 
   /* 13 ─ Danh mục Web --------------------------------------------------- */
   { n:14, type:'webshot',
-    crumb:['Quản lý kho','Danh mục tại WEB'],
-    title:'TÍNH NĂNG iPOS INVENTORY {{Plus}}',
+    crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Quản lý kho','Tại Web'],
+    title:'DANH MỤC',
     img:'slide13.png',
     note:'**Quản lý Danh mục trên Web** cũng tương tự phiên bản APP.' },
 
   /* 14 ─ Nghiệp vụ kho App ---------------------------------------------- */
   { n:15, type:'device',
-    crumb:['Quản lý kho','Nghiệp vụ Quản lý kho'],
-    title:'TÍNH NĂNG iPOS INVENTORY {{Plus}}',
+    crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Quản lý kho','Tại App'],
+    title:'NGHIỆP VỤ QUẢN LÝ KHO',
     imgs:['slide14.jpg'], frame:1,
     items:[
       { t:'Nhập kho' }, { t:'Xuất kho' }, { t:'Kiểm kê' },
@@ -196,15 +196,15 @@ plus: {
 
   /* 15 ─ Nghiệp vụ kho Web ---------------------------------------------- */
   { n:16, type:'video',
-    crumb:['Quản lý kho','Nghiệp vụ Quản lý kho'],
-    title:'TÍNH NĂNG iPOS INVENTORY {{Plus}}',
+    crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Quản lý kho','Tại Web'],
+    title:'NGHIỆP VỤ QUẢN LÝ KHO',
     video:'slide15.mp4',
     note:'Các nghiệp vụ quản lý kho tại bản **Web** của Plus tương tự phiên bản app.' },
 
   /* 16 ─ Công nợ App ---------------------------------------------------- */
   { n:17, type:'device',
-    crumb:['Công nợ Nhà cung cấp','Theo dõi và thanh toán công nợ'],
-    title:'TÍNH NĂNG iPOS INVENTORY {{Plus}}',
+    crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Công nợ nhà cung cấp','Tại App'],
+    title:'THEO DÕI VÀ THANH TOÁN CÔNG NỢ',
     imgs:['slide16-1.jpg','slide16-2.jpg'], frame:1,
     items:[
       { t:'Thanh toán nợ', s:'Lịch sử thanh toán công nợ nhà cung cấp' },
@@ -214,15 +214,15 @@ plus: {
 
   /* 17 ─ Công nợ Web ---------------------------------------------------- */
   { n:18, type:'webshot',
-    crumb:['Công nợ Nhà cung cấp','Theo dõi và thanh toán công nợ'],
-    title:'TÍNH NĂNG iPOS INVENTORY {{Plus}}',
+    crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Công nợ nhà cung cấp','Tại Web'],
+    title:'THEO DÕI VÀ THANH TOÁN CÔNG NỢ',
     img:'s17.png',
     note:'Cung cấp công cụ để **Theo dõi và thanh toán công nợ NCC** đơn giản và hiệu quả.' },
 
   /* 18 ─ Báo cáo App ---------------------------------------------------- */
   { n:19, type:'device',
-    crumb:['Báo cáo chi tiết','Quản lý Nhập Xuất kho · Tồn hiện tại · Hao hụt NVL'],
-    title:'TÍNH NĂNG iPOS INVENTORY {{Plus}}',
+    crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Báo cáo chi tiết','Tại App'],
+    title:'BÁO CÁO QUẢN LÝ KHO',
     imgs:['s18-1.jpg','s18-2.jpg'], frame:1,
     items:[
       { t:'Kiểm kê / Hao hụt NVL' },
@@ -235,8 +235,8 @@ plus: {
 
   /* 19 ─ Báo cáo Web ---------------------------------------------------- */
   { n:20, type:'webshot',
-    crumb:['BÁO CÁO'],
-    title:'TÍNH NĂNG iPOS INVENTORY {{Plus}}',
+    crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Báo cáo chi tiết','Tại Web'],
+    title:'BÁO CÁO QUẢN LÝ KHO',
     img:'s19.png',
     note:'Cung cấp các **Báo cáo quản lý Kho chuyên biệt cho F&B** nhanh chóng và chính xác.' },
 
@@ -361,6 +361,7 @@ pro: {
 
   /* 3 ─ Nền tảng sử dụng ------------------------------------------------ */
   { n:4, type:'platform',
+    crumb:['GIỚI THIỆU iPOS INVENTORY {{Pro}}'],
     title:'NỀN TẢNG SỬ DỤNG',
     badge:'App và Web',
     frame:1,
@@ -369,6 +370,7 @@ pro: {
 
   /* 4 ─ Bộ phận sử dụng ------------------------------------------------- */
   { n:5, type:'depts',
+    crumb:['GIỚI THIỆU iPOS INVENTORY {{Pro}}','Đối tượng sử dụng'],
     title:'BỘ PHẬN SỬ DỤNG',
     items:[
       { h:'BỘ PHẬN MUA HÀNG', ic:'cart', items:[
@@ -392,6 +394,7 @@ pro: {
 
   /* 5 ─ Bản đồ chức năng ------------------------------------------------ */
   { n:6, type:'modgrid',
+    kicker:'Các chức năng chính',
     title:'CHỨC NĂNG iPOS INVENTORY {{Pro}}',
     groups:[
       { h:'Đặt hàng', ic:'cart', span:3, c:'#1b6fe0',
@@ -438,12 +441,13 @@ pro: {
 
   /* 7 ─ Sơ đồ luân chuyển ----------------------------------------------- */
   { n:8, type:'imagefull',
-    kicker:'CHỨC NĂNG iPOS INVENTORY {{Pro}}',
+    crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Quản lý kho'],
     title:'Sơ đồ luân chuyển hàng hoá', titleX:1,
     img:'r07_1.png' },
 
   /* 8 ─ Nhập kho -------------------------------------------------------- */
   { n:9, type:'device',
+    crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Quản lý kho'],
     side:'right',
     title:'NHẬP KHO',
     imgs:['s9-1.jpg','s9-2.jpg','s9-3.jpg'], frame:1, colw:560,
@@ -457,6 +461,7 @@ pro: {
 
   /* 9 ─ Xuất kho -------------------------------------------------------- */
   { n:10, type:'device',
+    crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Quản lý kho'],
     side:'right',
     title:'XUẤT KHO',
     imgs:['s10-1.jpg','s10-2.jpg','s10-3.jpg'], frame:1, colw:560,
@@ -472,6 +477,7 @@ pro: {
 
   /* 10 ─ Sơ chế – Chế biến ---------------------------------------------- */
   { n:11, type:'production',
+    crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Bếp trung tâm'],
     title:'SƠ CHẾ – CHẾ BIẾN',
     check:{ h:'Vận hành sản xuất', items:[
       'Có quy trình sơ chế nguyên vật liệu',
@@ -485,7 +491,7 @@ pro: {
 
   /* 11 ─ Điều chuyển nội bộ --------------------------------------------- */
   { n:12, type:'twolane',
-    kicker:'LUÂN CHUYỂN NỘI BỘ',
+    crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Luân chuyển nội bộ'],
     title:'ĐIỀU CHUYỂN NỘI BỘ GIỮA HAI KHO',
     a:{ ic:'wh',   t:'Kho A', s:'Bên xuất hàng' },
     b:{ ic:'shop', t:'Kho B', s:'Bên nhận hàng' },
@@ -508,7 +514,7 @@ pro: {
 
   /* 12 ─ Kiểm kê -------------------------------------------------------- */
   { n:13, type:'pipeline',
-    kicker:'NGHIỆP VỤ CUỐI KỲ',
+    crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Nghiệp vụ cuối kỳ'],
     title:'QUY TRÌNH KIỂM KÊ',
     lead:{ h:'Kiểm kê thường', t:'Mã hàng có tồn, đếm trực tiếp · Đếm → so lệch → chốt điều chỉnh' },
     steps:[
@@ -527,7 +533,7 @@ pro: {
 
   /* 13 ─ Tính giá vốn --------------------------------------------------- */
   { n:14, type:'costformula',
-    kicker:'NGHIỆP VỤ CUỐI KỲ',
+    crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Nghiệp vụ cuối kỳ'],
     title:'TÍNH GIÁ VỐN',
     label:'Cách tính giá',
     value:'Bình quân cuối kỳ',
@@ -537,7 +543,7 @@ pro: {
 
   /* 14 ─ Công nợ -------------------------------------------------------- */
   { n:15, type:'webgrid',
-    kicker:'QUẢN TRỊ DÒNG TIỀN',
+    crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Quản trị dòng tiền'],
     title:'CÔNG NỢ',
     img:'s15.png',
     items:[
@@ -547,7 +553,7 @@ pro: {
 
   /* 15 ─ Nhượng quyền --------------------------------------------------- */
   { n:16, type:'webgrid', dir:'col', cols:2,
-    kicker:'THIẾT LẬP NÂNG CAO',
+    crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Thiết lập nâng cao'],
     title:'CẤU HÌNH CHUYÊN SÂU',
     img:'s16.png',
     items:[
@@ -559,7 +565,7 @@ pro: {
 
   /* 17 ─ Trợ lý iOne (Trum bổ sung 09/09/2026, nội dung từ tài liệu V3) -- */
   { n:17, type:'trio',
-    kicker:'TRỢ LÝ AI',
+    crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Trợ lý AI'],
     title:'TRỢ LÝ <b>iONE</b> LÀM HỘ PHẦN VIỆC TAY',
     items:[
       { f:'ione-1.jpg', t:'Quét ảnh tạo phiếu nhập mua',
@@ -572,7 +578,7 @@ pro: {
 
   /* 18 ─ Kết nối đối tác (Trum bổ sung 09/09/2026) ----------------------- */
   { n:18, type:'webgrid', dir:'col',
-    kicker:'MỞ RỘNG HỆ SINH THÁI',
+    crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Kết nối đối tác'],
     title:'KẾT NỐI ĐỐI TÁC',
     img:'ketnoi.png',
     items:[
