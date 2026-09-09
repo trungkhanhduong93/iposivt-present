@@ -849,6 +849,7 @@ const App = {
       fit();
       setTimeout(fit, 500);
     }
+    this.step = this.nsteps = 0;           // xấp trang không chia bước
     const pg = this.el.stage.children[this.i];
     if (pg) pg.scrollIntoView({ block: 'start' });
     this.paintCount();
@@ -982,25 +983,31 @@ const App = {
     setTimeout(run, 260);
   },
 
+  /* Thứ tự ba bước bắt buộc: đổi lớp chế độ → đặt tỉ lệ thu nhỏ → dựng lại.
+     Dựng trước khi có tỉ lệ thì mỗi trang còn cao nguyên 720px, cuộn tới trang
+     đang xem sẽ trượt sang trang khác ngay khi tỉ lệ được áp. */
   resize () {
     const mob = isMob();
-    if (mob !== this.mob) {
+    const changed = mob !== this.mob;
+    if (changed) {
       this.mob = mob;
       document.body.classList.toggle('mob', mob);
       this.pagesKey = null;                 // đổi chế độ thì dựng lại từ đầu
       if (!mob) this.unwatchPages();
-      if (this.el.stage.firstElementChild) this.render('all');
     }
+    const root = document.documentElement.style;
     if (mob) {
       /* Mỗi trang giữ khung 1280×720 rồi thu nhỏ theo --ms cho vừa bề ngang */
-      this.el.stage.style.transform = '';
-      document.documentElement.style.setProperty('--ms', (innerWidth / W).toFixed(5));
-      return;
+      root.removeProperty('--sc');
+      root.setProperty('--ms', (innerWidth / W).toFixed(5));
+    } else {
+      root.removeProperty('--ms');
+      const wrap = $('.stagewrap');
+      /* clientWidth/clientHeight của khung cha không bị zoom của .stage ảnh hưởng */
+      const s = Math.min(wrap.clientWidth / (W + 96), wrap.clientHeight / (H + 34));
+      root.setProperty('--sc', Math.max(s, .1).toFixed(5));
     }
-    document.documentElement.style.removeProperty('--ms');
-    const wrap = $('.stagewrap');
-    const s = Math.min(wrap.clientWidth / (W + 96), wrap.clientHeight / (H + 34));
-    this.el.stage.style.transform = `translate(-50%,-50%) scale(${Math.max(s, .1)})`;
+    if (changed && this.el.stage.firstElementChild) this.render('all');
   },
 
   toggleX () {

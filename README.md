@@ -197,7 +197,7 @@ Bố cục từng slide **không đổi gì** so với bản máy tính — khô
 | | |
 |---|---|
 | Khung mỗi trang | tỉ lệ 16:9, rộng bằng bề ngang màn |
-| Tỉ lệ thu nhỏ | biến `--ms` = `innerWidth / 1280`, `app.js` đặt mỗi lần đổi cỡ |
+| Tỉ lệ thu nhỏ | biến `--ms` = `innerWidth / 1280`, đặt vào `zoom`, `app.js` cập nhật mỗi lần đổi cỡ |
 | Ảnh | `loading="lazy"`, tải dần theo tầm nhìn — cả bộ nặng vài MB |
 | Hiệu ứng | tắt hết. Không chia phần, không chuyển động, không trượt slide |
 | Vuốt ngang | tắt, để không nhầm với cuộn |
@@ -235,8 +235,12 @@ tools/                script kiểm tra bằng Playwright
 ### Cách khung hình hoạt động
 
 `.stage` là hộp cứng **1280×720**. `app.js` tính `scale = min(vw/1280, vh/720)` rồi
-đặt vào `transform`. Mọi toạ độ trong CSS đều là số tuyệt đối trên khung 1280×720,
-không phải đơn vị co giãn — nên bố cục giống hệt nhau ở mọi màn hình.
+đặt vào biến `--sc`, CSS đọc biến đó qua **`zoom`**. Mọi toạ độ trong CSS đều là số
+tuyệt đối trên khung 1280×720, không phải đơn vị co giãn — nên bố cục giống hệt
+nhau ở mọi màn hình.
+
+**Phải là `zoom`, không được dùng `transform: scale()`** — xem bẫy ở mục 9. Nhờ
+`zoom` mà `.stage` chiếm chỗ thật nên canh giữa bằng flex là đủ.
 
 `.s-body` có chiều cao trống thật là **500px** (hằng số `COL_H` trong `app.js`) sau
 khi trừ tiêu đề và padding. Con số này dùng để tính chiều cao khung ảnh.
@@ -383,9 +387,43 @@ một dải bên phải.
 Dính ở **mọi bề ngang 820–1279px**: iPad dọc, điện thoại xoay ngang, cửa sổ
 laptop thu nhỏ. Bộ kiểm cũ chỉ chạy 1280 trở lên nên không bắt được.
 
-Sửa bằng toạ độ thay vì trông vào alignment: `.stage` đặt `position:absolute;
-left:50%; top:50%`, còn `app.js` ghép `translate(-50%,-50%)` vào trước `scale`.
-Đã thêm cỡ màn `1024×768` vào `check_app.py`.
+Sửa vòng một bằng toạ độ: `.stage` đặt `left:50%; top:50%` rồi ghép
+`translate(-50%,-50%)` vào trước `scale`. Vòng hai chuyển hẳn sang `zoom` (bẫy
+ngay dưới) thì `.stage` chiếm chỗ thật, canh giữa bằng flex là xong, không còn
+phụ thuộc quy tắc alignment nào. Đã thêm cỡ màn `1024×768` vào `check_app.py`.
+
+### `transform: scale()` phóng khung slide làm nhoè hết ảnh
+
+Triệu chứng: mọi hình trên slide trông mềm và rít, bấm vào phóng to thì nét —
+vì ảnh trong lightbox không nằm trong lớp bị kéo giãn.
+
+`transform` không bố trí lại, nó **kéo giãn lớp đã vẽ xong**. Ảnh được vẽ ở kích
+thước bố cục rồi mới phóng theo tỉ lệ khung, nên mất chi tiết. Chữ ít lộ hơn vì
+trình duyệt thường vẽ lại chữ, ảnh thì không.
+
+Đo bằng phương sai Laplacian trên cùng một vùng ảnh máy:
+
+| Màn | `transform` | `zoom` | Chênh |
+|---|---|---|---|
+| 1920×1080 | 1442 | 1922 | **+33%** |
+| 2560×1440 | 1508 | 1629 | +8% |
+
+Cách sửa: dùng `zoom` cho cả khung slide máy tính (`--sc`) lẫn trang trên điện
+thoại (`--ms`). `zoom` là thuộc tính bố cục, trình duyệt tính lại kích thước thật
+rồi mới vẽ nên ảnh giữ nguyên độ nét. Nó cũng đơn giản hoá phần canh giữa.
+
+Trên Safari iOS lỗi này nặng hơn máy tính nhiều: lớp có `transform` bị vẽ ở tỉ lệ
+thấp rồi phóng theo mật độ điểm ảnh của máy. Playwright không tái hiện được, phải
+mở bằng máy thật mà xem.
+
+### Đổi chế độ xem thì thứ tự ba bước là bắt buộc
+
+Đổi lớp chế độ → đặt tỉ lệ thu nhỏ → dựng lại. Dựng trước khi có tỉ lệ thì mỗi
+trang còn cao nguyên 720px, `scrollIntoView` nhắm đúng trang nhưng tỉ lệ áp xong
+là trang co lại, chỗ đang cuộn hoá ra trang khác — nhảy từ trang 2 sang trang 8.
+
+Cùng chỗ đó phải xoá `step` và `nsteps`: chế độ xấp trang không chia bước, giữ số
+cũ thì thanh công cụ còn hiện thẻ cam "1/7" của slide vừa xem ở chế độ kia.
 
 ### Bản gộp mất ảnh vì regex chỉ bắt một dạng ghép đường dẫn
 
