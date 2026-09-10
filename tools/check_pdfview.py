@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Khung xem ban goc (nut PDF): dung noi dung, cung nguon, in dung cua so.
+"""Nut PDF: hai ban in.
+
+  · Bo So sanh  -> ban goc nguyen van, nhung trong khung iframe.
+  · Ba bo con lai -> chinh slide cua no xep doc, moi slide mot trang giay.
 
     python tools/check_pdfview.py
 
@@ -36,9 +39,35 @@ def run(url, label):
         pg.on('pageerror', lambda e: errs.append(str(e)))
         pg.goto(url); pg.wait_for_timeout(1000)
 
-        ok('bo Plus khong hien nut PDF', not pg.is_visible('#pdfBtn'))
+        ok('bo nao cung hien nut PDF', pg.is_visible('#pdfBtn'))
+
+        # ── Ban in cua bo slide ─────────────────────────────────────────
+        for deck, nut in (('plus', '#toPlus'), ('pro', '#toPro'), ('v3', '#toV3')):
+            pg.evaluate("(k)=>{if(DECKS[k].gated)App.gate[k]=true;App.setDeck(k)}", deck)
+            pg.wait_for_timeout(600)
+            pg.click('#pdfBtn'); pg.wait_for_timeout(2400)
+            r = pg.evaluate("""()=>{const b=document.getElementById('prntBody');
+              const s=b.querySelector('.pg>.slide');
+              const an=[...b.querySelectorAll('[data-rv]')]
+                .filter(n=>+getComputedStyle(n).opacity<0.9).length;
+              const lz=[...b.querySelectorAll('img')]
+                .filter(i=>i.getAttribute('loading')!=='eager').length;
+              return {trang:b.children.length, rong:Math.round(s.getBoundingClientRect().width),
+                      an:an, lazy:lz, tran:b.scrollWidth>b.clientWidth+1,
+                      body:document.body.classList.contains('prnt-on')};}""")
+            n = pg.evaluate("(k)=>DECKS[k].slides.length", deck)
+            ok('bo %s: du %d trang' % (deck, n), r['trang'] == n, str(r['trang']))
+            ok('bo %s: trang giu khung 1280' % deck, r['rong'] == 1280, str(r['rong']))
+            ok('bo %s: hien tron, khong con phan an' % deck, r['an'] == 0, str(r['an']))
+            ok('bo %s: anh khong lazy, in ra khong trang trang' % deck, r['lazy'] == 0)
+            ok('bo %s: khong tran ngang' % deck, not r['tran'])
+            ok('bo %s: bat luat in tren body' % deck, r['body'])
+            pg.keyboard.press('Escape'); pg.wait_for_timeout(400)
+            ok('bo %s: Esc dong ban in' % deck, not pg.is_visible('#prnt'))
+            ok('bo %s: dong roi thi tat luat in' % deck,
+               not pg.evaluate("()=>document.body.classList.contains('prnt-on')"))
+
         pg.click('#toCmp'); pg.wait_for_timeout(600)
-        ok('bo So sanh hien nut PDF', pg.is_visible('#pdfBtn'))
 
         pg.click('#pdfBtn'); pg.wait_for_timeout(1400)
         ok('khung xem mo ra', pg.is_visible('#pdfv'))
@@ -79,6 +108,7 @@ def run(url, label):
         pg.click('#pdfBtn'); pg.wait_for_timeout(600)
         pg.evaluate("()=>App.setDeck('pro')"); pg.wait_for_timeout(600)
         ok('doi bo thi khung xem tu dong', not pg.is_visible('#pdfv'))
+        ok('doi bo thi ban in cung dong', not pg.is_visible('#prnt'))
         ok('khong loi js', not errs, str(errs[:2]))
         b.close()
 

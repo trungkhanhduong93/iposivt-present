@@ -1168,14 +1168,60 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
 .pdfv .pa{display:flex;align-items:center;gap:9px}
 .pdfv iframe{flex:1;width:100%;border:0;background:#eef2f7;display:block}
 
-/* Nút PDF chỉ có nghĩa ở bộ So sánh — bộ khác thì giấu đi cho khỏi bấm nhầm */
-#pdfBtn{display:none}
-body[data-deck="cmp"] #pdfBtn{display:inline-flex}
+/* =============================================================================
+   BẢN IN CỦA BỘ SLIDE (nút PDF ở ba bộ còn lại)
+   Mọi slide xếp dọc trong một khung cuộn, mỗi slide giữ nguyên 1280×720 và
+   đúng bằng một trang giấy. Bộ So sánh không dùng khối này — bộ đó có bản gốc
+   riêng, mở bằng khung nhúng ở trên.
+   ========================================================================== */
+.prnt{position:fixed;inset:0;z-index:85;background:#e9edf3;display:none;
+  flex-direction:column}
+.prnt.open{display:flex}
+.prnt .ph{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;
+  gap:14px;padding:11px 20px;background:#0f1a29;
+  border-bottom:1px solid rgba(255,255,255,.1)}
+.prnt .ph h2{font-size:14px;font-weight:600;color:#fff;letter-spacing:-.2px}
+.prnt .ph h2 small{color:#8296b0;font-weight:400;margin-left:9px}
+.prnt .pa{display:flex;align-items:center;gap:9px}
+.prnt .pb{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;
+  gap:16px;padding:20px 0 40px}
 
-/* Lúc in thì chỉ còn nội dung khung nhúng, thanh tiêu đề của mình biến mất */
+/* Trang giấy: khung 1280×720 nguyên vẹn, chỉ thu nhỏ cho vừa bề ngang cửa sổ.
+   Dùng `zoom` chứ không `transform:scale` — transform kéo giãn lớp đã vẽ nên
+   ảnh nhoè, đúng cái bẫy đã trả giá ở mục 9 của README. */
+.prnt .pg{position:relative;line-height:0;background:#fff;
+  box-shadow:0 2px 14px rgba(14,26,43,.16)}
+.prnt .pg>.slide{position:relative;width:1280px;height:720px;overflow:hidden;
+  zoom:var(--ps,1)}
+/* Bản in không chia bước: phần nào cũng phải hiện sẵn */
+.prnt .pg>.slide [data-rv]{opacity:1 !important;transform:none !important}
+.prnt .pg>.slide.in,.prnt .pg>.slide.in *{animation:none !important}
+
+/* Nút PDF: bộ nào cũng có. Màn hẹp thì giấu — ở đó vốn đã là xấp trang cuộn
+   dọc rồi, mà thêm nút nữa là thanh công cụ tràn ngang. */
+@media (max-width:900px){ #pdfBtn{display:none} }
+
+/* =============================================================================
+   IN RA GIẤY
+   Chỉ in khi đang mở một trong hai khung xem — bấm Ctrl+P lúc đang trình chiếu
+   thì để trình duyệt in như cũ, không thì ra giấy trắng.
+   ========================================================================== */
 @media print{
-  .pdfv.open{position:static;display:block}
-  .pdfv .ph{display:none}
+  /* Trang giấy đúng bằng khung slide: mỗi slide rơi gọn một trang, không thừa
+     trang trắng, không phải canh lề bằng mắt. */
+  @page{size:1280px 720px;margin:0}
+
+  body.prnt-on{overflow:visible !important;height:auto !important;background:#fff}
+  body.prnt-on .app,body.prnt-on .grid,body.prnt-on .lb,
+  body.prnt-on .pin,body.prnt-on .help,body.prnt-on .pdfv{display:none !important}
+  body.prnt-on .prnt.open{position:static;display:block;background:#fff}
+  body.prnt-on .prnt .ph{display:none !important}
+  body.prnt-on .prnt .pb{display:block;padding:0 !important;gap:0 !important;
+    overflow:visible !important}
+  body.prnt-on .prnt .pg{box-shadow:none !important;break-inside:avoid;
+    break-after:page}
+  body.prnt-on .prnt .pg:last-child{break-after:auto}
+  body.prnt-on .prnt .pg>.slide{zoom:1 !important}
 }
 
 /* =============================================================================

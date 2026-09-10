@@ -816,6 +816,9 @@ const App = {
       grid  : $('#grid'),
       gb    : $('#gb'),
       gt    : $('#gt'),
+      prnt  : $('#prnt'),
+      prb   : $('#prntBody'),
+      prt   : $('#prntTitle'),
       pdfv  : $('#pdfv'),
       pdff  : $('#pdfFrame'),
       lb    : $('#lb'),
@@ -844,7 +847,11 @@ const App = {
     this.el.prev.onclick = () => this.go(-1, 'all');
     this.el.next.onclick = () => this.go(1,  'all');
     $('#gridBtn').onclick  = () => this.toggleGrid();
-    $('#pdfBtn').onclick   = () => this.togglePdf(true);
+    /* Một nút, hai bản in: bộ So sánh mở bản gốc nguyên văn, ba bộ còn lại mở
+       chính slide của nó xếp dọc. */
+    $('#pdfBtn').onclick    = () => this.openPdf(true);
+    $('#prntClose').onclick = () => this.togglePrint(false);
+    $('#prntSave').onclick  = () => print();
     $('#pdfClose').onclick = () => this.togglePdf(false);
     $('#gclose').onclick  = () => this.toggleGrid(false);
     $('#fsBtn').onclick   = () => this.fullscreen();
@@ -858,8 +865,10 @@ const App = {
       if (t === 'INPUT' || t === 'TEXTAREA') return;
       if (this.el.pin.classList.contains('open')) return;
       if (this.el.help.classList.contains('open') && e.key !== 'Escape') return;
-      /* Khung xem bản gốc che kín màn: chỉ còn Esc và phím in của trình duyệt */
-      if (this.el.pdfv.classList.contains('open') && e.key !== 'Escape') return;
+      /* Khung xem che kín màn: chỉ còn Esc và phím in của trình duyệt */
+      if (e.key !== 'Escape' &&
+          (this.el.pdfv.classList.contains('open') ||
+           this.el.prnt.classList.contains('open'))) return;
 
       switch (e.key) {
         /* Space và PageDown hiện thêm một phần — remote trình chiếu gửi PageDown */
@@ -873,11 +882,10 @@ const App = {
           if (this.el.lb.classList.contains('open'))   this.el.lb.classList.remove('open');
           else if (this.el.help.classList.contains('open')) this.el.help.classList.remove('open');
           else if (this.el.pdfv.classList.contains('open')) this.togglePdf(false);
+          else if (this.el.prnt.classList.contains('open')) this.togglePrint(false);
           else this.toggleGrid();
           break;
-        case 'p': case 'P':
-          if (this.deck.page) this.togglePdf();
-          break;
+        case 'p': case 'P': this.openPdf(); break;
         case 'f': case 'F': this.fullscreen(); break;
         case 'x': case 'X': this.toggleX();    break;
         case '?': case '/': this.el.help.classList.add('open'); break;
@@ -1135,6 +1143,7 @@ const App = {
     const d = this.deck, s = this.slide;
     document.body.dataset.deck = this.key;
     if (!this.deck.page) this.togglePdf(false);   // bộ khác thì đóng khung xem
+    if (this.prntKey !== this.key) this.togglePrint(false);
     $$('.seg button').forEach(b => b.classList.toggle('on', b.dataset.deck === this.key));
 
     if (this.mob) {
@@ -1251,11 +1260,67 @@ const App = {
       root.setProperty('--sc', Math.max(s, .1).toFixed(5));
     }
     if (changed && this.el.stage.firstElementChild) this.render('all');
+    if (this.el.prnt.classList.contains('open')) this.fitPrint();
   },
 
   toggleX () {
     this.showx = !this.showx;
     document.body.classList.toggle('showx', this.showx);
+  },
+
+  /* Nút PDF mở đúng bản in của bộ đang xem */
+  openPdf (force) {
+    if (this.deck.page) this.togglePdf(force);
+    else this.togglePrint(force);
+  },
+
+  /* ── Bản in của bộ slide ────────────────────────────────────────────────
+     Dựng lại toàn bộ slide vào một khung cuộn dọc. Dựng một lần cho mỗi bộ
+     rồi giữ luôn: bộ Plus 28 slide, dựng lại mỗi lần mở là thấy khựng. */
+  buildPrint () {
+    if (this.prntKey === this.key) return;
+    this.prntKey = this.key;
+    const d = this.deck;
+    const frag = document.createDocumentFragment();
+    d.slides.forEach(s => {
+      const pg = document.createElement('div');
+      pg.className = 'pg';
+      pg.appendChild(this.buildSlide(s, d));
+      frag.appendChild(pg);
+    });
+    this.el.prb.innerHTML = '';
+    this.el.prb.appendChild(frag);
+    /* KHÔNG lazy-load ở đây: ảnh chưa từng lọt tầm nhìn thì lúc in ra trang
+       trắng. Bản in phải tải hết ngay. */
+    $$('img', this.el.prb).forEach(im => im.setAttribute('loading', 'eager'));
+    /* Video không có ảnh nền nên in ra là ô đen. Tua tới khung hình đầu rồi
+       dừng, khung đó vẽ ra giấy được. */
+    $$('video', this.el.prb).forEach(v => {
+      v.autoplay = false; v.controls = false; v.preload = 'auto';
+      v.addEventListener('loadeddata', () => { try { v.currentTime = 0.1; } catch (e) {} });
+      v.pause();
+    });
+  },
+
+  fitPrint () {
+    const w = this.el.prb.clientWidth - 48;
+    this.el.prnt.style.setProperty('--ps', Math.min(1, w / 1280).toFixed(4));
+    $$('.pg > .slide', this.el.prb).forEach(el => this.fitOnce(el));
+  },
+
+  togglePrint (force) {
+    const open = force === undefined
+      ? !this.el.prnt.classList.contains('open') : force;
+    if (open) {
+      this.buildPrint();
+      this.el.prt.innerHTML = `${esc(this.deck.name)}<small>${
+        this.deck.slides.length} slide · mỗi slide một trang</small>`;
+    }
+    /* Lớp trên body mới là thứ bật luật in. Không dùng :has() cho chắc: bấm
+       Ctrl+P lúc đang trình chiếu vẫn phải in được như trình duyệt vẫn làm. */
+    document.body.classList.toggle('prnt-on', open);
+    this.el.prnt.classList.toggle('open', open);
+    if (open) requestAnimationFrame(() => this.fitPrint());
   },
 
   /* ── Khung xem bản gốc ──────────────────────────────────────────────────

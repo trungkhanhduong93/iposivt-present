@@ -202,6 +202,7 @@ khung cắt mất đáy — đã dính một lần ở slide Quay lại bản c�
 | `F` | toàn màn hình |
 | `X` | hiện đánh dấu nội dung bổ sung + ghi chú |
 | `1` `2` `3` `4` | chuyển bộ Plus / Pro / So sánh / Cập nhật V3 |
+| `P` | bản in dạng cuộn dọc, mỗi slide một trang |
 | `P` | mở bản gốc dạng cuộn dọc (chỉ có ở bộ So sánh) |
 | `?` | bảng phím tắt |
 
@@ -365,8 +366,16 @@ Bộ này công khai, không có `gated` nên không hỏi mã.
 
 ### Nút PDF — bản gốc dạng cuộn dọc
 
-Cạnh nút Lưới có nút **PDF**, mở bản gốc cuộn dọc **nguyên văn từng ký tự**.
-Chỉ hiện ở bộ So sánh, bật bằng cờ `page: 1` của bộ.
+Cạnh nút Lưới có nút **PDF**. Bộ nào cũng có, nhưng mở ra hai thứ khác nhau —
+cờ `page: 1` của bộ quyết định:
+
+| Bộ | Nút PDF mở ra |
+|---|---|
+| So sánh (`page: 1`) | bản gốc cuộn dọc, **nguyên văn từng ký tự**, nhúng trong iframe |
+| Plus · Pro · V3 | chính slide của bộ đó xếp dọc, **mỗi slide đúng một trang giấy** |
+
+Màn hẹp dưới 900px thì giấu nút: ở đó vốn đã là xấp trang cuộn dọc rồi, mà thêm
+nút nữa là thanh công cụ tràn ngang.
 
 Nút xuất PDF chỉ có **một** — nút "Xuất PDF" sẵn có trong thanh của bản gốc.
 Thanh tiêu đề của khung xem cố tình không thêm nút thứ hai cùng việc.
@@ -405,6 +414,29 @@ hộp thoại in, không bật thì mất hết màu nền của bảng.
 
 **Số slide không cố định.** Thêm tính năng vào file gốc là số slide đổi theo, nên
 đừng ghi cứng con số ở chỗ khác.
+
+---
+
+### Bản in của bộ slide
+
+`buildPrint()` dựng lại toàn bộ slide vào `#prntBody`, mỗi slide một `.pg` giữ
+nguyên khung 1280×720, thu nhỏ cho vừa cửa sổ bằng `--ps` (lại là `zoom`, không
+phải `transform`). Dựng một lần cho mỗi bộ rồi giữ luôn.
+
+Luật in nằm sau `body.prnt-on`, **không** dùng `:has()`. Lý do: `@media print`
+phải giấu cả giao diện trình chiếu, mà giấu vô điều kiện thì bấm `Ctrl+P` lúc
+đang trình chiếu là ra giấy trắng.
+
+Ba chi tiết đã trả giá khi làm bản in:
+
+| Chi tiết | Không làm thì sao |
+|---|---|
+| `@page{size:1280px 720px;margin:0}` | trang giấy A4 không khớp 16:9, mỗi slide đẻ thêm một trang trắng |
+| `loading="eager"` cho mọi ảnh | ảnh chưa từng lọt tầm nhìn thì in ra trang trắng |
+| video tua tới giây 0.1 rồi dừng | không có ảnh nền nên in ra là một ô đen |
+
+Đã đo bằng `page.pdf(prefer_css_page_size=True)`: Plus 28 slide ra **28 trang**,
+Pro 23 ra **23**, V3 18 ra **18**, khung giấy 960×540 pt đúng tỉ lệ 16:9.
 
 ---
 ## 8. Cấu trúc và kiến trúc
