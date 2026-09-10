@@ -394,6 +394,18 @@ webgrid (s, d) {
       s.dir === 'col' ? shot + cards : cards + shot}</div></div>`;
 },
 
+/* Hai ảnh chụp khác hẳn tỉ lệ đứng cạnh nhau — ví dụ một ảnh Web ngang và một
+   ảnh App dọc. Chia bề ngang theo đúng tỉ lệ ảnh nên hai ảnh cao bằng nhau,
+   không ảnh nào bị ép bẹt. Chú thích xuống hai thẻ bên dưới cho dễ đọc. */
+twoshot (s, d) {
+  return head(kick(s), s.title, s.sub, 'up') + `<div class="s-body"><div class="tsh">
+    <div class="row">${s.imgs.map((f, i) =>
+      `<div class="a a${i}"><img src="${d.dir}${f}" alt="" data-zoom></div>`).join('')}</div>
+    <div class="pts">${s.items.map((it, i) => `
+      <div class="p"><b>${String(i + 1).padStart(2, '0')}</b><span>${md(it)}</span></div>`).join('')}</div>
+  </div></div>`;
+},
+
 imagefull (s, d) {
   return head(kick(s), s.title, '', 'up') +
     `<div class="s-body"><div class="imgfull${s.titleX ? ' xflag' : ''}">
@@ -789,6 +801,7 @@ const RV = {
   production: '.prod .chk, .prod .cols .c',
   twolane   : '.twol .lane',
   pipeline  : '.pipe .row>*',
+  twoshot   : '.tsh .p',
   packs     : '.pks .pk, .pks .dept .d',
   mxsum     : '.mxs .row .c, .mxs .lgd span'
 };

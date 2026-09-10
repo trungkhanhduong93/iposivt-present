@@ -1264,15 +1264,14 @@ v3: {
     ] },
 
   /* 16 ─ Chuyển đổi có thời gian thích nghi ------------------------------ */
-  { n:20, type:'trio',
+  { n:20, type:'twoshot',
     crumb:['CHUYỂN ĐỔI {{V3}}','Thời gian thích nghi'],
     title:'TỚI 10/10/2026 VẪN QUAY LẠI BẢN CŨ ĐƯỢC',
     sub:'Dữ liệu dùng chung nên chuyển qua lại không mất gì. Sau ngày đó giao diện chuyển hẳn, ~~không quay lại được nữa~~.',
+    imgs:['quay-lai-web.webp','quay-lai-app.webp'],
     items:[
-      { f:'quay-lai-web.webp', t:'Trên Web',
-        s:'Menu tài khoản ➜ Quay lại giao diện v2. Hoặc nút Quay lại bản cũ ngay trong popup Có gì mới.' },
-      { f:'quay-lai-app.webp', t:'Trên App',
-        s:'Popup Phiên bản mới hiện lên khi mở app ➜ Quay lại bản cũ.' }
+      '**Trên Web** — menu tài khoản ➜ Quay lại giao diện v2, hoặc nút Quay lại bản cũ ngay trong popup Có gì mới',
+      '**Trên App** — popup Phiên bản mới hiện lên khi mở app ➜ Quay lại bản cũ'
     ] },
 
   /* 17 ─ Chốt lại -------------------------------------------------------- */

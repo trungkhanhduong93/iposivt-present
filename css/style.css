@@ -1010,6 +1010,24 @@ body[data-deck="pro"] .qa .ln{background:#fff}
 .plat .row .ph img{filter:drop-shadow(0 12px 26px rgba(14,26,43,.18))}
 .plat .row .wb img{box-shadow:var(--sh-2)}
 
+/* ── Hai ảnh chụp khác tỉ lệ, đứng cạnh nhau ────────────────────────────
+   Chia bề ngang theo đúng tỉ lệ của hai ảnh: ảnh Web ngang 2.47 và ảnh App
+   dọc 0.65 thì tỉ lệ chỗ phải là 3.8 trên 1, hai ảnh mới cao bằng nhau. Chia
+   đều nhau thì ảnh dọc bị ép thấp hẳn xuống, nhìn như bị cắt. */
+.tsh{display:flex;flex-direction:column;gap:20px;width:100%;align-self:stretch;min-height:0}
+.tsh .row{flex:1;display:flex;gap:26px;min-height:0;justify-content:center}
+.tsh .a{min-width:0;display:flex;align-items:center;justify-content:center}
+.tsh .a0{flex:3.8 1 0}
+.tsh .a1{flex:1 1 0}
+.tsh .a img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;
+  border-radius:14px;box-shadow:var(--sh-2);cursor:zoom-in}
+.tsh .pts{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tsh .p{display:flex;gap:13px;align-items:flex-start;padding:14px 18px;border-radius:14px;
+  background:#fff;border:1px solid var(--line);box-shadow:var(--sh-1)}
+.tsh .p b{flex:0 0 auto;font-size:13px;font-weight:700;color:var(--acc);
+  font-variant-numeric:tabular-nums;padding-top:2px}
+.tsh .p span{font-size:16px;line-height:1.55;color:var(--body)}
+
 /* ── Slide mở đầu nội dung: chữ trái, ảnh lệch phải trên nền màu ────────── */
 .intro{position:absolute;inset:0;display:grid;grid-template-columns:45% 55%;
   background:#fff;overflow:hidden}

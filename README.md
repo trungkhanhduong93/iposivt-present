@@ -350,17 +350,21 @@ tám ô, ô cuối gọi tên cả hai nhóm.
 | `ỨNG DỤNG AI — TRỢ LÝ iONE` | đổi tiêu đề |
 | `SỬA DANH MỤC NGAY TRÊN APP` | bọc khung điện thoại |
 | `DANH SÁCH BÁO CÁO TỔ CHỨC LẠI` | đổi sang `webgrid dir:'col'` cho ảnh trải hết bề ngang |
-| `TỚI 10/10/2026 VẪN QUAY LẠI BẢN CŨ ĐƯỢC` | hai ảnh Web và App, kiểu `trio` |
+| `TỚI 10/10/2026 VẪN QUAY LẠI BẢN CŨ ĐƯỢC` | hai ảnh Web và App, kiểu `twoshot` |
 | `Hỏi đáp` | slide mới, đặt ngay trước slide cảm ơn |
 
 **Chữ tên gói phải viết riêng.** Logo `logo-ivt-*.png` đã có sẵn chữ Standard,
 Plus, Pro nhưng bé xíu, phóng logo lên vẫn đọc không ra. Nay `mxsum` in thêm một
 thẻ chữ, tên lấy từ bảng `PK_NAME` theo mã gói.
 
-**Ảnh web ngang không đứng cạnh ảnh điện thoại được.** Tỉ lệ 2.5 và 0.65 nhét
-chung một hàng thì hoặc ảnh web bé tí, hoặc điện thoại tràn. Đã thử chia bề ngang
-theo tỉ lệ rồi canh chân — vẫn chừa một mảng trắng lớn phía trên. Cách chạy được
-là `trio`: hai cột bằng nhau, ảnh canh chân, chữ nằm dưới mỗi ảnh.
+**Hai ảnh khác tỉ lệ đứng cạnh nhau thì phải chia chỗ theo đúng tỉ lệ.** Ảnh Web
+ngang 2.47 và ảnh App dọc 0.65 mà chia đôi bề ngang thì ảnh dọc bị ép thấp hẳn
+xuống, nhìn như bị cắt. Đã thử `device` chia theo tỉ lệ rồi canh chân, và thử
+`trio` hai cột bằng nhau — cả hai đều lệch.
+
+Cách chạy được là kiểu `twoshot`: chia bề ngang theo đúng tỉ lệ hai ảnh, ở đây là
+`3.8 : 1`, nên hai ảnh cao bằng nhau; chú thích xuống hai thẻ bên dưới thay vì
+nhét dưới từng ảnh. Thêm ảnh mới thì tính lại tỉ lệ đó ở `.tsh .a0` và `.tsh .a1`.
 
 ### Màu nhận diện
 
