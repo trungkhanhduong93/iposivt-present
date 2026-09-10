@@ -19,7 +19,8 @@ const COMPARE_PAGE = `<!DOCTYPE html>
     --brand:#1668b0; --brand-dark:#0d4f95; --brand-soft:#eaf3fb;
     /* Vàng Pro lấy đúng bảng màu của bộ trình chiếu web, đừng đổi lệch */
     --gold:#ac8129; --gold-dark:#a97f27; --gold-soft:#fff8ec;
-    --std:#374151; --std-dark:#111827; --std-soft:#eef0f3;
+    /* Xám Standard lấy đúng bảng màu của bộ trình chiếu web, đừng để đen */
+    --std:#6d7788; --std-dark:#5b6675; --std-soft:#f3f5f8;
     --ink:#111827; --ink-2:#374151; --muted:#6b7280;
     --line:#e5e7eb; --line-2:#eceef2;
     --bg:#eef2f7; --card:#ffffff; --sec:#0d3d70;
@@ -84,7 +85,7 @@ const COMPARE_PAGE = `<!DOCTYPE html>
   .stat.plus{background:linear-gradient(180deg,var(--brand-soft),#fff)}
   .stat.pro{background:linear-gradient(180deg,var(--gold-soft),#fff)}
   .stat .tag{display:inline-flex;align-items:center;gap:7px;font-weight:700;font-size:13px;padding:4px 11px;border-radius:999px;color:#fff}
-  .stat.std .tag{background:linear-gradient(135deg,var(--std),var(--std-dark))}
+  .stat.std .tag{background:linear-gradient(180deg,#5b6675,#6d7788 46%,#8b95a6)}
   .stat.plus .tag{background:linear-gradient(135deg,var(--brand),var(--brand-dark))}
   .stat.pro .tag{background:linear-gradient(180deg,#9c7220,#ac8129 46%,#cdb46e)}
   .stat .num{font-size:34px;font-weight:800;letter-spacing:-1px;margin-top:10px;line-height:1}
@@ -95,7 +96,7 @@ const COMPARE_PAGE = `<!DOCTYPE html>
   .stat .cap{color:var(--muted);font-size:12.5px;margin-top:4px;min-height:34px}
   .bar{height:7px;border-radius:999px;background:#e6e9ef;margin-top:12px;overflow:hidden}
   .bar>i{display:block;height:100%;border-radius:999px}
-  .stat.std .bar>i{background:linear-gradient(90deg,var(--std),var(--std-dark))}
+  .stat.std .bar>i{background:linear-gradient(90deg,#5b6675,#8b95a6)}
   .stat.plus .bar>i{background:linear-gradient(90deg,var(--brand),var(--brand-dark))}
   .stat.pro .bar>i{background:linear-gradient(90deg,#9c7220,#cdb46e)}
 
@@ -152,7 +153,7 @@ const COMPARE_PAGE = `<!DOCTYPE html>
 
   /* check / dash marks */
   .mk{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%}
-  .mk.yes-std{background:linear-gradient(135deg,var(--std),var(--std-dark));color:#fff}
+  .mk.yes-std{background:linear-gradient(180deg,#5b6675,#6d7788 46%,#8b95a6);color:#fff}
   .mk.yes-plus{background:linear-gradient(135deg,var(--brand),var(--brand-dark));color:#fff}
   .mk.yes-pro{background:linear-gradient(180deg,#9c7220,#ac8129 46%,#cdb46e);color:#fff}
   .mk svg{width:15px;height:15px}

@@ -1061,7 +1061,7 @@ v3: {
       { n:'01', c:'#12988c', t:'**Gói bản quyền** chuẩn hoá thành ba bậc Standard, Plus và Pro' },
       { n:'02', c:'#1b6fe0', t:'**Menu** gom theo nhóm nghiệp vụ thay cho danh sách phiếu dài' },
       { n:'03', c:'#e0673d', t:'**Bộ lọc** gọn lại, điều kiện thường dùng nằm ngay trên thanh công cụ' },
-      { n:'04', c:'#6d3fd4', t:'**Trợ lý iOne** làm hộ phần nhập mua và kiểm kê' }
+      { n:'04', c:'#6d3fd4', t:'**Trợ lý iOne.** Ứng dụng tính năng AI áp dụng cho Nhập mua hàng và Kiểm kê' }
     ] },
 
   /* 4 ─ Gói mới · chuyển đổi tự động, kèm điều khách cũ cần lưu ý -------- */

@@ -323,6 +323,10 @@ bằng giọng văn của bộ này**, giữ nguyên theme, icon, màu và chuy�
 | Phải có quyền `Kho & Cung ứng` mới thấy menu Kho trên FABi | ghi chú slide FABi |
 | Trợ lý dò nhà cung cấp, kho, hàng hoá trong danh mục | mô tả thẻ quét ảnh |
 
+**Màu gói Standard trong bản gốc phải là xám, không phải đen.** Bản gốc để
+`--std-dark:#111827` gần như đen, in ra PDF nhìn nặng. Nay lấy đúng dải xám của
+bộ trình chiếu: đặc `#5b6675`, dải `#5b6675` sang `#8b95a6`, nền `#f3f5f8`.
+
 **Số Standard chốt là 28, không phải 34.** Bản của sếp còn tick Standard cho cả
 phân hệ Thiết lập; bộ này đã bỏ theo yêu cầu ngày 10/09/2026.
 

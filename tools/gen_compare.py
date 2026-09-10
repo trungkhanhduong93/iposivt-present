@@ -307,16 +307,25 @@ print('so slide: %d' % n)
 
 # ── Chèn vào giữa bộ Pro và bộ V3 ────────────────────────────────────────
 dst = io.open(DST, encoding='utf-8').read()
-anchor = """/* ══════════════════════════════════════════════════════════════════════════
-   V3 — 18 slide · nội bộ iPOS, mở bằng mã PIN"""
-assert dst.count(anchor) == 1, 'moc v3'
+# Cho chen la ngay truoc khoi chu thich cua bo V3. Bam vao TEN BO chu dung bam
+# vao dong chu thich: sua mot chu trong chu thich la script gay ngay.
+BAR = '/* \u2550\u2550\u2550'
+
+
+def truoc_bo(txt, ten):
+    """Vi tri dau khoi chu thich dung ngay truoc `ten: {`."""
+    k = txt.index('\n%s: {' % ten)
+    m = txt.rfind(BAR, 0, k)
+    assert m > 0, 'khong thay khoi chu thich cua bo ' + ten
+    return m
+
 
 # Chay lai lan hai phai xoa ban cu di, khong thi DECKS co hai khoi cmp chong nhau.
-i = dst.find('\ncmp: {')
-if i >= 0:
-    dst = dst[:dst.rfind('/* \u2550\u2550\u2550', 0, i)] + dst[dst.index(anchor):]
+if '\ncmp: {' in dst:
+    dst = dst[:truoc_bo(dst, 'cmp')] + dst[truoc_bo(dst, 'v3'):]
     print('da xoa ban cmp cu')
 
-dst = dst.replace(anchor, deck.lstrip('\n') + '\n' + anchor)
+k = truoc_bo(dst, 'v3')
+dst = dst[:k] + deck.lstrip('\n') + '\n' + dst[k:]
 io.open(DST, 'w', encoding='utf-8', newline='').write(dst)
 print('slides-data.js: chen bo so sanh truoc bo V3')
