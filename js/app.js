@@ -478,7 +478,7 @@ webshot (s, d) {
     : `<img src="${d.dir}${s.img}" alt="" data-zoom>`;
   return head(kick(s), s.title, '', 'up') + `<div class="s-body"><div class="vid${
     s.imgw ? ' fixw' : ''}"${s.imgw ? ` style="--iw:${s.imgw}px"` : ''}>
-    <div class="fr shot${s.frame ? ' brwrap' : ''}">${shot}</div>
+    <div class="fr shot${s.frame ? ' brwrap' : ''}${s.shadow ? ' dsh' : ''}">${shot}</div>
     <div class="side" data-fit>
       ${s.items ? `<div class="lst">${s.items.map((it, i) => `
         <div class="it"><b>${i + 1}</b><div class="tx"><span>${md(it.t)}</span>

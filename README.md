@@ -392,6 +392,17 @@ khung điện thoại `'ph'` hoặc khung trình duyệt `'brw'`; để trống 
 Khai bằng `mock:['ph','brw']` trên slide `device` và `twoshot`, hoặc `k:'ph'`
 trên từng thẻ của `trio`. Cờ `frame:1` cũ vẫn chạy, nghĩa là bọc điện thoại hết.
 
+### Ảnh hộp thoại nổi thì cắt bo góc trong suốt
+
+Ảnh chụp một hộp thoại nổi luôn dính bốn góc nền mờ phía sau, chuyển sang RGB
+là bốn góc thành xám đen. `gia-han.webp` đã cắt bo góc bán kính **21px** thành
+trong suốt, lưu WebP giữ kênh alpha.
+
+Có alpha rồi thì bật `shadow:1` trên slide `webshot`: ảnh nhận
+`filter:drop-shadow`, bóng bám đúng đường bo góc nên hộp thoại nổi hẳn lên trong
+khung trình duyệt. Luật này cũng chừa đệm quanh ảnh, thiếu đệm thì `.brw` có
+`overflow:hidden` cắt mất bóng.
+
 ### Màu nhận diện
 
 Mỗi bộ một màu, đổi qua biến `--acc` theo `body[data-deck="…"]`: Plus xanh

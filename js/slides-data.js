@@ -1128,7 +1128,7 @@ v3: {
     ] },
 
   /* 8 ─ Mua và gia hạn ngay trên hệ thống -------------------------------- */
-  { n:9, type:'webshot', frame:1, imgw:740,
+  { n:9, type:'webshot', frame:1, imgw:740, shadow:1,
     crumb:['GÓI BẢN QUYỀN {{V3}}','Mua và gia hạn'],
     title:'MUA VÀ GIA HẠN NGAY TRÊN HỆ THỐNG',
     img:'gia-han.webp',
