@@ -1198,8 +1198,19 @@ v3: {
     ],
     note:'Ảnh bên là quy trình Sản xuất: ~~Sơ chế là TÁCH~~ một nguyên liệu ra nhiều mã, ~~Chế biến là GỘP~~ nhiều nguyên liệu thành một món.' },
 
-  /* 11 ─ Bộ lọc · bản cũ ------------------------------------------------- */
-  { n:14, type:'webshot', frame:1,
+  /* 11 ─ Tiện ích bổ sung ------------------------------------------------ */
+  { n:14, type:'trio',
+    crumb:['TIỆN ÍCH {{V3}}','Bổ sung'],
+    title:'TIỆN ÍCH BỔ SUNG',
+    items:[
+      { f:'dong-bo-pos.webp', k:'brw', t:'Đồng bộ hoá đơn POS cho nhiều cửa hàng',
+        s:'Chọn khoảng thời gian rồi tick các kho cần lấy lại dữ liệu. Cả chuỗi đồng bộ một lượt, không phải vào từng cửa hàng.' },
+      { f:'thanh-toan-vo.webp', k:'brw', t:'Thanh toán công nợ NCC liên kết Quỹ tiền kế toán VO',
+        s:'Lập phiếu thanh toán chọn thẳng quỹ tiền bên Kế toán VO, số liệu hai bên khớp nhau, không phải đối chiếu lại.' }
+    ] },
+
+  /* 12 ─ Bộ lọc · bản cũ ------------------------------------------------- */
+  { n:15, type:'webshot', frame:1,
     crumb:['BỘ LỌC {{V3}}','Trước — bản cũ'],
     title:'MỌI ĐIỀU KIỆN BÀY HẾT RA ĐẦU TRANG',
     img:'bo-loc-cu.webp',
@@ -1209,7 +1220,7 @@ v3: {
     ] },
 
   /* 12 ─ Bộ lọc · V3 ----------------------------------------------------- */
-  { n:15, type:'webshot', frame:1,
+  { n:16, type:'webshot', frame:1,
     crumb:['BỘ LỌC {{V3}}','Sau — V3'],
     title:'GỌN VÀ NHANH HƠN',
     img:'bo-loc-moi.webp',
@@ -1221,7 +1232,7 @@ v3: {
     ] },
 
   /* 13 ─ Trợ lý iOne ----------------------------------------------------- */
-  { n:16, type:'trio',
+  { n:17, type:'trio',
     crumb:['TRỢ LÝ {{V3}}','<b>iOne</b>'],
     title:'ỨNG DỤNG AI — TRỢ LÝ <b>iOne</b>',
     items:[
@@ -1234,7 +1245,7 @@ v3: {
     ] },
 
   /* 14 ─ Kho trên FABi --------------------------------------------------- */
-  { n:17, type:'device',
+  { n:18, type:'device',
     crumb:['MỞ RỘNG {{V3}}','App Manager và CMS FABi'],
     title:'DÙNG KHO NGAY TRÊN FABi',
     imgs:['fabi-app.webp','fabi-cms.webp'], colw:440, mock:['ph','brw'],
@@ -1245,7 +1256,7 @@ v3: {
     note:'Đầy đủ như App và Web IVT riêng lẻ, ~~không cần đăng nhập hệ thống khác~~. Tài khoản phải được phân quyền **Kho & Cung ứng** mới thấy menu này.' },
 
   /* Danh mục sửa được ngay trên App -------------------------------------- */
-  { n:18, type:'device',
+  { n:19, type:'device',
     crumb:['MỞ RỘNG {{V3}}','Danh mục trên App'],
     title:'SỬA DANH MỤC NGAY TRÊN APP',
     imgs:['danh-muc-app.webp'], colw:340, frame:1,
@@ -1257,7 +1268,7 @@ v3: {
     note:'Vào ở mục **Khác ➜ Danh mục**. Mỗi dòng hiện luôn tổng số đã khai, ~~không cần mở ra mới biết~~.' },
 
   /* 15 ─ Báo cáo mới ----------------------------------------------------- */
-  { n:19, type:'webgrid', dir:'col', cols:2,
+  { n:20, type:'webgrid', dir:'col', cols:2,
     crumb:['BÁO CÁO {{V3}}','Giao diện mới trên Web'],
     title:'DANH SÁCH BÁO CÁO TỔ CHỨC LẠI',
     img:'bao-cao.webp',
@@ -1267,7 +1278,7 @@ v3: {
     ] },
 
   /* 16 ─ Chuyển đổi có thời gian thích nghi ------------------------------ */
-  { n:20, type:'twoshot',
+  { n:21, type:'twoshot',
     crumb:['CHUYỂN ĐỔI {{V3}}','Thời gian thích nghi'],
     title:'TỚI 10/10/2026 VẪN QUAY LẠI BẢN CŨ ĐƯỢC',
     sub:'Dữ liệu dùng chung nên chuyển qua lại không mất gì. Sau ngày đó giao diện chuyển hẳn, ~~không quay lại được nữa~~.',
@@ -1278,7 +1289,7 @@ v3: {
     ] },
 
   /* 17 ─ Chốt lại -------------------------------------------------------- */
-  { n:21, type:'pillars',
+  { n:22, type:'pillars',
     kicker:'CHỐT LẠI',
     title:'V3 CÓ LỢI GÌ CHO NGƯỜI DÙNG',
     items:[
@@ -1288,13 +1299,13 @@ v3: {
     ] },
 
   /* 18 ─ Hỏi đáp --------------------------------------------------------- */
-  { n:22, type:'qa',
+  { n:23, type:'qa',
     num:'05',
     title:'Hỏi đáp',
     lead:'Mời AnhChiEm mạnh dạn đặt câu hỏi. Đừng sợ!' },
 
   /* 19 ─ Hỗ trợ ---------------------------------------------------------- */
-  { n:23, type:'thanks',
+  { n:24, type:'thanks',
     title:'Thank you!',
     sub:'Chuyển đổi gói hoặc đào tạo nhân sự trên V3, liên hệ chuyên viên phụ trách hoặc mở mục Hỗ trợ ngay trên thanh công cụ.',
     company:'iPOS.vn Joint Stock Company',

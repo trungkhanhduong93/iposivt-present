@@ -372,6 +372,10 @@ nhét dưới từng ảnh. Thêm ảnh mới thì tính lại tỉ lệ đó �
 
 ### Đợt ba — 10/09/2026
 
+Bộ này còn thêm slide `TIỆN ÍCH BỔ SUNG` sau slide quy trình: đồng bộ hoá đơn
+POS nhiều cửa hàng, và thanh toán công nợ nhà cung cấp liên kết Quỹ tiền kế
+toán VO. Dùng kiểu `trio` hai thẻ, mỗi ảnh bọc khung trình duyệt.
+
 | Slide | Đổi gì |
 |---|---|
 | `CHUYỂN ĐỔI TỰ ĐỘNG` | logo ba gói to hơn, `148×86` thay cho `112×64` |
@@ -398,10 +402,10 @@ trên từng thẻ của `trio`. Cờ `frame:1` cũ vẫn chạy, nghĩa là b�
 là bốn góc thành xám đen. `gia-han.webp` đã cắt bo góc bán kính **21px** thành
 trong suốt, lưu WebP giữ kênh alpha.
 
-Có alpha rồi thì bật `shadow:1` trên slide `webshot`: ảnh nhận
-`filter:drop-shadow`, bóng bám đúng đường bo góc nên hộp thoại nổi hẳn lên trong
-khung trình duyệt. Luật này cũng chừa đệm quanh ảnh, thiếu đệm thì `.brw` có
-`overflow:hidden` cắt mất bóng.
+Cờ `shadow:1` trên slide `webshot` đổ bóng cho **cả khung giả lập**, không phải
+cho ảnh bên trong. `.fr` vốn có `overflow:hidden` nên cắt cụt bóng — luật này mở
+`overflow:visible` cho bóng tràn ra ngoài. Chừa đệm thay cho mở khoá cũng được
+nhưng ăn mất chỗ của ảnh.
 
 ### Màu nhận diện
 
