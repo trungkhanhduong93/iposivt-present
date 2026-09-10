@@ -48,6 +48,18 @@ with sync_playwright() as p:
     ok('phim 2 chuyen sang bo Pro',
        pg.evaluate('()=>document.body.dataset.deck') == 'pro' and h() == '#pro-1')
 
+    # Da go cong ma noi bo: bo nao cung vao thang, ke ca mo link truc tiep.
+    ok('khong bo nao con co gated', pg.evaluate(
+        "()=>Object.values(DECKS).every(d=>!d.gated)"))
+    ok('khong con hop nhap ma trong trang', pg.evaluate(
+        "()=>!document.getElementById('pin')"))
+    for k in pg.evaluate('()=>Object.keys(DECKS)'):
+        pg.goto(BASE + '#%s-2' % k); pg.wait_for_timeout(700)
+        ok('mo thang link bo %s khong hoi ma' % k,
+           pg.evaluate('()=>document.body.dataset.deck') == k and h() == '#%s-2' % k,
+           h())
+    pg.goto(BASE + '#pro-1'); pg.wait_for_timeout(600)
+
     pg.keyboard.press('Escape'); pg.wait_for_timeout(400)
     n = pg.evaluate('()=>document.querySelectorAll("#gb .t").length')
     ok('Esc mo luoi, du o cho moi slide',

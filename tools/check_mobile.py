@@ -82,7 +82,6 @@ with sync_playwright() as p:
     # mở khoá bộ nội bộ một lần rồi đổi bộ bằng hash, không tải lại trang
     pg.goto(BASE)
     pg.wait_for_timeout(900)
-    pg.evaluate("()=>{for (const k in DECKS) if (DECKS[k].gated) App.gate[k] = true;}")
 
     for deck in DECKS:
         pg.evaluate('(h) => { location.hash = h; }', '#%s-1' % deck)

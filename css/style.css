@@ -1123,21 +1123,9 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
   cursor:pointer;display:grid;place-items:center}
 .lb .x svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round}
 
-/* ── Hộp nhập mã cho bộ nội bộ ─────────────────────────────────────────── */
-.pin{position:fixed;inset:0;z-index:96;background:rgba(6,11,18,.9);display:none;place-items:center}
-.pin.open{display:grid}
-.pin .cd{width:492px;max-width:calc(100vw - 32px);background:#101d2e;
-  border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:26px 30px;color:#d6e2f2}
-.pin h3{font-size:15.5px;font-weight:600;color:#fff;line-height:1.5;margin-bottom:16px}
-.pin input{width:100%;font:600 17px var(--fs);letter-spacing:3px;text-align:center;
-  padding:12px 14px;border-radius:11px;border:1px solid rgba(255,255,255,.16);
-  background:rgba(255,255,255,.06);color:#fff;outline:none}
-.pin input:focus{border-color:#17a89a;box-shadow:0 0 0 3px rgba(23,168,154,.22)}
-.pin input::placeholder{letter-spacing:.4px;font-weight:500;color:#6f8099}
-.pin .err{min-height:18px;margin-top:9px;font-size:12.5px;color:#ff8a80}
-.pin .cl{margin-top:12px;display:flex;justify-content:flex-end;gap:10px}
-.pin .tbtn.go{background:#12988c;border-color:#12988c;color:#fff}
-.pin .tbtn.go:hover{background:#17a89a}
+/* Nút chính trong thanh tiêu đề bản in */
+.prnt .tbtn.go{background:var(--blue);border-color:var(--blue);color:#fff}
+.prnt .tbtn.go:hover{background:var(--blue-d);border-color:var(--blue-d)}
 
 /* ── Trợ giúp phím ─────────────────────────────────────────────────────── */
 .help{position:fixed;inset:0;z-index:95;background:rgba(6,11,18,.9);display:none;place-items:center}
@@ -1214,7 +1202,7 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
 
   body.prnt-on{overflow:visible !important;height:auto !important;background:#fff}
   body.prnt-on .app,body.prnt-on .grid,body.prnt-on .lb,
-  body.prnt-on .pin,body.prnt-on .help,body.prnt-on .pdfv{display:none !important}
+  body.prnt-on .help,body.prnt-on .pdfv{display:none !important}
   body.prnt-on .prnt.open{position:static;display:block;background:#fff}
   body.prnt-on .prnt .ph{display:none !important}
   body.prnt-on .prnt .pb{display:block;padding:0 !important;gap:0 !important;

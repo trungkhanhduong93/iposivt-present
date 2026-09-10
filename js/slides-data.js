@@ -995,16 +995,16 @@ cmp: {
 },
 
 /* ══════════════════════════════════════════════════════════════════════════
-   V3 — 18 slide · nội bộ iPOS, mở bằng mã PIN
+   V3 — 18 slide
    Nguồn: "IVT V3 Introduction" (bài giới thiệu nội bộ, 09/04/2026).
-   Giữ nguyên cả phần chính sách sale nên deck này không dành cho khách.
+   Có cả phần chính sách sale. Trước đây khoá bằng mã, nay bỏ khoá: sale gửi
+   khách bản PDF xuất từ nút PDF chứ không gửi link ra ngoài.
    ══════════════════════════════════════════════════════════════════════════ */
 v3: {
   id: 'v3',
   name: 'Cập nhật V3',
   short: 'V3',
   tagline: 'Bản nâng cấp lớn nhất của iPOS Inventory',
-  gated: 1,
   dir: 'assets/slides/v3/',
   vdir: 'assets/video/',
   slides: [

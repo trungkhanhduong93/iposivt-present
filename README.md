@@ -3,7 +3,7 @@
 Bộ trình chiếu web thay cho các file PowerPoint. Khung 16:9 cố định **1280×720**,
 tự scale vừa màn hình, **không bao giờ sinh thanh cuộn**.
 
-| | |
+| |
 |---|---|
 | Bản chạy | **https://iposivt-present.pages.dev** |
 | Repo | https://github.com/trungkhanhduong93/iposivt-present |
@@ -258,7 +258,7 @@ Dưới **900px** bề ngang, trang chuyển sang **chế độ xấp trang**, x
 Bố cục từng slide **không đổi gì** so với bản máy tính — không dồn cột, không
 đổi cỡ chữ. Chữ nhỏ là đúng như xem PDF; muốn đọc kỹ thì phóng bằng hai ngón.
 
-| | |
+| |
 |---|---|
 | Khung mỗi trang | tỉ lệ 16:9, rộng bằng bề ngang màn |
 | Tỉ lệ thu nhỏ | biến `--ms` = `innerWidth / 1280`, đặt vào `zoom`, `app.js` cập nhật mỗi lần đổi cỡ |
@@ -283,51 +283,26 @@ Cuộn hết cỡ vẫn còn ba trang cuối nằm dưới mép trên, nên có 
 
 ---
 
-## 7. Bộ Cập nhật V3 và cổng mã
+## 7. Bộ Cập nhật V3
 
-Bộ thứ ba dựng từ bài giới thiệu nội bộ về phiên bản V3. Nó **giữ cả phần chính
-sách bán hàng, KPI và hoa hồng** nên chỉ dành cho nội bộ iPOS — vì vậy bấm vào
-nút của bộ này sẽ hỏi mã trước.
+Bộ thứ tư dựng từ bài giới thiệu nội bộ về phiên bản V3. Nó **có cả phần chính
+sách bán hàng, KPI và hoa hồng**.
 
-```js
-v3: {
-  gated: 1,          // có cờ này thì app hỏi mã trước khi mở
-  ...
-}
-```
+### Đã gỡ cổng mã — 10/09/2026
 
-Mã lưu trong `app.js` dưới dạng **băm SHA-256** (`PIN_HASH`) nên không nằm thẳng
-trong mã nguồn. Trạng thái mở khoá chỉ nằm trong bộ nhớ trang, **không** lưu
-xuống `sessionStorage` — tải lại tab là mất, phải nhập lần nữa. Mở link thẳng
-như `#v3-5` cũng hỏi mã, nhập xong vào đúng slide 5.
+Trước đây bộ này khoá bằng mã PIN: cờ `gated: 1` trên bộ, băm SHA-256 trong
+`app.js`, hộp nhập mã `#pin`, và `tools/check_gate.py`. **Đã gỡ sạch cả bốn thứ.**
 
-Chạy bộ kiểm cổng mã thì truyền mã qua biến môi trường, đừng ghi vào repo:
+Lý do Trum chốt: đã có nút PDF, sale xuất file gửi khách chứ không gửi link ra
+ngoài, nên không cần cổng chặn nữa.
 
-```bash
-IVT_PIN=<ma> python tools/check_gate.py
-```
+**Hệ quả phải nhớ:** `iposivt-present.pages.dev` là trang công khai. Ai có link
+đều mở được bộ V3 kèm phần chính sách sale. Không có gì chặn nữa.
 
-Hai bộ kiểm kia không cần mã: chúng bật `App.gate[k] = true` rồi đổi slide bằng
-`location.hash` thay vì tải lại trang, nên trạng thái mở khoá giữ nguyên suốt
-lượt chạy.
-
-### Đây KHÔNG phải bảo mật
-
-Trang là web tĩnh: toàn bộ nội dung slide nằm trong `js/slides-data.js` mà ai
-xem mã nguồn cũng đọc được. Cổng mã chỉ chặn người xem tình cờ, không chặn được
-người biết kỹ thuật. Cần chặn thật thì bật **Cloudflare Access** (Zero Trust,
-bản free cho 50 user) cho cả trang.
-
-Đổi mã thì thay `PIN_HASH` bằng băm mới:
-
-```bash
-python -c "import hashlib;print(hashlib.sha256('MA_MOI'.encode()).hexdigest())"
-```
-
-**Mã hiện tại đã nằm trong lịch sử git** — nó từng bị ghi dạng chữ vào
-`tools/check_gate.py` ở commit `6bd77ef` trước khi chuyển sang biến môi trường.
-Repo là public nên coi như mã đó đã lộ; muốn kín thì đổi sang mã khác và cập
-nhật `PIN_HASH`.
+Muốn khoá lại thì **đừng dựng lại cổng mã** — web tĩnh nên toàn bộ nội dung nằm
+trong `js/slides-data.js`, ai xem mã nguồn cũng đọc được, cổng mã chỉ chặn người
+xem tình cờ. Bật **Cloudflare Access** (Zero Trust, bản free 50 user) cho cả
+trang mới là chặn thật.
 
 ### Màu nhận diện
 
@@ -583,7 +558,7 @@ sẽ tràn mất phần đầu ảnh.
 
 Ảnh gốc 1272×2772 nặng 500–750 KB mỗi cái. Chuẩn dùng trong dự án:
 
-| | |
+| |
 |---|---|
 | Kích thước | **826×1800** |
 | Định dạng | JPEG, quality **86**, progressive |
@@ -604,7 +579,7 @@ im.resize((round(w*1800/h), 1800), Image.LANCZOS).save(
 
 ### Dung lượng hiện tại
 
-| | |
+| |
 |---|---|
 | `assets/slides/pro` | 7.5 MB |
 | `assets/slides/plus` | 4.8 MB |
@@ -781,10 +756,9 @@ Không cần `playwright install` — script dùng Chrome sẵn có trong máy.
 | Lệnh | Kiểm gì |
 |---|---|
 | `python tools/check_slides.py` | render toàn bộ 87 slide, báo slide nào tràn khung, slide nào bị auto-fit thu nhỏ, lỗi console |
-| `python tools/check_app.py` | điều hướng, lưới ESC, lightbox, chuyển bộ, phím X, hiện dần từng phần, và **không sinh thanh cuộn ở 6 cỡ màn hình** |
+| `python tools/check_app.py` | điều hướng, lưới ESC, lightbox, chuyển bộ, phím X, hiện dần từng phần, **không sinh thanh cuộn ở 6 cỡ màn hình**, và không bộ nào còn hỏi mã |
 | `python tools/check_mobile.py` | chế độ xấp trang khổ iPhone 14: đủ số trang, tỉ lệ 16:9, không tràn ngang, số trang chạy đúng khi cuộn, ảnh hỏng |
 | `python tools/check_pdfview.py` | nút PDF: nội dung nhúng giống bản gốc từng ký tự, cùng nguồn, Lưu PDF in đúng khung nhúng, chạy cả trên bản gộp một file |
-| `python tools/check_gate.py` | cổng mã của bộ nội bộ: bấm nút và mở link thẳng đều phải hỏi mã, mã sai bị chặn, mã đúng vào đúng slide |
 
 Ảnh chụp từng slide lưu vào `tools/shots/`, xem lại để soi bố cục. Bộ điện thoại
 chụp khi thêm tham số: `python tools/check_mobile.py shot` — ảnh vào
