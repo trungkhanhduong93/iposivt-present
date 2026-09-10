@@ -327,18 +327,32 @@ body[data-deck="v3"] .cvd .hd h1 .pro{background:linear-gradient(180deg,#0f7a72,
   width:calc(50% - 11px)}
 .agenda .it>span,.agenda .it .tx>span{font-size:18.5px;font-weight:600;
   color:var(--ink);line-height:1.3}
-/* Dạng gom nhóm: chỉ có bốn khối nên xếp một cột, mỗi hàng chiếm hết bề ngang
-   — tên khối bên trái, mục con thành chip bên phải. Hai cột thì thẻ ngắn tũn mà
-   nửa dưới slide hở một mảng trắng. */
-.agenda.grp{grid-template-columns:1fr;gap:13px;align-self:stretch;
-  align-content:stretch;grid-auto-rows:1fr}
-.agenda.grp .it{align-items:center;padding:14px 24px;gap:18px}
-.agenda.grp .it .tx{flex:1;min-width:0;display:flex;align-items:center;gap:22px}
-.agenda.grp .it .tx>span{flex:0 0 420px}
-.agenda.grp .sub{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:7px}
-.agenda.grp .sub i{font-style:normal;font-size:12.6px;font-weight:600;line-height:1;
-  color:var(--acc-d);background:var(--acc-t);border:1px solid var(--acc-b);
-  border-radius:999px;padding:5px 10px 6px;white-space:nowrap}
+/* ── Mục lục dạng mốc số ───────────────────────────────────────────────────
+   Chỉ có bốn khối nội dung lớn. Xếp thành bốn thẻ thì hoặc thẻ ngắn tũn và hở
+   một mảng trắng, hoặc giãn kín khung thì rỗng ruột. Bỏ thẻ, dựng một trục dọc
+   với bốn mốc số — bốn mốc chia đều 500px là vừa kín, không phải ép gì. */
+.agn2{position:relative;width:100%;align-self:stretch;display:flex;
+  flex-direction:column;gap:14px}
+/* Trục nối các mốc: chạy từ tâm mốc đầu tới tâm mốc cuối, nằm dưới mốc */
+.agn2::before{content:'';position:absolute;left:28px;top:56px;bottom:56px;width:2px;
+  border-radius:2px;background:linear-gradient(180deg,var(--acc),var(--acc-b))}
+.agn2 .it{flex:1;min-height:0;position:relative;display:flex;align-items:center;gap:22px}
+.agn2 .nd{flex:0 0 58px;height:58px;border-radius:50%;background:#fff;z-index:1;
+  border:2px solid var(--acc-b);display:grid;place-items:center;
+  box-shadow:0 8px 20px rgba(9,44,78,.10)}
+.agn2 .nd b{font-size:18.5px;font-weight:700;color:var(--acc-d);
+  font-variant-numeric:tabular-nums;letter-spacing:.4px}
+/* Thẻ chạy hết bề ngang, không thì nửa phải slide bỏ trống một mảng */
+.agn2 .pnl{flex:1;min-width:0;position:relative;overflow:hidden;
+  padding:15px 26px;border-radius:15px;border:1px solid var(--line);
+  background:#fff;box-shadow:var(--sh-1)}
+.agn2 .pnl::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:var(--acc)}
+.agn2 .pnl>span{display:block;font-size:22px;font-weight:700;color:var(--ink);
+  line-height:1.25;letter-spacing:-.45px}
+.agn2 .pnl>small{display:block;margin-top:6px;font-size:15px;color:var(--muted);
+  line-height:1.5}
+.agn2 .pnl>small i{font-style:normal;color:var(--acc-b);margin:0 9px}
 
 /* ── Thẻ định nghĩa ────────────────────────────────────────────────────── */
 .defs{display:flex;flex-direction:column;gap:22px;width:100%;justify-content:center;align-self:stretch}
@@ -450,19 +464,14 @@ body[data-deck="pro"] .sect .ln{background:#fff}
   border-radius:50%;background:rgba(9,44,78,.13);filter:blur(7px);z-index:-1}
 .bnr .ph img{width:100%;height:auto;border-radius:21px;display:block;cursor:zoom-in}
 
-/* Thẻ Plus / Pro trong tiêu đề — cùng màu với logo sản phẩm */
-.tbdg{display:inline-block;vertical-align:5px;margin:0 2px;padding:4px 14px 5px;
-  border-radius:999px;font-size:.62em;font-weight:700;letter-spacing:-.2px;
-  color:#fff;line-height:1;white-space:nowrap;text-transform:none}
-.kicker .tbdg{font-size:9.5px;padding:2.5px 8px 3px;vertical-align:1px;margin:0 1px}
-/* Trong đoạn văn thì thẻ phải nhỏ lại, không thì phá nhịp dòng */
-.hero p .tbdg,.hero li .tbdg{font-size:11.5px;padding:3px 9px 4px;vertical-align:1px;margin:0 2px}
-.tbdg.standard{background:#5b6675;box-shadow:0 3px 9px rgba(91,102,117,.24)}
-.tbdg.plus{background:#0560a6;box-shadow:0 3px 9px rgba(5,96,166,.24)}
-.tbdg.v3{background:linear-gradient(180deg,#0f7a72,#17a89a);
-  box-shadow:0 3px 9px rgba(15,122,114,.26)}
-.tbdg.pro{background:linear-gradient(180deg,#9c7220 0%,#ac8129 46%,#cdb46e 100%);
-  box-shadow:0 3px 9px rgba(138,107,22,.24)}
+/* Tên gói và tên bản viết thẳng trong câu, chỉ lấy màu của gói. Trước đây bọc
+   thẻ bo tròn nền đặc — nhìn thì nổi nhưng nhét vào dòng diễn giải thì thẻ nhảy
+   ra khỏi nhịp chữ, một câu ba bốn thẻ là rối mắt. */
+.tbdg{font-weight:700;text-transform:none;white-space:nowrap}
+.tbdg.standard{color:#5b6675}
+.tbdg.plus{color:#0560a6}
+.tbdg.v3{color:#0f7a72}
+.tbdg.pro{color:#9c7220}
 
 /* ── Lưới thẻ phân hệ ──────────────────────────────────────────────────── */
 .mgrid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;width:100%;
@@ -624,9 +633,6 @@ body[data-deck="pro"] .tree .g>b{background:linear-gradient(120deg,var(--orange-
 .lst .it .tx{flex:1;min-width:0}
 .lst .it .tx>span{display:block;font-size:16.4px;font-weight:600;color:var(--ink);line-height:1.4}
 .lst .it .tx>small{display:block;font-size:14.4px;color:var(--muted);margin-top:2px;line-height:1.45}
-/* Thẻ gói nằm trong dòng chữ nhỏ: .62em ra 9px, chiếu lên đọc không ra */
-.lst .it .tx>span .tbdg{font-size:12.6px;padding:3px 9px 4px;vertical-align:1px}
-.lst .it .tx>small .tbdg{font-size:11.4px;padding:2px 8px 3px;vertical-align:0}
 .note{display:flex;gap:12px;padding:12px 16px;border-radius:13px;background:var(--acc-t);
   border:1px solid var(--acc-b);font-size:16.4px;line-height:1.62;color:var(--body)}
 .note i{flex:0 0 17px;height:17px;margin-top:2px;color:var(--acc-d)}

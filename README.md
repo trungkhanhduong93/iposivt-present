@@ -121,7 +121,7 @@ khối CSS cùng tên trong `css/style.css`.
 | `cover` | Bìa. 5 biến thể: `left` (nền tranh, chữ trái), `devices` (chữ chìm + 3 thiết bị), `split` (chữ trái, tranh phải), `pro` (ảnh trên, mục lục dưới), `matrix` (chữ trái, ba thẻ gói phải, không dùng ảnh) | `variant` `img` `lines` `badge` `packs` |
 | `matrix` | Bảng đối chiếu tính năng ba gói, có dòng tên phân hệ xen giữa | `rows[{c,t,d,v}]` `rows[{g}]` `note` |
 | `mxsum` | Ba thẻ gói kèm thanh độ phủ, dùng cho trang mở và trang chọn gói | `packs` `total` `legend` |
-| `agenda` | Mục lục lưới 2 cột; khai `li` trên mục thì đổi sang một cột, tên khối trái · chip mục con phải | `items[{t,x,li[]}]` |
+| `agenda` | Mục lục lưới 2 cột; khai `li` trên mục thì đổi sang trục mốc số, mỗi mốc một thẻ khối nội dung | `items[{t,x,li[]}]` |
 | `cards3` | Thẻ định nghĩa + dải công thức | `cards` `formula` |
 | `section` | Slide chuyển mục nền gradient, số cỡ lớn | `num` `title` `lead` |
 | `bullets` | Tiêu đề trái + gạch đầu dòng phải, kèm tranh nếu có | `items` `art` `small` |
@@ -415,14 +415,12 @@ Dòng dẫn nay **ba tầng**: khối › nhóm › mục. `crumb` vốn nhận 
 không phải sửa gì trong `app.js`, chỉ khai thêm phần tử thứ ba.
 
 **Mục lục đổi từ mười mục phẳng sang bốn khối.** Khai `li` trên mục thì `agenda`
-dựng thẻ có chip mục con và thêm class `grp`. Bốn thẻ mà xếp hai cột thì nửa dưới
-slide hở một mảng trắng, cho giãn kín khung thì lại rỗng ruột từng thẻ — nên xếp
-**một cột**, tên khối chiếm `420px` bên trái, chip mục con dàn nốt bên phải.
-`420px` là bề ngang vừa đủ cho tên khối dài nhất nằm gọn một dòng.
+bỏ lưới thẻ, dựng `.agn2`: một trục dọc bên trái với bốn mốc số, mỗi mốc kèm một
+thẻ chạy hết bề ngang — tên khối ở trên, các mục con nằm dưới ngăn nhau bằng dấu
+`·`. Bốn thẻ chia đều `500px` là vừa kín khung.
 
-**Cẩn thận `.agenda .it span`.** Luật cũ viết dạng hậu duệ nên trúng luôn thẻ
-`.tbdg` lồng bên trong, đè mất `color:#fff` của thẻ badge. Đã đổi sang
-`.agenda .it>span, .agenda .it .tx>span`.
+Đã thử hai bố cục khác rồi bỏ: lưới hai cột thì nửa dưới slide hở một mảng trắng;
+một cột với tên khối trái và chip mục con phải thì kín khung nhưng nhìn thô.
 
 ### Slide mới: mỗi kho một gói riêng — 11/09/2026
 
@@ -432,10 +430,20 @@ cùng một mã công ty vẫn được. Slide `MỘT MÃ CÔNG TY, MỖI KHO M�
 khối *Với khách hàng*, ảnh `goi-theo-kho.webp` chụp cột **Gói bản quyền** ở Danh
 mục ➜ Kho hàng.
 
-**Tên gói trong chữ chạy đổi sang thẻ badge.** `md()` sẵn có `{{Standard}}`,
-`{{Plus}}`, `{{Pro}}` nên chỉ phải khai trong data. Nhưng `.tbdg` mặc định
-`.62em`, rơi vào dòng `<small>` cỡ `14.4px` thì ra `9px`, chiếu lên màn đọc không
-ra — đã ghim cỡ riêng cho thẻ nằm trong `.lst`.
+**Tên gói trong chữ chạy viết thẳng, chỉ lấy màu.** `md()` đổi `{{Standard}}`,
+`{{Plus}}`, `{{Pro}}`, `{{V3}}` thành `<span class="tbdg …">`. Trước đây `.tbdg`
+là thẻ bo tròn nền đặc: nổi thật, nhưng nhét vào dòng diễn giải thì thẻ nhảy khỏi
+nhịp chữ, một câu ba bốn thẻ là rối mắt. Nay `.tbdg` chỉ còn đậm chữ và đổi màu:
+
+| Tên | Màu |
+|---|---|
+| Standard | `#5b6675` |
+| Plus | `#0560a6` |
+| Pro | `#9c7220` |
+| V3 | `#0f7a72` |
+
+Bỏ luôn ba luật chỉnh cỡ thẻ theo ngữ cảnh (`.kicker`, `.hero p`, `.lst`) — chữ
+thường thì thừa hưởng cỡ của dòng nó nằm, không phải ghim.
 
 **Slide đông mục thì phải khai `imgw`.** Không khai thì khung ảnh ăn theo bề
 ngang tự nhiên của ảnh, cột chữ còn ~320px và autofit thu nhỏ xuống `0.84`. Đặt
