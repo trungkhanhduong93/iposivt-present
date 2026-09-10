@@ -330,9 +330,9 @@ Cả hai slide mới đã có ảnh: `SỬA DANH MỤC NGAY TRÊN APP` dùng `da
 với bố cục `device`, `MUA VÀ GIA HẠN NGAY TRÊN HỆ THỐNG` dùng `gia-han.webp` với
 bố cục `webshot`.
 
-`gia-han.webp` chỉ rộng 640px mà khung vẽ ra 875px trên màn 1920, tức **phóng
-1.37 lần**. Chụp lại ở độ phân giải cao hơn thì nét hơn, còn lại thì chấp nhận
-được vì chữ trong ảnh vẫn đọc rõ.
+`gia-han.webp` bản đầu chỉ rộng 640px, khung vẽ ra 875px nên bị phóng 1.37 lần
+và nhoè. Đã thay bằng bản 1117px, vẽ ra 1106px trên màn 1920 nên ~~không còn
+phóng~~.
 
 **Lưới `modgrid` chỉ vừa hai hàng.** Đã thử tách Kiểm kê và Công nợ thành chín ô:
 lưới thành ba hàng, cao quá khung 500px, chữ trong ô bị cắt mất dòng cuối. Giữ
@@ -648,6 +648,21 @@ Regex đọc hash trong `readHash()` ghi cứng `(plus|pro|v3)`, không khớp t
 Nay cả ba chỗ đều sinh từ `Object.keys(DECKS)`: regex đọc hash, phím số chọn bộ,
 và vòng lặp của script kiểm tra. Thêm bộ mới chỉ cần khai báo trong `DECKS` và
 thêm một nút trong `index.html`.
+
+### Khung trình duyệt lấy bề ngang theo ảnh gốc, không theo cột — dính 1 lần
+
+`.vid .fr.shot.brwrap .brw` là **flex item**, nên bề ngang của nó tính từ bề
+ngang tự nhiên của ảnh bên trong, không phải từ bề ngang cột.
+
+Ảnh 640px thì khung chỉ rộng 640px, vừa khít. Thay bằng ảnh **cùng tỉ lệ** nhưng
+rộng 1117px thì khung nở tới hết cột, chiều cao tính ra 586px trong khung 500px,
+và `.fr{overflow:hidden}` **cắt mất chân ảnh** — mất luôn hai nút bấm ở đáy hộp
+thoại. Không lỗi, không cảnh báo, auto-fit cũng không kêu vì đo `.side` chứ
+không đo `.fr`.
+
+Nay ảnh tự co vừa cả hai chiều: khung là flex dọc có `min-height:0`, ảnh để
+`height:auto` kèm `max-height:100%`. Ảnh ngang rộng vẫn vẽ y như cũ vì bề ngang
+mới là ràng buộc, chỉ ảnh cao mới co lại.
 
 ### Grid hàng `auto` làm `max-height:100%` của ảnh vô tác dụng — dính 2 lần
 

@@ -1136,7 +1136,7 @@ v3: {
     img:'gia-han.webp',
     items:[
       { t:'Mua mới ngay trên hệ thống', s:'Gói Pro thanh toán xong là có phiếu triển khai' },
-      { t:'Mua và gia hạn nhiều điểm một lần', s:'Ảnh bên là gia hạn tám cửa hàng' },
+      { t:'Mua và gia hạn nhiều điểm một lần', s:'Ảnh bên là gia hạn mười cửa hàng' },
       { t:'Ưu đãi giữ như đang chạy', s:'Gia hạn càng dài quà càng lớn' }
     ],
     note:'Khách mua online điền email giới thiệu **@ipos.vn** thì sale hoặc CS đó được ghi nhận ~~KPI và doanh số~~.' },
