@@ -121,7 +121,7 @@ khối CSS cùng tên trong `css/style.css`.
 | `cover` | Bìa. 5 biến thể: `left` (nền tranh, chữ trái), `devices` (chữ chìm + 3 thiết bị), `split` (chữ trái, tranh phải), `pro` (ảnh trên, mục lục dưới), `matrix` (chữ trái, ba thẻ gói phải, không dùng ảnh) | `variant` `img` `lines` `badge` `packs` |
 | `matrix` | Bảng đối chiếu tính năng ba gói, có dòng tên phân hệ xen giữa | `rows[{c,t,d,v}]` `rows[{g}]` `note` |
 | `mxsum` | Ba thẻ gói kèm thanh độ phủ, dùng cho trang mở và trang chọn gói | `packs` `total` `legend` |
-| `agenda` | Mục lục lưới 2 cột; khai `li` trên mục thì đổi sang trục mốc số, mỗi mốc một thẻ khối nội dung | `items[{t,x,li[]}]` |
+| `agenda` | Mục lục trục mốc số; `li` thì mục nằm trong thẻ, không có `li` thì chỉ một dòng kẻ; `p` là số slide mở đầu | `items[{t,x,p,li[]}]` |
 | `cards3` | Thẻ định nghĩa + dải công thức | `cards` `formula` |
 | `section` | Slide chuyển mục nền gradient, số cỡ lớn | `num` `title` `lead` |
 | `bullets` | Tiêu đề trái + gạch đầu dòng phải, kèm tranh nếu có | `items` `art` `small` |
@@ -414,13 +414,8 @@ Slide 23 – 25 (chốt lại, hỏi đáp, cảm ơn) giữ `kicker` một dòn
 Dòng dẫn nay **ba tầng**: khối › nhóm › mục. `crumb` vốn nhận mảng dài tuỳ ý nên
 không phải sửa gì trong `app.js`, chỉ khai thêm phần tử thứ ba.
 
-**Mục lục đổi từ mười mục phẳng sang bốn khối.** Khai `li` trên mục thì `agenda`
-bỏ lưới thẻ, dựng `.agn2`: một trục dọc bên trái với bốn mốc số, mỗi mốc kèm một
-thẻ chạy hết bề ngang — tên khối ở trên, các mục con nằm dưới ngăn nhau bằng dấu
-`·`. Bốn thẻ chia đều `500px` là vừa kín khung.
-
-Đã thử hai bố cục khác rồi bỏ: lưới hai cột thì nửa dưới slide hở một mảng trắng;
-một cột với tên khối trái và chip mục con phải thì kín khung nhưng nhìn thô.
+**Mục lục đổi từ mười mục phẳng sang bốn khối**, và đổi luôn bố cục — xem mục
+`Mục lục dùng chung một kiểu` bên dưới.
 
 ### Slide mới: mỗi kho một gói riêng — 11/09/2026
 
@@ -453,6 +448,32 @@ cùng nhóm. Hai, đổi tên class chứ **không đè lên `.tbdg`** — đè 
 ngang tự nhiên của ảnh, cột chữ còn ~320px và autofit thu nhỏ xuống `0.84`. Đặt
 `imgw:720` cho slide mỗi kho một gói và `imgw:700` cho slide đổi gói thì cột chữ
 rộng ra và cả hai về đúng cỡ chữ chuẩn.
+
+## Mục lục dùng chung một kiểu — 11/09/2026
+
+Cả ba bộ trình chiếu nay dùng chung một kiểu mục lục: **một trục dọc bên trái,
+mỗi mục một mốc số tròn**. Bộ dựng `agenda` chọn một trong hai dạng:
+
+| Dạng | Khi nào | Trông ra sao |
+|---|---|---|
+| `.agn2.the` | mục có khai `li` | mỗi mục một thẻ trắng, tên khối trên, mục con dưới |
+| `.agn2.ke` | danh sách phẳng | bỏ thẻ, chỉ một dòng kẻ chân mỗi mục |
+
+Lý do tách hai dạng: thẻ trắng chỉ chứa mỗi một cái tên ngắn thì hở một mảng
+trống bên phải, mà bộ Plus có tới bảy mục phẳng — bảy thẻ rỗng là xấu. Ngược lại
+bộ V3 mỗi mục có ba tới tám mục con nên thẻ đủ chữ để lấp.
+
+**Khai `p` là số slide mở đầu mục đó**, in ở lề phải. Đây không phải trang trí:
+dòng kẻ có neo cả hai đầu mới ra dáng trang mục lục, chứ hụt bên phải thì nhìn dở.
+Sửa thứ tự slide thì **phải sửa `p` theo** — không có gì tự kiểm cả.
+
+Bìa `Nội dung` của bộ Pro (`cover` `variant:'split'`) không đi qua `agenda` nhưng
+đã chỉnh CSS `.cvs .ag` cho cùng ngôn ngữ: mốc số tròn, trục dọc, dòng kẻ chân.
+Tranh minh hoạ nửa phải giữ nguyên.
+
+**`.cvs .ag>div>span` phải là `display:block`.** Để `flex` thì chữ và thẻ badge
+thành hai mục flex riêng, dấu cách giữa chúng bị nuốt mất — `Inventory` dính sát
+thẻ `Pro`.
 
 ### Ảnh hộp thoại nổi thì cắt bo góc trong suốt
 

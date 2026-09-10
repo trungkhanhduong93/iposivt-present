@@ -215,13 +215,22 @@ body[data-deck="v3"] .prog i{background:linear-gradient(90deg,#0f6d64,#2fc0b1)}
 .cvs h1{font-size:56px;font-weight:700;letter-spacing:-1.9px;color:var(--ink);
   line-height:1.16;padding-bottom:3px}
 .cvs .rule{width:100px;height:6px;border-radius:3px;background:var(--orange);margin-top:18px}
-.cvs .ag{display:flex;flex-direction:column;gap:11px}
-.cvs .ag>div{display:flex;align-items:center;gap:15px;padding:15px 19px;border-radius:15px;
-  border:1px solid var(--line);background:#fff;box-shadow:var(--sh-1);
-  font-size:16.5px;font-weight:600;color:var(--ink)}
-.cvs .ag i{flex:0 0 34px;height:34px;border-radius:10px;background:var(--acc-t);
-  color:var(--acc-d);display:grid;place-items:center;font-style:normal;
-  font-size:13.5px;font-weight:700}
+/* Mục lục trên bìa Nội dung: cùng ngôn ngữ với `.agn2` của slide mục lục —
+   trục dọc, mốc số tròn, dòng kẻ chân. Trước là bốn thẻ trắng mà thẻ nào cũng
+   chỉ chứa mỗi một cái tên ngắn. */
+.cvs .ag{position:relative;display:flex;flex-direction:column}
+.cvs .ag::before{content:'';position:absolute;left:22px;top:32px;bottom:32px;width:2px;
+  border-radius:2px;background:linear-gradient(180deg,var(--acc),var(--acc-b))}
+.cvs .ag>div{display:flex;align-items:center;gap:19px}
+.cvs .ag i{flex:0 0 46px;height:46px;border-radius:50%;background:#fff;z-index:1;
+  border:2px solid var(--acc-b);color:var(--acc-d);display:grid;place-items:center;
+  font-style:normal;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;
+  box-shadow:0 8px 20px rgba(9,44,78,.10)}
+/* display:block chu dung flex — flex bien chu va the badge thanh hai muc rieng,
+   an mat dau cach giua chung */
+.cvs .ag>div>span{flex:1;min-width:0;display:block;padding:17px 0;
+  font-size:19.5px;font-weight:700;letter-spacing:-.35px;color:var(--ink)}
+.cvs .ag>div+div>span{border-top:1px solid var(--line)}
 /* Tranh full chiều cao, mờ dần về trái để không tạo mép cứng giữa slide */
 .cvs .art{position:absolute;right:0;top:0;bottom:0;width:660px;z-index:1;
   -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 24%);
@@ -315,44 +324,54 @@ body[data-deck="v3"] .cvd .hd h1 .pro{background:linear-gradient(180deg,#0f7a72,
 .endimg{position:absolute;inset:0;background:#fff;display:flex;align-items:center;justify-content:center}
 .endimg img{width:100%;height:100%;object-fit:contain}
 
-/* ── Mục lục ───────────────────────────────────────────────────────────── */
-.agenda{display:grid;grid-template-columns:1fr 1fr;gap:18px 22px;align-content:stretch;
-  width:100%;align-self:center}
-.agenda .it{display:flex;align-items:center;gap:17px;padding:21px 22px;border-radius:15px;
-  border:1px solid var(--line);background:#fff;box-shadow:var(--sh-1);position:relative;overflow:hidden}
-.agenda .it::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--acc)}
-.agenda .it b{flex:0 0 44px;height:44px;border-radius:12px;background:var(--acc-t);color:var(--acc-d);
-  display:grid;place-items:center;font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}
-.agenda .it:last-child:nth-child(odd){grid-column:1 / -1;justify-self:center;
-  width:calc(50% - 11px)}
-.agenda .it>span,.agenda .it .tx>span{font-size:18.5px;font-weight:600;
-  color:var(--ink);line-height:1.3}
-/* ── Mục lục dạng mốc số ───────────────────────────────────────────────────
-   Chỉ có bốn khối nội dung lớn. Xếp thành bốn thẻ thì hoặc thẻ ngắn tũn và hở
-   một mảng trắng, hoặc giãn kín khung thì rỗng ruột. Bỏ thẻ, dựng một trục dọc
-   với bốn mốc số — bốn mốc chia đều 500px là vừa kín, không phải ép gì. */
+/* ── Mục lục ───────────────────────────────────────────────────────────────
+   Một trục dọc bên trái, mỗi mục một mốc số. Trước là lưới thẻ hai cột: thẻ nào
+   cũng chỉ chứa một cái tên ngắn nên hở một mảng trắng bên phải, và bốn mục thì
+   nửa dưới slide trống hẳn. */
 .agn2{position:relative;width:100%;align-self:stretch;display:flex;
-  flex-direction:column;gap:14px}
+  flex-direction:column}
 /* Trục nối các mốc: chạy từ tâm mốc đầu tới tâm mốc cuối, nằm dưới mốc */
-.agn2::before{content:'';position:absolute;left:28px;top:56px;bottom:56px;width:2px;
-  border-radius:2px;background:linear-gradient(180deg,var(--acc),var(--acc-b))}
-.agn2 .it{flex:1;min-height:0;position:relative;display:flex;align-items:center;gap:22px}
-.agn2 .nd{flex:0 0 58px;height:58px;border-radius:50%;background:#fff;z-index:1;
-  border:2px solid var(--acc-b);display:grid;place-items:center;
-  box-shadow:0 8px 20px rgba(9,44,78,.10)}
-.agn2 .nd b{font-size:18.5px;font-weight:700;color:var(--acc-d);
-  font-variant-numeric:tabular-nums;letter-spacing:.4px}
-/* Thẻ chạy hết bề ngang, không thì nửa phải slide bỏ trống một mảng */
-.agn2 .pnl{flex:1;min-width:0;position:relative;overflow:hidden;
-  padding:15px 26px;border-radius:15px;border:1px solid var(--line);
-  background:#fff;box-shadow:var(--sh-1)}
-.agn2 .pnl::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;
-  background:var(--acc)}
-.agn2 .pnl>span{display:block;font-size:22px;font-weight:700;color:var(--ink);
+.agn2::before{content:'';position:absolute;width:2px;border-radius:2px;
+  background:linear-gradient(180deg,var(--acc),var(--acc-b))}
+.agn2 .it{flex:1;min-height:0;position:relative;display:flex;align-items:center}
+.agn2 .nd{border-radius:50%;background:#fff;z-index:1;border:2px solid var(--acc-b);
+  display:grid;place-items:center;box-shadow:0 8px 20px rgba(9,44,78,.10)}
+.agn2 .nd b{color:var(--acc-d);font-weight:700;font-variant-numeric:tabular-nums;
+  letter-spacing:.4px}
+/* Số slide ở lề phải: neo dòng kẻ lại cả hai đầu, không thì nửa phải hụt hẫng */
+.agn2 .pnl{flex:1;min-width:0;display:flex;align-items:center;gap:22px}
+.agn2 .pnl .tx{flex:1;min-width:0}
+.agn2 .pnl>em{flex:0 0 auto;font-style:normal;font-weight:700;color:var(--acc-b);
+  font-variant-numeric:tabular-nums;letter-spacing:.5px}
+.agn2 .pnl .tx>span{display:block;font-weight:700;color:var(--ink);
   line-height:1.25;letter-spacing:-.45px}
-.agn2 .pnl>small{display:block;margin-top:6px;font-size:15px;color:var(--muted);
+
+/* Dạng thẻ — mục có mục con nên thẻ đủ chữ để lấp, chạy hết bề ngang */
+.agn2.the{gap:14px}
+.agn2.the::before{left:28px;top:56px;bottom:56px}
+.agn2.the .it{gap:22px}
+.agn2.the .nd{flex:0 0 58px;height:58px}
+.agn2.the .nd b{font-size:18.5px}
+.agn2.the .pnl{position:relative;overflow:hidden;padding:15px 26px;border-radius:15px;
+  border:1px solid var(--line);background:#fff;box-shadow:var(--sh-1)}
+.agn2.the .pnl::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:var(--acc)}
+.agn2.the .pnl .tx>span{font-size:22px}
+.agn2.the .pnl>em{font-size:19px}
+.agn2.the .pnl .tx>small{display:block;margin-top:6px;font-size:15px;color:var(--muted);
   line-height:1.5}
-.agn2 .pnl>small i{font-style:normal;color:var(--acc-b);margin:0 9px}
+.agn2.the .pnl .tx>small i{font-style:normal;color:var(--acc-b);margin:0 9px}
+
+/* Dạng dòng kẻ — danh sách phẳng, mỗi mục chỉ một cái tên ngắn. Bọc thẻ thì
+   thẻ nào cũng hở một mảng trống bên phải, nên bỏ thẻ, chừa dòng kẻ chân. */
+.agn2.ke::before{left:24px;top:34px;bottom:34px}
+.agn2.ke .it{gap:20px}
+.agn2.ke .nd{flex:0 0 50px;height:50px}
+.agn2.ke .nd b{font-size:16.5px}
+.agn2.ke .it+.it .pnl{border-top:1px solid var(--line)}
+.agn2.ke .pnl{align-self:stretch}
+.agn2.ke .pnl .tx>span{font-size:23px}
+.agn2.ke .pnl>em{font-size:19px}
 
 /* ── Thẻ định nghĩa ────────────────────────────────────────────────────── */
 .defs{display:flex;flex-direction:column;gap:22px;width:100%;justify-content:center;align-self:stretch}

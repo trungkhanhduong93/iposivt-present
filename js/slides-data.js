@@ -38,13 +38,13 @@ plus: {
   { n:2, type:'agenda',
     title:'Nội dung',
     items:[
-      { t:'Tại sao cần quản lý kho' },
-      { t:'Giới thiệu iPOS Inventory Plus' },
-      { t:'Tính năng' },
-      { t:'Giá trị mang lại' },
-      { t:'Điểm khác biệt giữa Plus & Pro' },
-      { t:'Chân dung khách hàng' },
-      { t:'Hỏi đáp', x:1 }
+      { t:'Tại sao cần quản lý kho',        p:4 },
+      { t:'Giới thiệu iPOS Inventory Plus', p:6 },
+      { t:'Tính năng',                      p:9 },
+      { t:'Giá trị mang lại',               p:21 },
+      { t:'Điểm khác biệt giữa Plus & Pro', p:25 },
+      { t:'Chân dung khách hàng',           p:26 },
+      { t:'Hỏi đáp', x:1,                   p:27 }
     ] },
 
   /* 3 ─ Giải thích từ ngữ ----------------------------------------------- */
@@ -1024,13 +1024,13 @@ v3: {
     /* Bốn khối nội dung lớn, mỗi khối liệt kê các mục con — trùng đúng với
        dòng dẫn đầu mỗi slide để người xem lần ra mình đang ở đâu. */
     items:[
-      { t:'Mục tiêu cập nhật {{V3}}',
+      { t:'Mục tiêu cập nhật {{V3}}', p:3,
         li:['Tổng quan','Ba mục tiêu','Bốn thay đổi lớn'] },
-      { t:'Gói bản quyền {{V3}} — với khách hàng',
+      { t:'Gói bản quyền {{V3}} — với khách hàng', p:6,
         li:['Chuyển đổi tự động','Ba gói có gì','Mỗi kho một gói riêng'] },
-      { t:'Gói bản quyền {{V3}} — chính sách bán hàng',
+      { t:'Gói bản quyền {{V3}} — chính sách bán hàng', p:9,
         li:['Đổi gói và hết hạn','Mua và gia hạn','Thay đổi khi bán hàng'] },
-      { t:'Các thay đổi lớn trên {{V3}}',
+      { t:'Các thay đổi lớn trên {{V3}}', p:12,
         li:['Menu','Quy trình hoá','Tiện ích bổ sung','Bộ lọc','Trợ lý iOne',
             'Mở rộng','Báo cáo','Chuyển đổi'] }
     ] },

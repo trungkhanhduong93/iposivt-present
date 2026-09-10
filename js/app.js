@@ -185,20 +185,19 @@ cover (s, d) {
 
 end (s, d) { return `<div class="endimg nodeco"><img src="${d.dir}${s.img}" alt=""></div>`; },
 
-/* Mục lục hai dạng: lưới thẻ phẳng, hoặc trục mốc số khi mục có khai `li` —
-   tên khối nội dung lớn, các mục con nằm ngay dưới. */
+/* Mục lục: trục dọc bên trái, mỗi mục một mốc số. Mục nào khai `li` thì đựng
+   trong thẻ kèm dòng mục con; danh sách phẳng thì bỏ thẻ, chỉ một dòng kẻ chân
+   — thẻ trắng chỉ chứa mỗi cái tên ngắn thì hở một mảng trống bên phải. */
 agenda (s) {
-  if ((s.items || []).some(it => it.li))
-    return head(kick(s, 'Mục lục'), s.title) + `<div class="s-body"><div class="agn2">
-      ${s.items.map((it, i) => `<div class="it${xf(it)}">
-        <div class="nd"><b>${String(i + 1).padStart(2, '0')}</b></div>
-        <div class="pnl"><span>${md(it.t)}</span><small>${
-          (it.li || []).map(x => md(x)).join('<i>·</i>')}</small></div>
-      </div>`).join('')}
-    </div></div>`;
-  return head(kick(s, 'Mục lục'), s.title) + `<div class="s-body"><div class="agenda">
+  const the = (s.items || []).some(it => it.li);
+  return head(kick(s, 'Mục lục'), s.title) + `<div class="s-body"><div class="agn2 ${
+    the ? 'the' : 'ke'}">
     ${s.items.map((it, i) => `<div class="it${xf(it)}">
-      <b>${String(i + 1).padStart(2, '0')}</b><span>${md(it.t)}</span></div>`).join('')}
+      <div class="nd"><b>${String(i + 1).padStart(2, '0')}</b></div>
+      <div class="pnl"><div class="tx"><span>${md(it.t)}</span>${it.li ? `<small>${
+        it.li.map(x => md(x)).join('<i>·</i>')}</small>` : ''}</div>${
+        it.p ? `<em>${String(it.p).padStart(2, '0')}</em>` : ''}</div>
+    </div>`).join('')}
   </div></div>`;
 },
 
@@ -817,7 +816,7 @@ T.packs = function (s, d) {
    bìa, chuyển mục, ảnh toàn slide, video, hỏi đáp, cảm ơn.
    Space đi từng bước. Mũi tên phải bỏ qua các bước còn lại và sang slide sau. */
 const RV = {
-  agenda    : '.agenda .it,.agn2 .it',
+  agenda    : '.agn2 .it',
   cards3    : '.defs .c, .defs .fx',
   bullets   : '.bl li',
   hero      : '.hero li',
