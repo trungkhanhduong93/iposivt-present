@@ -366,6 +366,28 @@ Cách chạy được là kiểu `twoshot`: chia bề ngang theo đúng tỉ l�
 `3.8 : 1`, nên hai ảnh cao bằng nhau; chú thích xuống hai thẻ bên dưới thay vì
 nhét dưới từng ảnh. Thêm ảnh mới thì tính lại tỉ lệ đó ở `.tsh .a0` và `.tsh .a1`.
 
+### Đợt ba — 10/09/2026
+
+| Slide | Đổi gì |
+|---|---|
+| `CHUYỂN ĐỔI TỰ ĐỘNG` | logo ba gói to hơn, `148×86` thay cho `112×64` |
+| `BA GÓI CÓ GÌ` | thêm **thẻ nhấn mạnh** của từng gói và đủ tính năng như slide 5 bản của sếp |
+| `ĐỔI GÓI LÚC NÀO CŨNG ĐƯỢC` | nhấn Standard miễn phí không giới hạn thời gian |
+| `MUA VÀ GIA HẠN` | bóng khung trình duyệt đậm hơn |
+| `GỌN VÀ NHANH HƠN` | đổi mục cuối sang cấu hình tham số lọc |
+| `ỨNG DỤNG AI — TRỢ LÝ iOne` | tên viết đúng chữ i thường |
+| `V3 CÓ LỢI GÌ CHO NGƯỜI DÙNG` | tiêu đề và ba ý mới |
+| `Hỏi đáp` | đổi câu dẫn |
+
+**Tên riêng có chữ thường phải bọc `<b>`.** Tiêu đề và dòng dẫn đều có
+`text-transform:uppercase`, nên `iOne` viết trần sẽ ra `IONE`. Bọc `<b>iOne</b>`
+thì hai luật `.s-title b` và `.kicker b` trả lại chữ thường mà không in đậm.
+
+**Ảnh chụp màn nào cũng nên có khung giả lập.** Hàm `mock(f, dir, k)` bọc ảnh vào
+khung điện thoại `'ph'` hoặc khung trình duyệt `'brw'`; để trống thì ảnh trần.
+Khai bằng `mock:['ph','brw']` trên slide `device` và `twoshot`, hoặc `k:'ph'`
+trên từng thẻ của `trio`. Cờ `frame:1` cũ vẫn chạy, nghĩa là bọc điện thoại hết.
+
 ### Màu nhận diện
 
 Mỗi bộ một màu, đổi qua biến `--acc` theo `body[data-deck="…"]`: Plus xanh

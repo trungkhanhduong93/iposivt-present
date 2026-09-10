@@ -566,7 +566,7 @@ pro: {
   /* 17 ─ Trợ lý iOne (Trum bổ sung 09/09/2026, nội dung từ tài liệu V3) -- */
   { n:17, type:'trio',
     crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Trợ lý AI'],
-    title:'TRỢ LÝ <b>iONE</b> HỖ TRỢ NHẬP LIỆU',
+    title:'TRỢ LÝ <b>iOne</b> HỖ TRỢ NHẬP LIỆU',
     items:[
       { f:'ione-1.jpg', t:'Quét ảnh tạo phiếu nhập mua',
         s:'Chụp hoá đơn hoặc phiếu giao hàng của nhà cung cấp, Trợ lý đọc và điền sẵn dòng hàng, số lượng, đơn giá.' },
@@ -1091,23 +1091,26 @@ v3: {
     total:'99 tính năng',
     packs:[
       { k:'st', logo:'logo-ivt-standard.png', n:'28',
-        t:'Miễn phí cho mọi khách hàng.',
-        li:['Nhập mua và công nợ nhà cung cấp',
-            'Kho hàng bán thẳng: tồn kho, kiểm kê',
-            'Mười lăm báo cáo quản trị kho và đối soát'] },
+        tag:'TÍNH NĂNG KHO **FREE**',
+        t:'Miễn phí cho toàn bộ khách hàng.',
+        li:['Nhập mua',
+            'Công nợ nhà cung cấp',
+            'Kho hàng bán thẳng: tồn kho, kiểm kê'] },
       { k:'pl', logo:'logo-ivt-plus.png', n:'46',
-        t:'Gồm gói Standard, bằng bản IVT Lite cũ.',
+        tag:'BAO GỒM TÍNH NĂNG **IVT Lite** CŨ',
+        t:'Gồm trọn gói Standard, cộng thêm:',
         li:['Trừ kho theo định lượng',
-            'Kho nguyên vật liệu và hàng hoá',
+            'Kho nguyên liệu và hàng hoá',
             'Quản lý giá vốn',
             'Quản lý hàng hỏng huỷ',
             'Trợ lý iOne bản cơ bản'] },
       { k:'pr', logo:'logo-ivt-pro.png', n:'99',
-        t:'Gồm gói Plus, bằng bản IVT Pro hiện tại.',
+        tag:'BAO GỒM TÍNH NĂNG **IVT Pro** HIỆN TẠI',
+        t:'Gồm trọn gói Plus, cộng thêm:',
         li:['Điều chuyển hàng giữa các kho',
-            'Đặt hàng nhà cung cấp và kho tổng',
-            'Sơ chế, chế biến, sản xuất',
-            'Bán hàng và công nợ khách, nội bộ',
+            'Đặt hàng nhà cung cấp, kho tổng, bếp trung tâm',
+            'Quản lý sản xuất: sơ chế và chế biến',
+            'Bán hàng và công nợ khách hàng, nội bộ',
             'Vận hành nhượng quyền',
             'Trợ lý iOne bản nâng cao'] }
     ] },
@@ -1121,7 +1124,7 @@ v3: {
       { t:'Khách mới mặc định gói Standard', s:'30 ngày đầu mở full gói Pro, hết thử không mua thì về Standard' },
       { t:'Nâng lúc nào cũng được, hạ khi hạn còn dưới 60 ngày', s:'Ngày còn lại quy ra tiền, chia theo đơn giá gói mới' },
       { t:'Lên gói Pro có thêm phí triển khai', s:'Áp cho mô hình kho tổng và kho cửa hàng' },
-      { t:'Hết hạn không gia hạn thì về Standard', s:'Dữ liệu giữ nguyên, mở lại gói là dùng tiếp' }
+      { t:'Hết hạn không gia hạn thì tự về Standard', s:'Standard miễn phí không giới hạn thời gian, dữ liệu giữ nguyên' }
     ] },
 
   /* 8 ─ Mua và gia hạn ngay trên hệ thống -------------------------------- */
@@ -1175,7 +1178,7 @@ v3: {
   { n:12, type:'device',
     crumb:['MENU {{V3}}','Gom theo nhóm nghiệp vụ'],
     title:'MENU ĐIỀU HƯỚNG MỚI',
-    imgs:['menu.webp'], colw:330,
+    imgs:['menu.webp'], colw:330, mock:['brw'],
     items:[
       { t:'Bỏ menu Giá vốn', s:'Tính giá vốn chuyển về menu Kế toán' },
       { t:'Cài đặt ➜ Thiết lập quy về một nơi', s:'Công nợ đầu kỳ, Quy tắc giá vốn, Định mức tồn kho, Nhân viên (trước là Tài khoản), Kế hoạch tự động' },
@@ -1214,19 +1217,19 @@ v3: {
       { t:'Điều kiện thường dùng ra ngoài', s:'Nằm ngay trên thanh công cụ' },
       { t:'Điều kiện nâng cao thu một chỗ', s:'Mở ra khi cần dùng tới' },
       { t:'Ít click hơn', s:'Ra đúng dữ liệu muốn xem nhanh hơn' },
-      { t:'Trạng thái lọc luôn hiện rõ', s:'Không còn bị xem thiếu dữ liệu' }
+      { t:'Cấu hình tham số lọc', s:'Tuỳ biến ô lọc nào mang ra ngoài để lọc cho nhanh' }
     ] },
 
   /* 13 ─ Trợ lý iOne ----------------------------------------------------- */
   { n:16, type:'trio',
-    crumb:['TRỢ LÝ {{V3}}','iOne'],
-    title:'ỨNG DỤNG AI — TRỢ LÝ iONE',
+    crumb:['TRỢ LÝ {{V3}}','<b>iOne</b>'],
+    title:'ỨNG DỤNG AI — TRỢ LÝ <b>iOne</b>',
     items:[
-      { f:'ione-quet-anh.webp', t:'Quét ảnh tạo phiếu nhập mua',
+      { f:'ione-quet-anh.webp', k:'ph', t:'Quét ảnh tạo phiếu nhập mua',
         s:'Chụp hoá đơn hoặc phiếu giao hàng, Trợ lý đọc và điền sẵn dòng hàng, số lượng, đơn giá. Nhà cung cấp, kho và hàng hoá được dò trong danh mục, thiếu thì tạo mới ngay tại chỗ.' },
-      { f:'ione-chat.webp', t:'Chat để lập phiếu nhập mua',
+      { f:'ione-chat.webp', k:'ph', t:'Chat để lập phiếu nhập mua',
         s:'Gõ yêu cầu bằng tiếng Việt tự nhiên, Trợ lý dựng phiếu nháp để bạn kiểm tra và lưu.' },
-      { f:'ione-giong-noi.webp', t:'Kiểm kê bằng giọng nói',
+      { f:'ione-giong-noi.webp', k:'ph', t:'Kiểm kê bằng giọng nói',
         s:'Đọc tên hàng và số lượng khi đang đứng trong kho — không cần rời tay khỏi hàng để nhập máy.' }
     ] },
 
@@ -1234,7 +1237,7 @@ v3: {
   { n:17, type:'device',
     crumb:['MỞ RỘNG {{V3}}','App Manager và CMS FABi'],
     title:'DÙNG KHO NGAY TRÊN FABi',
-    imgs:['fabi-app.webp','fabi-cms.webp'], colw:440,
+    imgs:['fabi-app.webp','fabi-cms.webp'], colw:440, mock:['ph','brw'],
     items:[
       { t:'Trên app FABi Manager', s:'Vào Ứng dụng ➜ Kho & Cung ứng' },
       { t:'Trên CMS FABi', s:'Vào thẳng menu Kho & Cung ứng trên thanh menu chung' }
@@ -1268,7 +1271,7 @@ v3: {
     crumb:['CHUYỂN ĐỔI {{V3}}','Thời gian thích nghi'],
     title:'TỚI 10/10/2026 VẪN QUAY LẠI BẢN CŨ ĐƯỢC',
     sub:'Dữ liệu dùng chung nên chuyển qua lại không mất gì. Sau ngày đó giao diện chuyển hẳn, ~~không quay lại được nữa~~.',
-    imgs:['quay-lai-web.webp','quay-lai-app.webp'],
+    imgs:['quay-lai-web.webp','quay-lai-app.webp'], mock:['brw',''],
     items:[
       '**Trên Web** — menu tài khoản ➜ Quay lại giao diện v2, hoặc nút Quay lại bản cũ ngay trong popup Có gì mới',
       '**Trên App** — popup Phiên bản mới hiện lên khi mở app ➜ Quay lại bản cũ'
@@ -1277,17 +1280,18 @@ v3: {
   /* 17 ─ Chốt lại -------------------------------------------------------- */
   { n:21, type:'pillars',
     kicker:'CHỐT LẠI',
-    title:'V3 ĐỔI GÌ CHO NGƯỜI DÙNG',
+    title:'V3 CÓ LỢI GÌ CHO NGƯỜI DÙNG',
     items:[
-      { n:'01', c:'#12988c', t:'Tìm chức năng nhanh hơn vì menu theo đúng dòng chảy nghiệp vụ' },
-      { n:'02', c:'#1b6fe0', t:'Ít thao tác hơn để ra đúng dữ liệu cần xem' },
-      { n:'03', c:'#6d3fd4', t:'Bớt việc nhập tay nhờ Trợ lý iOne và quy trình có hướng dẫn' }
+      { n:'01', c:'#12988c', t:'**Thao tác và tìm kiếm thuận tiện hơn** với cấu trúc tổ chức phân hệ mới theo nghiệp vụ.' },
+      { n:'02', c:'#1b6fe0', t:'**Quy trình rõ ràng, ví dụ dễ hiểu**, tối ưu hiệu năng để mọi việc nhanh chóng hơn.' },
+      { n:'03', c:'#6d3fd4', t:'**Ứng dụng AI.** Trợ lý iOne thử nghiệm một vài tính năng và sẽ mở rộng trong thời gian tới.' }
     ] },
 
   /* 18 ─ Hỏi đáp --------------------------------------------------------- */
   { n:22, type:'qa',
     num:'05',
-    title:'Hỏi đáp' },
+    title:'Hỏi đáp',
+    lead:'Mời AnhChiEm mạnh dạn đặt câu hỏi. Đừng sợ!' },
 
   /* 19 ─ Hỗ trợ ---------------------------------------------------------- */
   { n:23, type:'thanks',

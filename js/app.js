@@ -82,6 +82,17 @@ function frameH (n, colW, colH, gap) {
 const framed = (files, dir, fs) => files.map(f =>
   `<div class="pf"${fs}><img src="${dir}${f}" alt="" data-zoom></div>`).join('');
 
+/* Bọc một ảnh vào khung giả lập: 'ph' khung điện thoại, 'brw' khung trình duyệt,
+   để trống thì ảnh trần. Ảnh chụp màn nào cũng nên có khung — không thì trông
+   như ảnh cắt dở dán vào slide. */
+const mock = (f, dir, k, fs) =>
+  k === 'brw'
+    ? `<div class="brw"><div class="bar3"><i></i><i></i><i></i></div>
+         <img src="${dir}${f}" alt="" data-zoom></div>`
+    : k === 'ph'
+      ? `<div class="pf"${fs || ''}><img src="${dir}${f}" alt="" data-zoom></div>`
+      : `<img src="${dir}${f}" alt="" data-zoom>`;
+
 /* ── Bộ dựng từng loại slide ─────────────────────────────────────────────── */
 const head = (kicker, title, sub, cls) => `
   <div class="s-head">
@@ -212,7 +223,8 @@ mxsum (s) {
         <div class="tp">
           <div class="lg"><img src="assets/${p.logo}" alt="">
             <span class="bdg">${esc(PK_NAME[p.k] || '')}</span></div>
-          <div class="n"><b>${esc(p.n)}</b><span>/ ${esc(s.total)}</span></div></div>
+          <div class="n"><b>${esc(p.n)}</b><span>/ ${esc(s.total)}</span></div>
+          ${p.tag ? `<div class="tag">${md(p.tag)}</div>` : ''}</div>
         <div class="cov"><i style="width:${Math.round(+p.n / max * 100)}%"></i></div>
         <p>${md(p.t)}</p>
         <ul>${(p.li || []).map(x => `<li>${md(x)}</li>`).join('')}</ul>
@@ -375,7 +387,7 @@ flow (s) {
 trio (s, d) {
   return head(kick(s), s.title, s.sub, 'up') + `<div class="s-body"><div class="trio">
     ${s.items.map((it, i) => `<div class="c">
-      <div class="ph"><img src="${d.dir}${it.f}" alt="" data-zoom></div>
+      <div class="ph">${mock(it.f, d.dir, it.k)}</div>
       <div class="tx"><b><i>${String(i + 1).padStart(2, '0')}</i>${esc(it.t)}</b>
         <span>${md(it.s)}</span></div>
     </div>`).join('')}
@@ -400,7 +412,7 @@ webgrid (s, d) {
 twoshot (s, d) {
   return head(kick(s), s.title, s.sub, 'up') + `<div class="s-body"><div class="tsh">
     <div class="row">${s.imgs.map((f, i) =>
-      `<div class="a a${i}"><img src="${d.dir}${f}" alt="" data-zoom></div>`).join('')}</div>
+      `<div class="a a${i}">${mock(f, d.dir, (s.mock || [])[i])}</div>`).join('')}</div>
     <div class="pts">${s.items.map((it, i) => `
       <div class="p"><b>${String(i + 1).padStart(2, '0')}</b><span>${md(it)}</span></div>`).join('')}</div>
   </div></div>`;
@@ -444,8 +456,10 @@ device (s, d) {
      Nhiều máy trong một cột thì phải hạ chiều cao, không thì tràn ra ngoài cột. */
   const cw = s.colw || 400;                    // bề ngang cột ảnh, nới ra khi nhiều máy
   const fs = s.frame ? frameH(s.imgs.length, cw, COL_H, 14) : '';
-  const shots = `<div class="shots">${s.frame ? framed(s.imgs, d.dir, fs)
-    : s.imgs.map(i => `<img src="${d.dir}${i}" alt="" data-zoom>`).join('')}</div>`;
+  /* `mock` khai khung cho từng ảnh; `frame:1` là lối tắt cũ, bọc điện thoại hết */
+  const mk = s.mock || (s.frame ? s.imgs.map(() => 'ph') : []);
+  const shots = `<div class="shots">${
+    s.imgs.map((f, i) => mock(f, d.dir, mk[i], fs)).join('')}</div>`;
   const list = `<div class="lst${s.grid === 2 ? ' c2' : ''}">${s.items.map((it, i) => `
     <div class="it${xf(it)}"><b>${i + 1}</b><div class="tx">
       <span>${md(it.t)}</span>${it.s ? `<small>${md(it.s)}</small>` : ''}
@@ -578,7 +592,7 @@ qa (s) {
       <div class="num">PHẦN ${esc(s.num)}</div>
       <h1>${esc(s.title)}</h1>
       <div class="ln"></div>
-      <p>Mời đặt câu hỏi — tình huống thực tế tại cửa hàng.</p>
+      <p>${md(s.lead || 'Mời đặt câu hỏi — tình huống thực tế tại cửa hàng.')}</p>
     </div>
   </div>`;
 },
