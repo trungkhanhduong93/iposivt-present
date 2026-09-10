@@ -66,6 +66,10 @@ const SHOT_R = 1272 / 2772;
 const COL_H = 500;          // chiều cao trống thật của .s-body ở slide có tiêu đề
 const PAD   = 12;           // viền trắng của khung máy (.pf padding 6px hai bên)
 /* Ngưỡng đổi sang chế độ xấp trang — phải khớp @media trong style.css. */
+/* Tên gói viết thành chữ riêng: chữ Standard, Plus, Pro nằm sẵn trong file logo
+   nhưng bé xíu, chiếu lên màn hình đọc không ra. */
+const PK_NAME = { st: 'STANDARD', pl: 'PLUS', pr: 'PRO' };
+
 const MOB_W = 900;
 const isMob = () => innerWidth < MOB_W;
 function frameH (n, colW, colH, gap) {
@@ -205,7 +209,9 @@ mxsum (s) {
   return head(kick(s, 'So sánh tính năng'), s.title, s.sub, 'up') +
     `<div class="s-body"><div class="mxs">
       <div class="row">${s.packs.map(p => `<div class="c ${p.k}">
-        <div class="tp"><img src="assets/${p.logo}" alt="">
+        <div class="tp">
+          <div class="lg"><img src="assets/${p.logo}" alt="">
+            <span class="bdg">${esc(PK_NAME[p.k] || '')}</span></div>
           <div class="n"><b>${esc(p.n)}</b><span>/ ${esc(s.total)}</span></div></div>
         <div class="cov"><i style="width:${Math.round(+p.n / max * 100)}%"></i></div>
         <p>${md(p.t)}</p>
@@ -444,7 +450,8 @@ webshot (s, d) {
     ? `<div class="brw"><div class="bar3"><i></i><i></i><i></i></div>
          <img src="${d.dir}${s.img}" alt="" data-zoom></div>`
     : `<img src="${d.dir}${s.img}" alt="" data-zoom>`;
-  return head(kick(s), s.title, '', 'up') + `<div class="s-body"><div class="vid">
+  return head(kick(s), s.title, '', 'up') + `<div class="s-body"><div class="vid${
+    s.imgw ? ' fixw' : ''}"${s.imgw ? ` style="--iw:${s.imgw}px"` : ''}>
     <div class="fr shot${s.frame ? ' brwrap' : ''}">${shot}</div>
     <div class="side" data-fit>
       ${s.items ? `<div class="lst">${s.items.map((it, i) => `

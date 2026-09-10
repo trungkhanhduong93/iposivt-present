@@ -604,6 +604,9 @@ body[data-deck="pro"] .tree .g>b{background:linear-gradient(120deg,var(--orange-
   stroke-linecap:round;stroke-linejoin:round}
 
 /* ── Video ─────────────────────────────────────────────────────────────── */
+/* Ảnh cao, tỉ lệ hẹp thì để khung tự do sẽ thừa hai dải trắng hai bên. Khai
+   `imgw` để ghim bề ngang cột ảnh, phần dư trả hết cho cột chữ. */
+.vid.fixw{grid-template-columns:var(--iw) minmax(300px,1fr)}
 .vid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:34px;width:100%;
   min-height:0;align-items:stretch}
 .vid .fr{position:relative;border-radius:16px;overflow:hidden;background:#0b1420;
@@ -625,7 +628,7 @@ body[data-deck="pro"] .tree .g>b{background:linear-gradient(120deg,var(--orange-
 .pil[style*="--pc:2"]{align-items:stretch;align-self:stretch}
 /* Slide ít thẻ thì đừng kéo cao hết khung, thẻ rỗng ruột nhìn rất trơ */
 .pil.fit{align-items:stretch;align-self:center}
-.pil.fit .c{padding:30px 28px 28px;gap:14px}
+.pil.fit .c{padding:30px 28px 28px;gap:14px;justify-content:flex-start}
 .pil.fit .c p{font-size:20.5px;line-height:1.6}
 .pil .c{--mc:var(--acc)}
 .pil .c{position:relative;padding:34px 28px 30px;border-radius:18px;background:#fff;
@@ -758,6 +761,7 @@ body[data-deck="pro"] .thx .top{background:linear-gradient(122deg,#7a3c05,#c2660
 .qa{position:absolute;inset:0;display:grid;place-items:center;
   background:linear-gradient(120deg,var(--blue-xd),var(--blue-d) 58%,var(--blue))}
 body[data-deck="pro"] .qa{background:linear-gradient(120deg,#7a3c05,#c2660a 58%,var(--orange))}
+body[data-deck="v3"] .qa{background:linear-gradient(120deg,#0a4a45,#0f6d64 58%,#17a89a)}
 .qa .in{position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;
   align-items:center;gap:18px}
 .qa .num{font-size:14px;font-weight:700;letter-spacing:3.4px;color:rgba(255,255,255,.6)}
@@ -1274,8 +1278,15 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
   gap:14px;border-top:4px solid var(--st)}
 .mxs .c.pl{border-top-color:var(--pl)}
 .mxs .c.pr{border-top-color:var(--pr)}
-.mxs .tp{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
-.mxs .tp img{height:26px;width:auto;object-fit:contain}
+/* Logo và thẻ tên gói một hàng, con số một hàng: nhét cả ba vào một hàng thì
+   chữ "/ 99 tính năng" bị ép xuống dòng, nhìn như lỗi. */
+.mxs .tp{display:flex;flex-direction:column;gap:11px}
+.mxs .lg{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.mxs .tp img{height:30px;width:auto;object-fit:contain}
+.mxs .bdg{padding:4px 12px 5px;border-radius:999px;color:#fff;font-size:11.5px;
+  font-weight:700;letter-spacing:1.1px;line-height:1;background:var(--st);white-space:nowrap}
+.mxs .c.pl .bdg{background:var(--pl)}
+.mxs .c.pr .bdg{background:linear-gradient(180deg,#9c7220,#ac8129 46%,#cdb46e)}
 .mxs .n{display:flex;align-items:baseline;gap:5px}
 .mxs .n b{font-size:31px;font-weight:700;color:var(--ink);letter-spacing:-1px;line-height:1}
 .mxs .n span{font-size:13px;color:var(--muted)}

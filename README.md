@@ -338,6 +338,30 @@ phóng~~.
 lưới thành ba hàng, cao quá khung 500px, chữ trong ô bị cắt mất dòng cuối. Giữ
 tám ô, ô cuối gọi tên cả hai nhóm.
 
+### Đợt hai: lấy thêm văn và bố cục lại — 10/09/2026
+
+| Slide | Đổi gì |
+|---|---|
+| `VÌ SAO CÓ BẢN NÀY` | văn theo slide 3 bản của sếp, ba thẻ chỉnh cho dài bằng nhau |
+| `BA GÓI CÓ GÌ` | thêm tính năng theo slide 5 bản của sếp, logo to hơn và **thêm thẻ chữ tên gói** |
+| `ĐỔI GÓI LÚC NÀO CŨNG ĐƯỢC` | gộp slide chính sách gói với slide mua, nâng, hạ làm một |
+| `MUA VÀ GIA HẠN` | khai `imgw` để cột ảnh hết thừa hai dải trắng, văn theo slide 11 bản của sếp |
+| `MỖI NGHIỆP VỤ CÓ THÊM PHẦN QUY TRÌNH` | ảnh mới, và mọi nhóm nghiệp vụ đều đã có quy trình chứ không riêng sản xuất |
+| `ỨNG DỤNG AI — TRỢ LÝ iONE` | đổi tiêu đề |
+| `SỬA DANH MỤC NGAY TRÊN APP` | bọc khung điện thoại |
+| `DANH SÁCH BÁO CÁO TỔ CHỨC LẠI` | đổi sang `webgrid dir:'col'` cho ảnh trải hết bề ngang |
+| `TỚI 10/10/2026 VẪN QUAY LẠI BẢN CŨ ĐƯỢC` | hai ảnh Web và App, kiểu `trio` |
+| `Hỏi đáp` | slide mới, đặt ngay trước slide cảm ơn |
+
+**Chữ tên gói phải viết riêng.** Logo `logo-ivt-*.png` đã có sẵn chữ Standard,
+Plus, Pro nhưng bé xíu, phóng logo lên vẫn đọc không ra. Nay `mxsum` in thêm một
+thẻ chữ, tên lấy từ bảng `PK_NAME` theo mã gói.
+
+**Ảnh web ngang không đứng cạnh ảnh điện thoại được.** Tỉ lệ 2.5 và 0.65 nhét
+chung một hàng thì hoặc ảnh web bé tí, hoặc điện thoại tràn. Đã thử chia bề ngang
+theo tỉ lệ rồi canh chân — vẫn chừa một mảng trắng lớn phía trên. Cách chạy được
+là `trio`: hai cột bằng nhau, ảnh canh chân, chữ nằm dưới mỗi ảnh.
+
 ### Màu nhận diện
 
 Mỗi bộ một màu, đổi qua biến `--acc` theo `body[data-deck="…"]`: Plus xanh
