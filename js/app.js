@@ -468,7 +468,10 @@ video (s, d) {
 },
 
 pillars (s) {
-  return head(s.kicker || (s.num ? `PHẦN ${esc(s.num)}` : ''), s.title, '', 'up') +
+  /* Phải đọc `crumb` như mọi kiểu khác, không thì slide nào khai crumb là mất
+     hẳn dòng dẫn mà chẳng báo gì. */
+  return head(s.crumb ? kick(s) : (s.kicker || (s.num ? `PHẦN ${esc(s.num)}` : '')),
+    s.title, '', 'up') +
     `<div class="s-body"><div class="pil${s.fit ? ' fit' : ''}" style="--pc:${s.cols || s.items.length}">
       ${s.items.map((p, i) => `<div class="c"${p.c ? ` style="--mc:${p.c}"` : ''}>
         <b>${esc(p.n || String(i + 1).padStart(2, '0'))}</b><p>${md(p.t)}</p>

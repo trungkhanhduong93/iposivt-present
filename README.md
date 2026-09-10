@@ -7,7 +7,7 @@ tự scale vừa màn hình, **không bao giờ sinh thanh cuộn**.
 |---|---|
 | Bản chạy | **https://iposivt-present.pages.dev** |
 | Repo | https://github.com/trungkhanhduong93/iposivt-present |
-| Số slide | Plus **28** · Pro **23** · So sánh tính năng **18** · Cập nhật V3 **18** |
+| Số slide | Plus **28** · Pro **23** · So sánh tính năng **18** · Cập nhật Inventory V3 **23** |
 | Mở tại máy | bấm đúp `index.html` |
 
 Gửi kèm số slide được: `iposivt-present.pages.dev/#pro-13` mở thẳng slide Quy trình kiểm kê.
@@ -21,7 +21,7 @@ Gửi kèm số slide được: `iposivt-present.pages.dev/#pro-13` mở thẳng
 | **Plus** | `TRAINING IVT LITE - NHAN VIEN.pptx` (26 slide) + phần Trum bổ sung |
 | **Pro** | `Demo IVT Pro.pptx` (20 slide) + phần Trum bổ sung |
 | **So sánh tính năng** | `assets/So-sanh-IVT-Standard-Plus-Pro.html` — bảng đối chiếu 99 tính năng. Sửa số liệu thì sửa mảng `DATA` trong file đó, cả bộ slide lẫn bản gốc đều đọc từ đấy |
-| **Cập nhật V3** | bài giới thiệu nội bộ `IVT V3 Introduction` (09/04/2026) |
+| **Cập nhật Inventory V3** | bài giới thiệu nội bộ `IVT V3 Introduction` (09/04/2026), bổ sung nội dung từ bản `iPOS-Inventory-3.0` của sếp (10/09/2026) |
 
 Chữ trong `js/slides-data.js` là **nguyên văn từ PPTX**, kể cả chữ nằm trong
 SmartArt — 33 khối SmartArt đã bóc ra và dựng lại bằng HTML nên zoom vẫn nét.
@@ -201,7 +201,7 @@ khung cắt mất đáy — đã dính một lần ở slide Quay lại bản c�
 | `Esc` | mở / đóng lưới slide |
 | `F` | toàn màn hình |
 | `X` | hiện đánh dấu nội dung bổ sung + ghi chú |
-| `1` `2` `3` `4` | chuyển bộ Plus / Pro / So sánh / Cập nhật V3 |
+| `1` `2` `3` `4` | chuyển bộ Plus / Pro / So sánh / Cập nhật Inventory V3 |
 | `P` | bản in dạng cuộn dọc, mỗi slide một trang |
 | `P` | mở bản gốc dạng cuộn dọc (chỉ có ở bộ So sánh) |
 | `?` | bảng phím tắt |
@@ -283,7 +283,7 @@ Cuộn hết cỡ vẫn còn ba trang cuối nằm dưới mép trên, nên có 
 
 ---
 
-## 7. Bộ Cập nhật V3
+## 7. Bộ Cập nhật Inventory V3
 
 Bộ thứ tư dựng từ bài giới thiệu nội bộ về phiên bản V3. Nó **có cả phần chính
 sách bán hàng, KPI và hoa hồng**.
@@ -303,6 +303,36 @@ Muốn khoá lại thì **đừng dựng lại cổng mã** — web tĩnh nên t
 trong `js/slides-data.js`, ai xem mã nguồn cũng đọc được, cổng mã chỉ chặn người
 xem tình cờ. Bật **Cloudflare Access** (Zero Trust, bản free 50 user) cho cả
 trang mới là chặn thật.
+
+### Nội dung lấy từ bản của sếp — 10/09/2026
+
+Bản `iPOS-Inventory-3.0` của sếp có 18 slide, cùng nội dung nhưng bố cục theo
+`2.1 … 2.11`. Đã đối chiếu và lấy sang mười nội dung bộ này chưa có, **viết lại
+bằng giọng văn của bộ này**, giữ nguyên theme, icon, màu và chuyển động:
+
+| Nội dung lấy sang | Nằm ở slide nào |
+|---|---|
+| Vì sao có bản này: gom một sản phẩm, bắt kịp đối thủ, đưa AI vào | slide mới `VÌ SAO CÓ BẢN NÀY` |
+| Ba gói có gì, kèm số tính năng | slide mới `BA GÓI CÓ GÌ` |
+| Standard miễn phí, 30 ngày thử Pro, hết hạn về Standard | slide mới `HẾT HẠN THÌ VỀ STANDARD` |
+| Mua và gia hạn nhiều điểm, ghi nhận KPI theo email giới thiệu | slide mới `MUA VÀ GIA HẠN NGAY TRÊN HỆ THỐNG` |
+| Sửa danh mục trên App | slide mới `SỬA DANH MỤC NGAY TRÊN APP` |
+| Phí triển khai khi lên Pro | thêm dòng vào slide mua, nâng, hạ gói |
+| Mốc `10/10/2026` hết hạn quay lại bản cũ | tiêu đề và ghi chú slide quay lại bản cũ |
+| Menu gom thành chín nhóm nghiệp vụ | ghi chú slide menu điều hướng |
+| Phải có quyền `Kho & Cung ứng` mới thấy menu Kho trên FABi | ghi chú slide FABi |
+| Trợ lý dò nhà cung cấp, kho, hàng hoá trong danh mục | mô tả thẻ quét ảnh |
+
+**Số Standard chốt là 28, không phải 34.** Bản của sếp còn tick Standard cho cả
+phân hệ Thiết lập; bộ này đã bỏ theo yêu cầu ngày 10/09/2026.
+
+Hai slide mới chưa có ảnh, đang để bố cục chữ. Có ảnh chụp thì đổi sang
+`webshot` rồi thả ảnh vào: `SỬA DANH MỤC NGAY TRÊN APP` và
+`MUA VÀ GIA HẠN NGAY TRÊN HỆ THỐNG`.
+
+**Lưới `modgrid` chỉ vừa hai hàng.** Đã thử tách Kiểm kê và Công nợ thành chín ô:
+lưới thành ba hàng, cao quá khung 500px, chữ trong ô bị cắt mất dòng cuối. Giữ
+tám ô, ô cuối gọi tên cả hai nhóm.
 
 ### Màu nhận diện
 
@@ -422,7 +452,7 @@ css/style.css         thiết kế — token màu ở :root, mỗi kiểu slide 
 js/slides-data.js     TOÀN BỘ nội dung — chỗ duy nhất cần sửa khi đổi nội dung
 js/app.js             bộ dựng slide + điều hướng + auto-fit chống tràn
 assets/slides/plus/   ảnh bộ Plus        assets/slides/pro/  ảnh bộ Pro
-assets/slides/v3/     ảnh bộ Cập nhật V3 (WebP, từ bài giới thiệu nội bộ)
+assets/slides/v3/     ảnh bộ Cập nhật Inventory V3 (WebP)
                       bộ So sánh không có ảnh riêng — dựng thẳng bằng HTML
 assets/So-sanh-IVT-Standard-Plus-Pro.html   bản gốc, nguồn của cả bộ So sánh
 js/compare-page.js    bản gốc gói thành chuỗi cho nút PDF (sinh tự động)
