@@ -1021,32 +1021,33 @@ v3: {
   { n:2, type:'agenda',
     kicker:'MỤC LỤC',
     title:'Nội dung',
+    /* Bốn khối nội dung lớn, mỗi khối liệt kê các mục con — trùng đúng với
+       dòng dẫn đầu mỗi slide để người xem lần ra mình đang ở đâu. */
     items:[
-      { t:'Vì sao có bản này' },
-      { t:'Ba gói bản quyền mới' },
-      { t:'Mua, gia hạn và đổi gói' },
-      { t:'Menu gom theo nhóm nghiệp vụ' },
-      { t:'Quy trình hoá nghiệp vụ' },
-      { t:'Bộ lọc mới' },
-      { t:'Trợ lý iOne' },
-      { t:'Kho trên FABi và danh mục trên App' },
-      { t:'Giao diện báo cáo mới' },
-      { t:'Chuyển đổi có thời gian thích nghi' }
+      { t:'Mục tiêu cập nhật {{V3}}',
+        li:['Tổng quan','Ba mục tiêu','Bốn thay đổi lớn'] },
+      { t:'Gói bản quyền {{V3}} — với khách hàng',
+        li:['Chuyển đổi tự động','Ba gói có gì','Mỗi kho một gói riêng'] },
+      { t:'Gói bản quyền {{V3}} — chính sách bán hàng',
+        li:['Đổi gói và hết hạn','Mua và gia hạn','Thay đổi khi bán hàng'] },
+      { t:'Các thay đổi lớn trên {{V3}}',
+        li:['Menu','Quy trình hoá','Tiện ích bổ sung','Bộ lọc','Trợ lý iOne',
+            'Mở rộng','Báo cáo','Chuyển đổi'] }
     ] },
 
   /* 2 ─ Tổng quan -------------------------------------------------------- */
   { n:3, type:'intro',
-    kicker:'TỔNG QUAN',
+    crumb:['MỤC TIÊU CẬP NHẬT {{V3}}','Tổng quan'],
     title:'Bản nâng cấp lớn nhất của IVT',
     img:'tong-quan.webp',
     lead:'Menu sắp lại theo dòng chảy nghiệp vụ kho, bộ lọc làm mới, gói bản quyền chuẩn hoá thành ba bậc **Standard – Plus – Pro**, và Trợ lý iOne lo phần nhập mua và kiểm kê.',
     chips:['Menu theo nghiệp vụ','Bộ lọc mới','Ba gói bản quyền','Trợ lý iOne'],
     note:'Trang chủ V3 tách bạch khu **Quản trị** và **Cần theo dõi**, số liệu kho hiển thị ngay khi mở.' },
 
-  /* 3 ─ Vì sao có bản này ------------------------------------------------ */
+  /* 3 ─ Mục tiêu cập nhật V3 --------------------------------------------- */
   { n:4, type:'pillars', cols:3, fit:1,
-    kicker:'MỞ ĐẦU',
-    title:'VÌ SAO CÓ BẢN NÀY',
+    crumb:['MỤC TIÊU CẬP NHẬT {{V3}}','Ba mục tiêu'],
+    title:'BA MỤC TIÊU CỦA BẢN NÀY',
     items:[
       { n:'01', c:'#12988c', t:'**Quản lý kho tập trung trên một sản phẩm.** Không còn hai dòng chạy song song, toàn bộ nghiệp vụ kho quy về một nền tảng duy nhất.' },
       { n:'02', c:'#1b6fe0', t:'**Tăng tính cạnh tranh trên thị trường.** Bổ sung và tối ưu những điểm khách hay đem ra so: giao diện, tốc độ thao tác, bộ lọc và hệ thống báo cáo.' },
@@ -1055,7 +1056,7 @@ v3: {
 
   /* 4 ─ Bốn thay đổi lớn nhất -------------------------------------------- */
   { n:5, type:'pillars', cols:2,
-    kicker:'CÓ GÌ MỚI',
+    crumb:['MỤC TIÊU CẬP NHẬT {{V3}}','Bốn thay đổi lớn'],
     title:'BỐN THAY ĐỔI LỚN NHẤT',
     items:[
       { n:'01', c:'#12988c', t:'**Gói bản quyền** chuẩn hoá thành ba bậc Standard, Plus và Pro' },
@@ -1066,7 +1067,7 @@ v3: {
 
   /* 4 ─ Gói mới · chuyển đổi tự động, kèm điều khách cũ cần lưu ý -------- */
   { n:6, type:'packs',
-    crumb:['GÓI BẢN QUYỀN {{V3}}','Với khách hàng'],
+    crumb:['GÓI BẢN QUYỀN {{V3}}','Với khách hàng','Chuyển đổi tự động'],
     title:'CHUYỂN ĐỔI TỰ ĐỘNG, KHÔNG CẦN THAO TÁC',
     packs:[
       { logo:'logo-ivt-plus.png',     c:'#1b6fe0', from:'Đang dùng Lite',      to:'Gói Plus' },
@@ -1085,7 +1086,7 @@ v3: {
 
   /* 5 ─ Ba gói có gì ----------------------------------------------------- */
   { n:7, type:'mxsum',
-    crumb:['GÓI BẢN QUYỀN {{V3}}','Ba gói'],
+    crumb:['GÓI BẢN QUYỀN {{V3}}','Với khách hàng','Ba gói có gì'],
     title:'BA GÓI CÓ GÌ',
     sub:'Cùng một phần mềm, khác nhau ở số phân hệ được mở.',
     total:'99 tính năng',
@@ -1115,21 +1116,44 @@ v3: {
             'Trợ lý iOne bản nâng cao'] }
     ] },
 
+  /* 6 ─ Bản quyền tính theo từng kho ------------------------------------- */
+  { n:8, type:'webshot', frame:1, imgw:700,
+    crumb:['GÓI BẢN QUYỀN {{V3}}','Với khách hàng','Mỗi kho một gói riêng'],
+    title:'MỘT MÃ CÔNG TY, MỖI KHO MỘT GÓI',
+    img:'goi-theo-kho.webp',
+    items:[
+      { t:'Bản cũ: cả mã công ty chung một phiên bản',
+        s:'Chạy Lite thì mọi kho đều Lite, chạy Pro thì mọi kho đều Pro.' },
+      { t:'Từ {{V3}}: bản quyền tính theo từng kho',
+        s:'Kho A {{Plus}}, kho B {{Pro}}, kho C {{Standard}} trong cùng một mã công ty.' },
+      { t:'Cấp gói đúng nhu cầu từng điểm',
+        s:'Kho tổng và bếp trung tâm lên {{Pro}}, cửa hàng bán lẻ dùng {{Plus}} là đủ.' },
+      { t:'Hợp với chuỗi và mô hình nhượng quyền',
+        s:'Mỗi chi nhánh chọn gói theo quy mô riêng của nó.' }
+    ],
+    note:'Cột **Gói bản quyền** ở Danh mục ➜ Kho hàng cho biết ~~từng kho đang ở gói nào~~.' },
+
   /* 6 ─ Đổi gói và hết hạn · gộp hai slide cũ làm một --------------------- */
-  { n:8, type:'webshot', frame:1,
-    crumb:['GÓI BẢN QUYỀN {{V3}}','Đổi gói và hết hạn'],
+  { n:9, type:'webshot', frame:1, imgw:700,
+    crumb:['GÓI BẢN QUYỀN {{V3}}','Chính sách bán hàng','Đổi gói và hết hạn'],
     title:'ĐỔI GÓI LÚC NÀO CŨNG ĐƯỢC',
     img:'goi-ban-quyen.webp',
     items:[
-      { t:'Khách mới mặc định gói Standard', s:'30 ngày đầu mở full gói Pro, hết thử không mua thì về Standard' },
-      { t:'Nâng lúc nào cũng được, hạ khi hạn còn dưới 60 ngày', s:'Ngày còn lại quy ra tiền, chia theo đơn giá gói mới' },
-      { t:'Lên gói Pro có thêm phí triển khai', s:'Áp cho mô hình kho tổng và kho cửa hàng' },
-      { t:'Hết hạn không gia hạn thì tự về Standard', s:'Standard miễn phí không giới hạn thời gian, dữ liệu giữ nguyên' }
+      { t:'Kích hoạt lần đầu là gói {{Standard}}',
+        s:'Kèm **30 ngày dùng thử full {{Pro}}**. Hết hạn không mua thì về {{Standard}}.' },
+      { t:'Nâng gói lúc nào cũng được',
+        s:'Lên {{Plus}} hoặc {{Pro}} bất kỳ lúc nào, không chờ tới kỳ gia hạn.' },
+      { t:'Hạ {{Pro}} về {{Plus}} khi hạn còn ~~dưới 60 ngày~~',
+        s:'Ngày còn lại chia tỷ lệ quy ra ngày {{Plus}}: 45 ngày {{Pro}} ≈ 120 ngày {{Plus}}.' },
+      { t:'Lên gói {{Pro}} có thêm phí triển khai',
+        s:'Áp cho mô hình kho tổng và kho cửa hàng' },
+      { t:'Hết hạn không gia hạn thì tự về {{Standard}}',
+        s:'Gói miễn phí không giới hạn thời gian, dữ liệu giữ nguyên.' }
     ] },
 
   /* 8 ─ Mua và gia hạn ngay trên hệ thống -------------------------------- */
-  { n:9, type:'webshot', frame:1, imgw:740, shadow:1,
-    crumb:['GÓI BẢN QUYỀN {{V3}}','Mua và gia hạn'],
+  { n:10, type:'webshot', frame:1, imgw:740, shadow:1,
+    crumb:['GÓI BẢN QUYỀN {{V3}}','Chính sách bán hàng','Mua và gia hạn'],
     title:'MUA VÀ GIA HẠN NGAY TRÊN HỆ THỐNG',
     img:'gia-han.webp',
     items:[
@@ -1141,8 +1165,8 @@ v3: {
     note:'Khách mua online điền email giới thiệu **@ipos.vn** thì sale hoặc CS đó được ghi nhận ~~KPI và doanh số~~.' },
 
   /* 7 ─ Gói mới · với sale ----------------------------------------------- */
-  { n:10, type:'pillars', cols:2, fit:1,
-    crumb:['GÓI BẢN QUYỀN {{V3}}','Với sale'],
+  { n:11, type:'pillars', cols:2, fit:1,
+    crumb:['GÓI BẢN QUYỀN {{V3}}','Chính sách bán hàng','Với sale'],
     title:'THAY ĐỔI KHI BÁN HÀNG',
     items:[
       { n:'01', c:'#12988c', t:'**Chính sách bán hàng giữ nguyên.** Không thay đổi gì so với chính sách hiện hành đang áp dụng cho sale, hoa hồng tương ứng gói mới.' },
@@ -1150,8 +1174,8 @@ v3: {
     ] },
 
   /* 8 ─ Menu · bảng nhóm nghiệp vụ --------------------------------------- */
-  { n:11, type:'modgrid',
-    crumb:['MENU {{V3}}','Gom theo nhóm nghiệp vụ'],
+  { n:12, type:'modgrid',
+    crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Menu','Gom theo nhóm nghiệp vụ'],
     title:'CHỨC NĂNG GOM VỀ ĐÚNG NHÓM',
     groups:[
       { h:'Đặt hàng', ic:'cart', span:3, c:'#12988c',
@@ -1175,8 +1199,8 @@ v3: {
     ] },
 
   /* 9 ─ Menu · ảnh và các thay đổi khác ---------------------------------- */
-  { n:12, type:'device',
-    crumb:['MENU {{V3}}','Gom theo nhóm nghiệp vụ'],
+  { n:13, type:'device',
+    crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Menu','Điều hướng mới'],
     title:'MENU ĐIỀU HƯỚNG MỚI',
     imgs:['menu.webp'], colw:330, mock:['brw'],
     items:[
@@ -1187,8 +1211,8 @@ v3: {
     note:'Menu gom thành **chín nhóm nghiệp vụ**. Tìm nhanh hơn, và ~~nhân viên mới học nhanh hơn~~ vì chức năng nằm đúng chỗ người ta nghĩ tới.' },
 
   /* 10 ─ Quy trình hoá nghiệp vụ ----------------------------------------- */
-  { n:13, type:'webshot',
-    crumb:['QUY TRÌNH HOÁ {{V3}}','Đủ mọi nhóm nghiệp vụ'],
+  { n:14, type:'webshot',
+    crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Quy trình hoá','Đủ mọi nhóm nghiệp vụ'],
     title:'MỖI NGHIỆP VỤ CÓ THÊM PHẦN QUY TRÌNH',
     img:'quy-trinh-san-xuat.webp', frame:1,
     items:[
@@ -1199,8 +1223,8 @@ v3: {
     note:'Ảnh bên là quy trình Sản xuất: ~~Sơ chế là TÁCH~~ một nguyên liệu ra nhiều mã, ~~Chế biến là GỘP~~ nhiều nguyên liệu thành một món.' },
 
   /* 11 ─ Tiện ích bổ sung ------------------------------------------------ */
-  { n:14, type:'trio',
-    crumb:['TIỆN ÍCH {{V3}}','Bổ sung'],
+  { n:15, type:'trio',
+    crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Tiện ích bổ sung'],
     title:'TIỆN ÍCH BỔ SUNG',
     items:[
       { f:'dong-bo-pos.webp', k:'brw', t:'Đồng bộ hoá đơn POS cho nhiều cửa hàng',
@@ -1210,8 +1234,8 @@ v3: {
     ] },
 
   /* 12 ─ Bộ lọc · bản cũ ------------------------------------------------- */
-  { n:15, type:'webshot', frame:1,
-    crumb:['BỘ LỌC {{V3}}','Trước — bản cũ'],
+  { n:16, type:'webshot', frame:1,
+    crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Bộ lọc','Trước — bản cũ'],
     title:'MỌI ĐIỀU KIỆN BÀY HẾT RA ĐẦU TRANG',
     img:'bo-loc-cu.webp',
     items:[
@@ -1220,8 +1244,8 @@ v3: {
     ] },
 
   /* 12 ─ Bộ lọc · V3 ----------------------------------------------------- */
-  { n:16, type:'webshot', frame:1,
-    crumb:['BỘ LỌC {{V3}}','Sau — V3'],
+  { n:17, type:'webshot', frame:1,
+    crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Bộ lọc','Sau — bản mới'],
     title:'GỌN VÀ NHANH HƠN',
     img:'bo-loc-moi.webp',
     items:[
@@ -1232,8 +1256,8 @@ v3: {
     ] },
 
   /* 13 ─ Trợ lý iOne ----------------------------------------------------- */
-  { n:17, type:'trio',
-    crumb:['TRỢ LÝ {{V3}}','<b>iOne</b>'],
+  { n:18, type:'trio',
+    crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Trợ lý <b>iOne</b>'],
     title:'ỨNG DỤNG AI — TRỢ LÝ <b>iOne</b>',
     items:[
       { f:'ione-quet-anh.webp', k:'ph', t:'Quét ảnh tạo phiếu nhập mua',
@@ -1245,8 +1269,8 @@ v3: {
     ] },
 
   /* 14 ─ Kho trên FABi --------------------------------------------------- */
-  { n:18, type:'device',
-    crumb:['MỞ RỘNG {{V3}}','App Manager và CMS FABi'],
+  { n:19, type:'device',
+    crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Mở rộng','App Manager và CMS FABi'],
     title:'DÙNG KHO NGAY TRÊN FABi',
     imgs:['fabi-app.webp','fabi-cms.webp'], colw:440, mock:['ph','brw'],
     items:[
@@ -1256,8 +1280,8 @@ v3: {
     note:'Đầy đủ như App và Web IVT riêng lẻ, ~~không cần đăng nhập hệ thống khác~~. Tài khoản phải được phân quyền **Kho & Cung ứng** mới thấy menu này.' },
 
   /* Danh mục sửa được ngay trên App -------------------------------------- */
-  { n:19, type:'device',
-    crumb:['MỞ RỘNG {{V3}}','Danh mục trên App'],
+  { n:20, type:'device',
+    crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Mở rộng','Danh mục trên App'],
     title:'SỬA DANH MỤC NGAY TRÊN APP',
     imgs:['danh-muc-app.webp'], colw:340, frame:1,
     items:[
@@ -1268,8 +1292,8 @@ v3: {
     note:'Vào ở mục **Khác ➜ Danh mục**. Mỗi dòng hiện luôn tổng số đã khai, ~~không cần mở ra mới biết~~.' },
 
   /* 15 ─ Báo cáo mới ----------------------------------------------------- */
-  { n:20, type:'webgrid', dir:'col', cols:2,
-    crumb:['BÁO CÁO {{V3}}','Giao diện mới trên Web'],
+  { n:21, type:'webgrid', dir:'col', cols:2,
+    crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Báo cáo','Giao diện mới trên Web'],
     title:'DANH SÁCH BÁO CÁO TỔ CHỨC LẠI',
     img:'bao-cao.webp',
     items:[
@@ -1278,8 +1302,8 @@ v3: {
     ] },
 
   /* 16 ─ Chuyển đổi có thời gian thích nghi ------------------------------ */
-  { n:21, type:'twoshot',
-    crumb:['CHUYỂN ĐỔI {{V3}}','Thời gian thích nghi'],
+  { n:22, type:'twoshot',
+    crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Chuyển đổi','Thời gian thích nghi'],
     title:'TỚI 10/10/2026 VẪN QUAY LẠI BẢN CŨ ĐƯỢC',
     sub:'Dữ liệu dùng chung nên chuyển qua lại không mất gì. Sau ngày đó giao diện chuyển hẳn, ~~không quay lại được nữa~~.',
     imgs:['quay-lai-web.webp','quay-lai-app.webp'], mock:['brw',''],
@@ -1289,7 +1313,7 @@ v3: {
     ] },
 
   /* 17 ─ Chốt lại -------------------------------------------------------- */
-  { n:22, type:'pillars',
+  { n:23, type:'pillars',
     kicker:'CHỐT LẠI',
     title:'V3 CÓ LỢI GÌ CHO NGƯỜI DÙNG',
     items:[
@@ -1299,13 +1323,13 @@ v3: {
     ] },
 
   /* 18 ─ Hỏi đáp --------------------------------------------------------- */
-  { n:23, type:'qa',
+  { n:24, type:'qa',
     num:'05',
     title:'Hỏi đáp',
     lead:'Mời AnhChiEm mạnh dạn đặt câu hỏi. Đừng sợ!' },
 
   /* 19 ─ Hỗ trợ ---------------------------------------------------------- */
-  { n:24, type:'thanks',
+  { n:25, type:'thanks',
     title:'Thank you!',
     sub:'Chuyển đổi gói hoặc đào tạo nhân sự trên V3, liên hệ chuyên viên phụ trách hoặc mở mục Hỗ trợ ngay trên thanh công cụ.',
     company:'iPOS.vn Joint Stock Company',

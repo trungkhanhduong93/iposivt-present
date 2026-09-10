@@ -175,10 +175,17 @@ cover (s, d) {
 
 end (s, d) { return `<div class="endimg nodeco"><img src="${d.dir}${s.img}" alt=""></div>`; },
 
+/* Mục lục hai dạng: danh sách phẳng, hoặc gom nhóm khi mục có `li` — tên khối
+   nội dung lớn ở trên, các mục con thành chip ở dưới. */
 agenda (s) {
-  return head(kick(s, 'Mục lục'), s.title) + `<div class="s-body"><div class="agenda">
+  const grp = (s.items || []).some(it => it.li);
+  return head(kick(s, 'Mục lục'), s.title) + `<div class="s-body"><div class="agenda${
+    grp ? ' grp' : ''}">
     ${s.items.map((it, i) => `<div class="it${xf(it)}">
-      <b>${String(i + 1).padStart(2, '0')}</b><span>${md(it.t)}</span></div>`).join('')}
+      <b>${String(i + 1).padStart(2, '0')}</b>${it.li
+        ? `<div class="tx"><span>${md(it.t)}</span><div class="sub">${
+            it.li.map(x => `<i>${md(x)}</i>`).join('')}</div></div>`
+        : `<span>${md(it.t)}</span>`}</div>`).join('')}
   </div></div>`;
 },
 

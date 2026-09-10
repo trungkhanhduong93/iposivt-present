@@ -7,7 +7,7 @@ tự scale vừa màn hình, **không bao giờ sinh thanh cuộn**.
 |---|---|
 | Bản chạy | **https://iposivt-present.pages.dev** |
 | Repo | https://github.com/trungkhanhduong93/iposivt-present |
-| Số slide | Plus **28** · Pro **23** · So sánh tính năng **18** · Cập nhật Inventory V3 **23** |
+| Số slide | Plus **28** · Pro **23** · So sánh tính năng **18** · Cập nhật Inventory V3 **25** |
 | Mở tại máy | bấm đúp `index.html` |
 
 Gửi kèm số slide được: `iposivt-present.pages.dev/#pro-13` mở thẳng slide Quy trình kiểm kê.
@@ -121,7 +121,7 @@ khối CSS cùng tên trong `css/style.css`.
 | `cover` | Bìa. 5 biến thể: `left` (nền tranh, chữ trái), `devices` (chữ chìm + 3 thiết bị), `split` (chữ trái, tranh phải), `pro` (ảnh trên, mục lục dưới), `matrix` (chữ trái, ba thẻ gói phải, không dùng ảnh) | `variant` `img` `lines` `badge` `packs` |
 | `matrix` | Bảng đối chiếu tính năng ba gói, có dòng tên phân hệ xen giữa | `rows[{c,t,d,v}]` `rows[{g}]` `note` |
 | `mxsum` | Ba thẻ gói kèm thanh độ phủ, dùng cho trang mở và trang chọn gói | `packs` `total` `legend` |
-| `agenda` | Mục lục dạng lưới 2 cột | `items[{t,x}]` |
+| `agenda` | Mục lục lưới 2 cột; khai `li` trên mục thì đổi sang một cột, tên khối trái · chip mục con phải | `items[{t,x,li[]}]` |
 | `cards3` | Thẻ định nghĩa + dải công thức | `cards` `formula` |
 | `section` | Slide chuyển mục nền gradient, số cỡ lớn | `num` `title` `lead` |
 | `bullets` | Tiêu đề trái + gạch đầu dòng phải, kèm tranh nếu có | `items` `art` `small` |
@@ -395,6 +395,52 @@ thì hai luật `.s-title b` và `.kicker b` trả lại chữ thường mà kh�
 khung điện thoại `'ph'` hoặc khung trình duyệt `'brw'`; để trống thì ảnh trần.
 Khai bằng `mock:['ph','brw']` trên slide `device` và `twoshot`, hoặc `k:'ph'`
 trên từng thẻ của `trio`. Cờ `frame:1` cũ vẫn chạy, nghĩa là bọc điện thoại hết.
+
+### Đợt bốn: gom nhóm nội dung lớn — 11/09/2026
+
+Trước đợt này mỗi slide tự đặt dòng dẫn riêng, nên bộ 24 slide có tới mười tên
+phân hệ khác nhau và người xem không lần ra mình đang ở khối nào. Nay chốt
+**bốn khối nội dung lớn**, dòng dẫn của mọi slide đều mở đầu bằng tên khối:
+
+| Khối | Slide | Dòng dẫn mở đầu |
+|---|---|---|
+| Mục tiêu cập nhật V3 | 3 – 5 | `MỤC TIÊU CẬP NHẬT {{V3}}` |
+| Gói bản quyền · với khách hàng | 6 – 8 | `GÓI BẢN QUYỀN {{V3}} › Với khách hàng` |
+| Gói bản quyền · chính sách bán hàng | 9 – 11 | `GÓI BẢN QUYỀN {{V3}} › Chính sách bán hàng` |
+| Các thay đổi lớn trên V3 | 12 – 22 | `CÁC THAY ĐỔI LỚN {{V3}}` |
+
+Slide 23 – 25 (chốt lại, hỏi đáp, cảm ơn) giữ `kicker` một dòng như cũ.
+
+Dòng dẫn nay **ba tầng**: khối › nhóm › mục. `crumb` vốn nhận mảng dài tuỳ ý nên
+không phải sửa gì trong `app.js`, chỉ khai thêm phần tử thứ ba.
+
+**Mục lục đổi từ mười mục phẳng sang bốn khối.** Khai `li` trên mục thì `agenda`
+dựng thẻ có chip mục con và thêm class `grp`. Bốn thẻ mà xếp hai cột thì nửa dưới
+slide hở một mảng trắng, cho giãn kín khung thì lại rỗng ruột từng thẻ — nên xếp
+**một cột**, tên khối chiếm `420px` bên trái, chip mục con dàn nốt bên phải.
+`420px` là bề ngang vừa đủ cho tên khối dài nhất nằm gọn một dòng.
+
+**Cẩn thận `.agenda .it span`.** Luật cũ viết dạng hậu duệ nên trúng luôn thẻ
+`.tbdg` lồng bên trong, đè mất `color:#fff` của thẻ badge. Đã đổi sang
+`.agenda .it>span, .agenda .it .tx>span`.
+
+### Slide mới: mỗi kho một gói riêng — 11/09/2026
+
+Bản cũ chỉ chạy được một phiên bản cho cả mã công ty: chọn Lite thì mọi kho đều
+Lite. V3 tính bản quyền **theo từng kho**, kho A gói Plus và kho B gói Pro trong
+cùng một mã công ty vẫn được. Slide `MỘT MÃ CÔNG TY, MỖI KHO MỘT GÓI` đặt cuối
+khối *Với khách hàng*, ảnh `goi-theo-kho.webp` chụp cột **Gói bản quyền** ở Danh
+mục ➜ Kho hàng.
+
+**Tên gói trong chữ chạy đổi sang thẻ badge.** `md()` sẵn có `{{Standard}}`,
+`{{Plus}}`, `{{Pro}}` nên chỉ phải khai trong data. Nhưng `.tbdg` mặc định
+`.62em`, rơi vào dòng `<small>` cỡ `14.4px` thì ra `9px`, chiếu lên màn đọc không
+ra — đã ghim cỡ riêng cho thẻ nằm trong `.lst`.
+
+**Slide đông mục thì phải khai `imgw`.** Không khai thì khung ảnh ăn theo bề
+ngang tự nhiên của ảnh, cột chữ còn ~320px và autofit thu nhỏ xuống `0.84`. Đặt
+`imgw:720` cho slide mỗi kho một gói và `imgw:700` cho slide đổi gói thì cột chữ
+rộng ra và cả hai về đúng cỡ chữ chuẩn.
 
 ### Ảnh hộp thoại nổi thì cắt bo góc trong suốt
 
