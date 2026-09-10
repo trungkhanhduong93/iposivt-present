@@ -326,9 +326,13 @@ bằng giọng văn của bộ này**, giữ nguyên theme, icon, màu và chuy�
 **Số Standard chốt là 28, không phải 34.** Bản của sếp còn tick Standard cho cả
 phân hệ Thiết lập; bộ này đã bỏ theo yêu cầu ngày 10/09/2026.
 
-`SỬA DANH MỤC NGAY TRÊN APP` đã có ảnh `danh-muc-app.webp` và chuyển sang bố
-cục `device`. Còn `MUA VÀ GIA HẠN NGAY TRÊN HỆ THỐNG` đang để bố cục chữ, có ảnh
-chụp thì đổi sang `webshot` rồi thả ảnh vào.
+Cả hai slide mới đã có ảnh: `SỬA DANH MỤC NGAY TRÊN APP` dùng `danh-muc-app.webp`
+với bố cục `device`, `MUA VÀ GIA HẠN NGAY TRÊN HỆ THỐNG` dùng `gia-han.webp` với
+bố cục `webshot`.
+
+`gia-han.webp` chỉ rộng 640px mà khung vẽ ra 875px trên màn 1920, tức **phóng
+1.37 lần**. Chụp lại ở độ phân giải cao hơn thì nét hơn, còn lại thì chấp nhận
+được vì chữ trong ảnh vẫn đọc rõ.
 
 **Lưới `modgrid` chỉ vừa hai hàng.** Đã thử tách Kiểm kê và Công nợ thành chín ô:
 lưới thành ba hàng, cao quá khung 500px, chữ trong ô bị cắt mất dòng cuối. Giữ

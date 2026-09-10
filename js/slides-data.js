@@ -1130,23 +1130,16 @@ v3: {
     ] },
 
   /* 8 ─ Mua và gia hạn ngay trên hệ thống -------------------------------- */
-  { n:10, type:'modgrid', rows:'auto',
+  { n:10, type:'webshot', frame:1,
     crumb:['GÓI BẢN QUYỀN {{V3}}','Mua và gia hạn'],
     title:'MUA VÀ GIA HẠN NGAY TRÊN HỆ THỐNG',
-    groups:[
-      { h:'Mua mới', ic:'cart', span:4, c:'#12988c', items:[
-        'Gói Plus mua thẳng trên hệ thống',
-        'Gói Pro thanh toán xong thì hệ thống tự tạo phiếu triển khai cho iAcc',
-        'Bản quyền chạy ngay khi thanh toán xong',
-        'Một lần mua được cho nhiều điểm' ] },
-      { h:'Gia hạn', ic:'swap', span:4, c:'#1b6fe0', items:[
-        'Ưu đãi giữ như chính sách đang chạy',
-        'Gia hạn nhiều điểm trong một lần',
-        'Chọn thời hạn nào thì ưu đãi hiện ngay theo thời hạn đó' ] },
-      { h:'Ghi nhận doanh số', ic:'user', span:4, c:'#e0673d', items:[
-        'Khách mua online điền email người giới thiệu là email **@ipos.vn**',
-        'Sale hoặc CS đó được ghi nhận ~~KPI và doanh số~~' ] }
-    ] },
+    img:'gia-han.webp',
+    items:[
+      { t:'Mua mới ngay trên hệ thống', s:'Gói Pro thanh toán xong là có phiếu triển khai' },
+      { t:'Mua và gia hạn nhiều điểm một lần', s:'Ảnh bên là gia hạn tám cửa hàng' },
+      { t:'Ưu đãi giữ như đang chạy', s:'Gia hạn càng dài quà càng lớn' }
+    ],
+    note:'Khách mua online điền email giới thiệu **@ipos.vn** thì sale hoặc CS đó được ghi nhận ~~KPI và doanh số~~.' },
 
   /* 7 ─ Gói mới · với sale ----------------------------------------------- */
   { n:11, type:'pillars', cols:2, fit:1,
