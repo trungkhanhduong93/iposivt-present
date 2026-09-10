@@ -93,6 +93,16 @@ const mock = (f, dir, k, fs) =>
       ? `<div class="pf"${fs || ''}><img src="${dir}${f}" alt="" data-zoom></div>`
       : `<img src="${dir}${f}" alt="" data-zoom>`;
 
+/* Slide khai `plain` thì tên gói bỏ thẻ, viết thẳng lấy màu. Chừa dòng dẫn đầu
+   slide lại — thẻ ở đó bé và giống nhau suốt bộ, đổi thì lệch với các slide khác.
+   Đổi thẳng tên class trên chuỗi HTML đã dựng cho khỏi phải đấu specificity. */
+const KICK = /<div class="kicker">[\s\S]*?<\/div>/;
+function tenThang (html) {
+  const m = KICK.exec(html);
+  const k = m ? m.index + m[0].length : 0;
+  return html.slice(0, k) + html.slice(k).replace(/class="tbdg /g, 'class="tnm ');
+}
+
 /* ── Bộ dựng từng loại slide ─────────────────────────────────────────────── */
 const head = (kicker, title, sub, cls) => `
   <div class="s-head">
@@ -1009,8 +1019,9 @@ const App = {
   /* Dựng một slide thành phần tử rời — dùng chung cho cả hai chế độ xem */
   buildSlide (s, d) {
     const build = T[s.type];
-    const inner = build ? build(s, d, d)
+    let inner = build ? build(s, d, d)
       : `<div class="s-body"><div>Chưa có mẫu cho type "${esc(s.type)}"</div></div>`;
+    if (s.plain) inner = tenThang(inner);
     const el = document.createElement('div');
     el.className = 'slide' + (/nodeco/.test(inner) ? ' nodeco' : '')
                  + (s.type === 'cover' || s.type === 'end' ? ' bare' : '');

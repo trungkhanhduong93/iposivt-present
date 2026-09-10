@@ -430,20 +430,24 @@ cùng một mã công ty vẫn được. Slide `MỘT MÃ CÔNG TY, MỖI KHO M�
 khối *Với khách hàng*, ảnh `goi-theo-kho.webp` chụp cột **Gói bản quyền** ở Danh
 mục ➜ Kho hàng.
 
-**Tên gói trong chữ chạy viết thẳng, chỉ lấy màu.** `md()` đổi `{{Standard}}`,
-`{{Plus}}`, `{{Pro}}`, `{{V3}}` thành `<span class="tbdg …">`. Trước đây `.tbdg`
-là thẻ bo tròn nền đặc: nổi thật, nhưng nhét vào dòng diễn giải thì thẻ nhảy khỏi
-nhịp chữ, một câu ba bốn thẻ là rối mắt. Nay `.tbdg` chỉ còn đậm chữ và đổi màu:
+**Thẻ gói vẫn là mặc định, chữ thẳng phải khai riêng.** `md()` đổi
+`{{Standard}}`, `{{Plus}}`, `{{Pro}}`, `{{V3}}` thành `<span class="tbdg …">`,
+tức thẻ bo tròn nền đặc như cũ. Nhưng ba slide bàn riêng về gói bản quyền thì một
+câu có tới ba bốn tên gói, bọc thẻ hết là rối mắt — nên khai `plain:1` trên slide:
 
-| Tên | Màu |
+| Slide | Khai |
 |---|---|
-| Standard | `#5b6675` |
-| Plus | `#0560a6` |
-| Pro | `#9c7220` |
-| V3 | `#0f7a72` |
+| Mục lục | `{ n:2, type:'agenda', plain:1 …` |
+| Một mã công ty, mỗi kho một gói | `{ n:8, type:'webshot', … plain:1 …` |
+| Đổi gói lúc nào cũng được | `{ n:9, type:'webshot', … plain:1 …` |
 
-Bỏ luôn ba luật chỉnh cỡ thẻ theo ngữ cảnh (`.kicker`, `.hero p`, `.lst`) — chữ
-thường thì thừa hưởng cỡ của dòng nó nằm, không phải ghim.
+`buildSlide` gọi `tenThang()` đổi `class="tbdg"` thành `class="tnm"` — chữ đậm,
+chỉ lấy màu gói: Standard `#5b6675`, Plus `#0560a6`, Pro `#9c7220`, V3 `#0f7a72`.
+
+Hai chỗ phải nhớ. Một, `tenThang()` **chừa dòng dẫn đầu slide lại**: thẻ trong
+`.kicker` bé và giống nhau suốt bộ, đổi riêng ba slide thì lệch với các slide
+cùng nhóm. Hai, đổi tên class chứ **không đè lên `.tbdg`** — đè thì phải thắng cả
+`.kicker .tbdg` lẫn `.hero p .tbdg`, viết luật càng dài càng dễ gãy.
 
 **Slide đông mục thì phải khai `imgw`.** Không khai thì khung ảnh ăn theo bề
 ngang tự nhiên của ảnh, cột chữ còn ~320px và autofit thu nhỏ xuống `0.84`. Đặt

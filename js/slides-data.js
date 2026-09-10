@@ -1018,7 +1018,7 @@ v3: {
     devices:['ione-quet-anh.webp','tong-quan.webp','ione-chat.webp'] },
 
   /* 2 ─ Nội dung ---------------------------------------------------------- */
-  { n:2, type:'agenda',
+  { n:2, type:'agenda', plain:1,
     kicker:'MỤC LỤC',
     title:'Nội dung',
     /* Bốn khối nội dung lớn, mỗi khối liệt kê các mục con — trùng đúng với
@@ -1117,7 +1117,7 @@ v3: {
     ] },
 
   /* 6 ─ Bản quyền tính theo từng kho ------------------------------------- */
-  { n:8, type:'webshot', frame:1, imgw:700,
+  { n:8, type:'webshot', frame:1, imgw:700, plain:1,
     crumb:['GÓI BẢN QUYỀN {{V3}}','Với khách hàng','Mỗi kho một gói riêng'],
     title:'MỘT MÃ CÔNG TY, MỖI KHO MỘT GÓI',
     img:'goi-theo-kho.webp',
@@ -1134,7 +1134,7 @@ v3: {
     note:'Cột **Gói bản quyền** ở Danh mục ➜ Kho hàng cho biết ~~từng kho đang ở gói nào~~.' },
 
   /* 6 ─ Đổi gói và hết hạn · gộp hai slide cũ làm một --------------------- */
-  { n:9, type:'webshot', frame:1, imgw:700,
+  { n:9, type:'webshot', frame:1, imgw:700, plain:1,
     crumb:['GÓI BẢN QUYỀN {{V3}}','Chính sách bán hàng','Đổi gói và hết hạn'],
     title:'ĐỔI GÓI LÚC NÀO CŨNG ĐƯỢC',
     img:'goi-ban-quyen.webp',

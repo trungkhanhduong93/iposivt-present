@@ -464,14 +464,29 @@ body[data-deck="pro"] .sect .ln{background:#fff}
   border-radius:50%;background:rgba(9,44,78,.13);filter:blur(7px);z-index:-1}
 .bnr .ph img{width:100%;height:auto;border-radius:21px;display:block;cursor:zoom-in}
 
-/* Tên gói và tên bản viết thẳng trong câu, chỉ lấy màu của gói. Trước đây bọc
-   thẻ bo tròn nền đặc — nhìn thì nổi nhưng nhét vào dòng diễn giải thì thẻ nhảy
-   ra khỏi nhịp chữ, một câu ba bốn thẻ là rối mắt. */
-.tbdg{font-weight:700;text-transform:none;white-space:nowrap}
-.tbdg.standard{color:#5b6675}
-.tbdg.plus{color:#0560a6}
-.tbdg.v3{color:#0f7a72}
-.tbdg.pro{color:#9c7220}
+/* Thẻ Plus / Pro trong tiêu đề — cùng màu với logo sản phẩm */
+.tbdg{display:inline-block;vertical-align:5px;margin:0 2px;padding:4px 14px 5px;
+  border-radius:999px;font-size:.62em;font-weight:700;letter-spacing:-.2px;
+  color:#fff;line-height:1;white-space:nowrap;text-transform:none}
+.kicker .tbdg{font-size:9.5px;padding:2.5px 8px 3px;vertical-align:1px;margin:0 1px}
+/* Trong đoạn văn thì thẻ phải nhỏ lại, không thì phá nhịp dòng */
+.hero p .tbdg,.hero li .tbdg{font-size:11.5px;padding:3px 9px 4px;vertical-align:1px;margin:0 2px}
+.tbdg.standard{background:#5b6675;box-shadow:0 3px 9px rgba(91,102,117,.24)}
+.tbdg.plus{background:#0560a6;box-shadow:0 3px 9px rgba(5,96,166,.24)}
+.tbdg.v3{background:linear-gradient(180deg,#0f7a72,#17a89a);
+  box-shadow:0 3px 9px rgba(15,122,114,.26)}
+.tbdg.pro{background:linear-gradient(180deg,#9c7220 0%,#ac8129 46%,#cdb46e 100%);
+  box-shadow:0 3px 9px rgba(138,107,22,.24)}
+
+/* Slide khai `plain` thì tên gói viết thẳng, chỉ lấy màu. Dùng cho mấy slide bàn
+   riêng về gói bản quyền: một câu có tới ba bốn tên gói, bọc thẻ hết thì rối
+   mắt. Đặt tên class khác hẳn chứ không đè lên .tbdg — đè thì phải thắng cả
+   đống luật chỉnh cỡ thẻ theo ngữ cảnh. */
+.tnm{font-weight:700;text-transform:none;white-space:nowrap}
+.tnm.standard{color:#5b6675}
+.tnm.plus{color:#0560a6}
+.tnm.v3{color:#0f7a72}
+.tnm.pro{color:#9c7220}
 
 /* ── Lưới thẻ phân hệ ──────────────────────────────────────────────────── */
 .mgrid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;width:100%;
