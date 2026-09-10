@@ -682,7 +682,7 @@ cmp: {
     lines:['SO SÁNH TÍNH NĂNG','STANDARD · PLUS · PRO'],
     lead:'Danh sách đầy đủ tính năng theo từng phân hệ của phần mềm iPOS Inventory.',
     packs:[
-      { k:'st', logo:'logo-ivt-standard.png', n:'34',
+      { k:'st', logo:'logo-ivt-standard.png', n:'28',
         t:'Nghiệp vụ kho cơ bản: mua hàng, bán POS, kiểm kê' },
       { k:'pl', logo:'logo-ivt-plus.png',     n:'46',
         t:'Mở rộng: công thức chế biến, giá thành, hao hụt' },
@@ -697,14 +697,14 @@ cmp: {
     sub:'Cùng một hệ thống, khác nhau ở số phân hệ được mở.',
     total:'99 tính năng',
     packs:[
-      { k:'st', logo:'logo-ivt-standard.png', n:'34',
+      { k:'st', logo:'logo-ivt-standard.png', n:'28',
         t:'Nghiệp vụ kho cơ bản: mua hàng, bán POS, kiểm kê.',
         li:['Đủ chứng từ nhập, xuất, kiểm kê nền tảng',
             'Mười lăm báo cáo quản trị kho và đối soát',
             'Đối soát KTV và iACC ngay từ gói thấp nhất'] },
       { k:'pl', logo:'logo-ivt-plus.png', n:'46',
         t:'Mở rộng: công thức chế biến, giá thành, hao hụt nguyên vật liệu.',
-        li:['Thêm 12 tính năng so với Standard',
+        li:['Thêm 18 tính năng so với Standard',
             'Công thức chế biến, bảng giá, quy đổi đơn vị',
             'Báo cáo hao hụt, tỷ lệ trả hàng, giá thành'] },
       { k:'pr', logo:'logo-ivt-pro.png', n:'99',
@@ -726,14 +726,14 @@ cmp: {
     title:'THIẾT LẬP — PHẦN 1',
     rows:[
       { g:'1 · Thiết lập' },
-      { c:'1.01', t:'Tồn đầu kỳ', v:[1,1,1] },
-      { c:'1.02', t:'Nợ đầu kỳ nhà cung cấp', v:[1,1,1] },
+      { c:'1.01', t:'Tồn đầu kỳ', v:[0,1,1] },
+      { c:'1.02', t:'Nợ đầu kỳ nhà cung cấp', v:[0,1,1] },
       { c:'1.03', t:'Nợ đầu kỳ khách hàng', v:[0,0,1] },
       { c:'1.04', t:'Nợ đầu kỳ nội bộ', v:[0,0,1] },
-      { c:'1.05', t:'Quy tắc giá vốn', v:[1,1,1] },
-      { c:'1.06', t:'Định mức tồn kho', v:[1,1,1] }
+      { c:'1.05', t:'Quy tắc giá vốn', v:[0,1,1] },
+      { c:'1.06', t:'Định mức tồn kho', v:[0,1,1] }
     ],
-    note:'Sáu mục đầu có ở cả ba gói. Nợ đầu kỳ khách hàng, nhân viên, chức vụ và kế hoạch tự động là phần riêng của {{Pro}}.' },
+    note:'Gói {{Standard}} không mở phân hệ Thiết lập. Sáu mục đầu có từ {{Plus}}; nợ đầu kỳ khách hàng, nợ đầu kỳ nội bộ, nhân viên, chức vụ và kế hoạch tự động là phần riêng của {{Pro}}.' },
 
   /* 4 ─ Thiết lập — phần 2 */
   { n:4, type:'matrix',
@@ -741,13 +741,13 @@ cmp: {
     title:'THIẾT LẬP — PHẦN 2',
     rows:[
       { g:'1 · Thiết lập' },
-      { c:'1.07', t:'Hệ thống', d:'Khai báo cấu hình hệ thống · Đặt lại hệ thống: xóa dữ liệu phát sinh, xóa danh mục và khai báo tồn đầu kỳ', v:[1,1,1] },
-      { c:'1.08', t:'Chứng từ', d:'Cấu hình hàng hóa trong chứng từ · Khai báo cấu trúc số phiếu từng loại chứng từ · Khai báo quy tắc gợi ý giá · Cấu hình ẩn giá tiền và ẩn tồn hệ thống · Chỉnh sửa mẫu phiếu in', v:[1,1,1] },
+      { c:'1.07', t:'Hệ thống', d:'Khai báo cấu hình hệ thống · Đặt lại hệ thống: xóa dữ liệu phát sinh, xóa danh mục và khai báo tồn đầu kỳ', v:[0,1,1] },
+      { c:'1.08', t:'Chứng từ', d:'Cấu hình hàng hóa trong chứng từ · Khai báo cấu trúc số phiếu từng loại chứng từ · Khai báo quy tắc gợi ý giá · Cấu hình ẩn giá tiền và ẩn tồn hệ thống · Chỉnh sửa mẫu phiếu in', v:[0,1,1] },
       { c:'1.09', t:'Nhân viên', v:[0,0,1] },
       { c:'1.10', t:'Chức vụ', v:[0,0,1] },
       { c:'1.11', t:'Kế hoạch tự động', v:[0,0,1] }
     ],
-    note:'Sáu mục đầu có ở cả ba gói. Nợ đầu kỳ khách hàng, nhân viên, chức vụ và kế hoạch tự động là phần riêng của {{Pro}}.' },
+    note:'Gói {{Standard}} không mở phân hệ Thiết lập. Sáu mục đầu có từ {{Plus}}; nợ đầu kỳ khách hàng, nợ đầu kỳ nội bộ, nhân viên, chức vụ và kế hoạch tự động là phần riêng của {{Pro}}.' },
 
   /* 5 ─ Danh mục — phần 1 */
   { n:5, type:'matrix',
@@ -961,7 +961,7 @@ cmp: {
     sub:'Chọn theo cách vận hành thật của cửa hàng, không chọn theo số tính năng.',
     total:'99 tính năng',
     packs:[
-      { k:'st', logo:'logo-ivt-standard.png', n:'34',
+      { k:'st', logo:'logo-ivt-standard.png', n:'28',
         t:'Một điểm bán, mua hàng và bán POS là chính.',
         li:['Chưa cần công thức chế biến',
             'Chỉ cần biết tồn kho và giá vốn',

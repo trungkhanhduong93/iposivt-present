@@ -84,7 +84,7 @@ def rows_js(rows, ind='      '):
 # ── Chia slide: mỗi slide một khối nghiệp vụ đọc liền mạch ───────────────
 TABLES = [
     ('Thiết lập', 'THIẾT LẬP', ['1.'],
-     'Sáu mục đầu có ở cả ba gói. Nợ đầu kỳ khách hàng, nhân viên, chức vụ và kế hoạch tự động là phần riêng của {{Pro}}.'),
+     'Gói {{Standard}} không mở phân hệ Thiết lập. Sáu mục đầu có từ {{Plus}}; nợ đầu kỳ khách hàng, nợ đầu kỳ nội bộ, nhân viên, chức vụ và kế hoạch tự động là phần riêng của {{Pro}}.'),
     ('Danh mục — phần 1', 'DANH MỤC HÀNG HOÁ VÀ CÔNG THỨC', [('2.01', '2.09')],
      'Công thức chế biến mở từ {{Plus}}; sơ chế bán thành phẩm và định mức biến thiên chỉ có trên {{Pro}}.'),
     ('Danh mục — phần 2', 'DANH MỤC ĐỐI TÁC VÀ KHO', [('2.10', '2.17')],
@@ -171,12 +171,12 @@ cmp: {
             'Đối soát KTV và iACC ngay từ gói thấp nhất'] },
       { k:'pl', logo:'logo-ivt-plus.png', n:'%d',
         t:'Mở rộng: công thức chế biến, giá thành, hao hụt nguyên vật liệu.',
-        li:['Thêm 12 tính năng so với Standard',
+        li:['Thêm %d tính năng so với Standard',
             'Công thức chế biến, bảng giá, quy đổi đơn vị',
             'Báo cáo hao hụt, tỷ lệ trả hàng, giá thành'] },
       { k:'pr', logo:'logo-ivt-pro.png', n:'%d',
         t:'Đầy đủ toàn bộ phân hệ và báo cáo.',
-        li:['Thêm 53 tính năng so với Plus',
+        li:['Thêm %d tính năng so với Plus',
             'Đặt hàng, sơ chế, chế biến, điều chuyển, nhượng quyền',
             'Trọn 37 báo cáo của tám nhóm'] }
     ],
@@ -186,7 +186,13 @@ cmp: {
       { k:'pr', t:'Cột vàng là gói **Pro**' },
       { k:'no', t:'Dấu tích là có, gạch ngang là không có' }
     ] },
-""" % (tot[0], tot[1], tot[2], len(items), tot[0], tot[1], tot[2])]
+"""
+      # Thứ tự phải khớp đúng từng %d trong khuôn ở trên: ba số ở bìa, tổng số
+      # mục, rồi từng thẻ gói — số tính năng của gói đứng TRƯỚC dòng chênh lệch.
+      % (tot[0], tot[1], tot[2], len(items),
+         tot[0],
+         tot[1], tot[1] - tot[0],
+         tot[2], tot[2] - tot[1])]
 
 # Chiều cao ước lượng của một dòng, khớp với style.css: dòng thường 34px,
 # thêm 17px cho mỗi dòng mô tả bị xuống hàng (một hàng chứa ~95 ký tự).

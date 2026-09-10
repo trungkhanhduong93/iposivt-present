@@ -20,7 +20,7 @@ Gửi kèm số slide được: `iposivt-present.pages.dev/#pro-13` mở thẳng
 |---|---|
 | **Plus** | `TRAINING IVT LITE - NHAN VIEN.pptx` (26 slide) + phần Trum bổ sung |
 | **Pro** | `Demo IVT Pro.pptx` (20 slide) + phần Trum bổ sung |
-| **So sánh tính năng** | `So-sanh-IVT-Standard-Plus-Pro.html` — bảng đối chiếu 99 tính năng |
+| **So sánh tính năng** | `assets/So-sanh-IVT-Standard-Plus-Pro.html` — bảng đối chiếu 99 tính năng. Sửa số liệu thì sửa mảng `DATA` trong file đó, cả bộ slide lẫn bản gốc đều đọc từ đấy |
 | **Cập nhật V3** | bài giới thiệu nội bộ `IVT V3 Introduction` (09/04/2026) |
 
 Chữ trong `js/slides-data.js` là **nguyên văn từ PPTX**, kể cả chữ nằm trong

@@ -442,6 +442,7 @@ body[data-deck="pro"] .sect .ln{background:#fff}
 .kicker .tbdg{font-size:9.5px;padding:2.5px 8px 3px;vertical-align:1px;margin:0 1px}
 /* Trong đoạn văn thì thẻ phải nhỏ lại, không thì phá nhịp dòng */
 .hero p .tbdg,.hero li .tbdg{font-size:11.5px;padding:3px 9px 4px;vertical-align:1px;margin:0 2px}
+.tbdg.standard{background:#5b6675;box-shadow:0 3px 9px rgba(91,102,117,.24)}
 .tbdg.plus{background:#0560a6;box-shadow:0 3px 9px rgba(5,96,166,.24)}
 .tbdg.v3{background:linear-gradient(180deg,#0f7a72,#17a89a);
   box-shadow:0 3px 9px rgba(15,122,114,.26)}
