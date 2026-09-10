@@ -326,9 +326,9 @@ bằng giọng văn của bộ này**, giữ nguyên theme, icon, màu và chuy�
 **Số Standard chốt là 28, không phải 34.** Bản của sếp còn tick Standard cho cả
 phân hệ Thiết lập; bộ này đã bỏ theo yêu cầu ngày 10/09/2026.
 
-Hai slide mới chưa có ảnh, đang để bố cục chữ. Có ảnh chụp thì đổi sang
-`webshot` rồi thả ảnh vào: `SỬA DANH MỤC NGAY TRÊN APP` và
-`MUA VÀ GIA HẠN NGAY TRÊN HỆ THỐNG`.
+`SỬA DANH MỤC NGAY TRÊN APP` đã có ảnh `danh-muc-app.webp` và chuyển sang bố
+cục `device`. Còn `MUA VÀ GIA HẠN NGAY TRÊN HỆ THỐNG` đang để bố cục chữ, có ảnh
+chụp thì đổi sang `webshot` rồi thả ảnh vào.
 
 **Lưới `modgrid` chỉ vừa hai hàng.** Đã thử tách Kiểm kê và Công nợ thành chín ô:
 lưới thành ba hàng, cao quá khung 500px, chữ trong ô bị cắt mất dòng cuối. Giữ

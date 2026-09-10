@@ -1252,13 +1252,16 @@ v3: {
     note:'Đầy đủ như App và Web IVT riêng lẻ, ~~không cần đăng nhập hệ thống khác~~. Tài khoản phải được phân quyền **Kho & Cung ứng** mới thấy menu này.' },
 
   /* Danh mục sửa được ngay trên App -------------------------------------- */
-  { n:19, type:'pillars', cols:2, fit:1,
+  { n:19, type:'device',
     crumb:['MỞ RỘNG {{V3}}','Danh mục trên App'],
     title:'SỬA DANH MỤC NGAY TRÊN APP',
+    imgs:['danh-muc-app.webp'], colw:340,
     items:[
-      { n:'01', c:'#7c8a9c', t:'**Bản cũ chỉ sửa được trên Web.** Đổi tên hàng, thêm nhóm hàng hay thêm đơn vị tính đều phải mở máy tính lên.' },
-      { n:'02', c:'#12988c', t:'**Từ bản này làm thẳng trên App.** Xem, thêm, sửa, xoá hàng hoá, nhóm hàng và đơn vị tính. Vào ở mục **Khác ➜ Danh mục**.' }
-    ] },
+      { t:'Bản cũ chỉ sửa được trên Web', s:'Đổi tên hàng hay thêm một đơn vị tính cũng phải mở máy tính lên' },
+      { t:'Từ bản này làm thẳng trên App', s:'Xem, thêm, sửa, xoá ngay trên điện thoại' },
+      { t:'Đủ danh mục thường dùng', s:'Hàng hoá, nhóm hàng, đơn vị tính, quy đổi, công thức sơ chế và chế biến, kho hàng, khách hàng, nhà cung cấp' }
+    ],
+    note:'Vào ở mục **Khác ➜ Danh mục**. Mỗi dòng hiện luôn tổng số đã khai, ~~không cần mở ra mới biết~~.' },
 
   /* 15 ─ Báo cáo mới ----------------------------------------------------- */
   { n:20, type:'webshot',
