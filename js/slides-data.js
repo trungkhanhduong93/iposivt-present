@@ -199,6 +199,12 @@ plus: {
     crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Quản lý kho','Tại Web'],
     title:'NGHIỆP VỤ QUẢN LÝ KHO',
     video:'slide15.mp4',
+    items:[
+      { t:'Đã bổ sung các quy trình nghiệp vụ',
+        s:'Mỗi nhóm nghiệp vụ có sơ đồ từng bước kèm giải thích' },
+      { t:'Ví dụ minh hoạ theo từng nghiệp vụ',
+        s:'Xem ví dụ cụ thể ngay trong phần quy trình' }
+    ],
     note:'Các nghiệp vụ quản lý kho tại bản **Web** của Plus tương tự phiên bản app.' },
 
   /* 16 ─ Công nợ App ---------------------------------------------------- */
@@ -1061,8 +1067,8 @@ v3: {
     title:'BỐN THAY ĐỔI LỚN NHẤT',
     items:[
       { n:'01', c:'#12988c', t:'**Gói bản quyền** chuẩn hoá thành ba bậc Standard, Plus và Pro' },
-      { n:'02', c:'#1b6fe0', t:'**Menu** gom theo nhóm nghiệp vụ thay cho danh sách phiếu dài' },
-      { n:'03', c:'#e0673d', t:'**Bộ lọc** gọn lại, điều kiện thường dùng nằm ngay trên thanh công cụ' },
+      { n:'02', c:'#1b6fe0', t:'**Logic bản quyền** đổi sang tính theo từng kho, không theo mã công ty như trước' },
+      { n:'03', c:'#e0673d', t:'**Menu và bộ lọc** làm lại: menu gom theo nhóm nghiệp vụ, bộ lọc gọn lại và điều kiện thường dùng nằm ngay trên thanh công cụ' },
       { n:'04', c:'#6d3fd4', t:'**Trợ lý iOne.** Ứng dụng tính năng AI áp dụng cho Nhập mua hàng và Kiểm kê' }
     ] },
 
@@ -1145,11 +1151,11 @@ v3: {
       { t:'Nâng gói lúc nào cũng được',
         s:'Lên {{Plus}} hoặc {{Pro}} bất kỳ lúc nào, không chờ tới kỳ gia hạn.' },
       { t:'Hạ {{Pro}} về {{Plus}} khi hạn còn ~~dưới 60 ngày~~',
-        s:'Ngày còn lại chia tỷ lệ quy ra ngày {{Plus}}: 45 ngày {{Pro}} ≈ 120 ngày {{Plus}}.' },
+        s:'**Ví dụ:** ngày còn lại của {{Pro}} là 45 thì quy sang {{Plus}} được khoảng 120 ngày.' },
       { t:'Lên gói {{Pro}} có thêm phí triển khai',
         s:'Áp cho mô hình kho tổng và kho cửa hàng' },
-      { t:'Hết hạn không gia hạn thì tự về {{Standard}}',
-        s:'Gói miễn phí không giới hạn thời gian, dữ liệu giữ nguyên.' }
+      { t:'Hết hạn mà không gia hạn',
+        s:'Chỉ dùng được các tính năng như bản {{Standard}}, dữ liệu vẫn giữ nguyên.' }
     ] },
 
   /* 8 ─ Mua và gia hạn ngay trên hệ thống -------------------------------- */

@@ -519,7 +519,12 @@ video (s, d) {
              autoplay muted loop playsinline preload="auto"
              title="Bấm để tạm dừng / chạy tiếp"></video>
     </div>
-    <div class="side">${note(s.note)}</div>
+    <div class="side" data-fit>
+      ${s.items ? `<div class="lst">${s.items.map((it, i) => `
+        <div class="it"><b>${i + 1}</b><div class="tx"><span>${md(it.t)}</span>
+        ${it.s ? `<small>${md(it.s)}</small>` : ''}</div></div>`).join('')}</div>` : ''}
+      ${s.note ? note(s.note) : ''}
+    </div>
   </div></div>`;
 },
 

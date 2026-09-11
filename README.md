@@ -130,7 +130,7 @@ khối CSS cùng tên trong `css/style.css`.
 | `imagefull` | Một ảnh chiếm cả slide | `img` |
 | `modgrid` | Lưới thẻ phân hệ, span trên 12 cột, mỗi thẻ một màu | `groups[{h,ic,span,c,items}]` |
 | `device` | Ảnh máy + danh sách mục + ghi chú | `imgs` `items` `note` `side` `colw` `grid` |
-| `video` | Video chạy như ảnh động | `video` `poster` `note` |
+| `video` | Video chạy như ảnh động, cột phải nhận danh sách như `webshot` | `video` `poster` `items[{t,s}]` `note` |
 | `webshot` | Ảnh chụp màn Web nằm ngang + ghi chú phải | `img` `items` `note` `frame` |
 | `packs` | Ba thẻ gói kèm logo sản phẩm + hai thẻ lưu ý bên dưới | `packs[{logo,from,to,c}]` `notes[{h,ic,items}]` |
 | `intro` | Mở đầu một phần: chữ trái, ảnh lệch phải trên nền màu | `kicker` `title` `lead` `chips` `note` `img` |
