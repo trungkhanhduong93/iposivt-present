@@ -465,6 +465,64 @@ ngang tự nhiên của ảnh, cột chữ còn ~320px và autofit thu nhỏ xu�
 `imgw:720` cho slide mỗi kho một gói và `imgw:700` cho slide đổi gói thì cột chữ
 rộng ra và cả hai về đúng cỡ chữ chuẩn.
 
+## Ảnh: bỏ PNG/JPG, còn WebP hết — 11/09/2026
+
+`assets/slides` **14 MB xuống 4.2 MB**, bản gộp một file **25.1 MB xuống 12.6 MB**.
+Trước đó bản gộp đã sát mốc 25 MB mà nhiều hộp thư chặn.
+
+Ba việc đã làm:
+
+- **Xoá 6 file không ai gọi tên**, 3.5 MB. Nặng nhất là `pro/v3-bia.jpg` 2.8 MB.
+  Muốn tìm lại thì có trong lịch sử git.
+- **Chuyển toàn bộ PNG/JPG trong `assets/slides` sang WebP**, chất lượng 90.
+  Kênh trong suốt đặc hết thì bỏ luôn cho nhẹ.
+- **Hạ bề ngang ảnh về đúng gấp đôi cỡ vẽ ra**, đủ nét cho màn 2560. Đo cỡ vẽ ra
+  thật ở cả ba chế độ: trình chiếu, lưới Esc và bản in, lấy cỡ lớn nhất, và
+  **không bao giờ phóng ảnh lên**. `plus/v3-so-do-tong-the` rộng 6912px mà chỉ vẽ
+  ra 1819px, một mình nó nặng 1.2 MB.
+
+**Đã đo chứ không đoán:** chụp năm slide nhiều chữ nhất trước và sau, chênh lệch
+màu trung bình 0.11 tới 0.37 trên 255. Mắt không thấy.
+
+Còn hai ảnh hơi mềm khi chiếu lên màn 1920, nhưng là do bản chụp gốc nhỏ chứ
+không phải do nén: `v3/menu.webp` (rộng 325px, cần 480px) và `v3/quay-lai-web.webp`
+(rộng 1100px, cần 1329px). Muốn nét phải chụp lại từ đầu.
+
+### Số đo hiệu năng — 11/09/2026
+
+Đo bằng Chrome thật, có bật ghi nhận tác vụ dài chặn luồng chính.
+
+| Thao tác | Máy thường | Máy chậm 4 lần |
+|---|---|---|
+| Bấm sang slide sau | 32 ms | 28 ms |
+| Mở lưới Esc (28 ô) | 52 ms | 26 ms |
+| Đổi bộ | 15–37 ms | 20–25 ms |
+| Phóng to ảnh | 14 ms | 14 ms |
+| Mở bản in **lần đầu** | 144 ms | 73 ms |
+| Mở bản in **lần sau** | 6 ms | 13 ms |
+
+Bấm liên tục 90 lần qua cả bốn bộ: **không có tác vụ dài nào**. Chậm 6 lần mới
+bắt đầu thấy, 12 tác vụ dài cao nhất 56 ms — vẫn chưa tới mức người xem nhận ra.
+
+**Chỗ nặng duy nhất là dựng bản in**, vì nó dựng cả bộ slide một lượt. Đã có bộ
+nhớ đệm theo bộ (`prntKey`) nên chỉ tốn đúng lần đầu mỗi bộ. Đừng chia nhỏ ra
+nhiều khung hình: rắc rối thêm mà chỉ đổi được một lần 144 ms.
+
+### PDF xuất ra: đã soi từng trang — 11/09/2026
+
+Xuất PDF thật rồi mở bằng PyMuPDF soi, không phải chỉ nhìn bản xem trước:
+
+| Kiểm | Kết quả |
+|---|---|
+| Số trang bằng số slide | Plus 28, Pro 23, V3 25 — khớp |
+| Khổ trang | 960×540 pt, đúng bằng 1280×720 px |
+| Trang trắng | không có |
+| Chữ trên màn có mặt đủ trong PDF | đủ, cả ba bộ |
+| Ảnh trong PDF đủ độ phân giải | đủ |
+
+Dải sẫm màu ở mép dưới mỗi trang là **vạch trang trí chân slide**, không phải nội
+dung bị cắt. Đã phóng to mép ra kiểm tận nơi.
+
 ## Mỗi loại slide một nhịp vào riêng — 11/09/2026
 
 Trước đợt này cả 94 slide dùng chung đúng một hiệu ứng: trượt ngang theo hướng

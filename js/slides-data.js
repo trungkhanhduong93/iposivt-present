@@ -29,7 +29,7 @@ plus: {
 
   /* 1 ─ Bìa ------------------------------------------------------------- */
   { n:1, type:'cover', variant:'left',
-    img:'anh-bia.png',
+    img:'anh-bia.webp',
     logo:'logo-ipos.png',
     lines:['iPOS INVENTORY'],
     badge:'Plus' },        /* thẻ xanh, lấy màu từ logo-ivt-plus.png */
@@ -68,7 +68,7 @@ plus: {
   /* 5 ─ 4 lý do --------------------------------------------------------- */
   { n:5, type:'bullets',
     title:'TẠI SAO CẦN QUẢN LÝ KHO?',
-    art:'s5.png',
+    art:'s5.webp',
     items:[
       'Tránh **thất thoát** hàng hóa, nguyên vật liệu',
       'Theo dõi tồn kho chặt chẽ ➜ **Chủ động lượng hàng** cho việc bán hàng, đáp ứng nhu cầu của khách hàng, lên kế hoạch kinh doanh',
@@ -87,11 +87,11 @@ plus: {
     /* Mỗi máy một nhãn, nhãn bám ngay trên đầu máy đó. Máy giữa cao nhất,
        để trống nhãn cho thoáng. Thêm/bớt máy thì khoảng cách tự tính lại. */
     shots:[
-      { f:'v3-home-quantri.jpg',   t:'Giải pháp quản lý kho<br>cho ngành F&B!' },
-      { f:'v3-danhmuc.jpg',        t:'Quản lý tồn kho<br>nguyên vật liệu, hàng hoá' },
-      { f:'v3-home-theodoi.jpg' },
-      { f:'v3-quytrinh.jpg',       t:'Quy trình nghiệp vụ<br>đơn giản, dễ hiểu' },
-      { f:'v3-baocao-tonkho.jpg',  t:'Quản lý kho chính xác<br>theo thời gian thực' }
+      { f:'v3-home-quantri.webp',   t:'Giải pháp quản lý kho<br>cho ngành F&B!' },
+      { f:'v3-danhmuc.webp',        t:'Quản lý tồn kho<br>nguyên vật liệu, hàng hoá' },
+      { f:'v3-home-theodoi.webp' },
+      { f:'v3-quytrinh.webp',       t:'Quy trình nghiệp vụ<br>đơn giản, dễ hiểu' },
+      { f:'v3-baocao-tonkho.webp',  t:'Quản lý kho chính xác<br>theo thời gian thực' }
     ],
     body:'Ứng dụng quản lý kho cực kỳ đơn giản và chuyên biệt cho ngành F&B trên nền tảng **Web/App**, đáp ứng nhu cầu **quản lý tồn kho**, **phân tích hao hụt**, **kiểm soát chi phí nguyên vật liệu**. Đồng thời, cung cấp các **báo cáo, biểu đồ chỉ số** trực quan, giúp Chủ nhà hàng đưa ra quyết định quản trị kịp thời.' },
 
@@ -99,13 +99,13 @@ plus: {
   { n:7, type:'imagefull',
     crumb:['GIỚI THIỆU iPOS INVENTORY {{Plus}}','Mô hình vừa và nhỏ'],
     title:'Luồng vận hành kho tổng quan',
-    img:'s7-luong.png' },
+    img:'s7-luong.webp' },
 
   /* 8 ─ Sơ đồ tổng thể -------------------------------------------------- */
   { n:8, type:'imagefull',
     crumb:['GIỚI THIỆU iPOS INVENTORY {{Plus}}'],
     title:'Bức tranh tổng thể',   titleX:1,
-    img:'v3-so-do-tong-the.png' },
+    img:'v3-so-do-tong-the.webp' },
 
   /* 8 ─ Cây tính năng --------------------------------------------------- */
   { n:9, type:'modgrid',
@@ -132,7 +132,7 @@ plus: {
   { n:10, type:'device',
     crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Trang chủ','Tại App'],
     title:'QUẢN TRỊ',
-    imgs:['v3-home-quantri.jpg'], frame:1,
+    imgs:['v3-home-quantri.webp'], frame:1,
     items:[
       { t:'Tổng giá trị tồn kho hiện tại' },
       { t:'Chi phí nguyên vật liệu tháng hiện tại' },
@@ -145,7 +145,7 @@ plus: {
   { n:11, type:'device',
     crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Trang chủ','Tại App'],
     title:'CẦN THEO DÕI',
-    imgs:['v3-home-theodoi.jpg'], frame:1,
+    imgs:['v3-home-theodoi.webp'], frame:1,
     items:[
       { t:'Kiểm kê', s:'7 ngày qua' },
       { t:'Nhập hàng', s:'7 ngày qua' },
@@ -166,7 +166,7 @@ plus: {
   { n:13, type:'device',
     crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Quản lý kho','Tại App'],
     title:'DANH MỤC',
-    imgs:['v3-danhmuc.jpg'], frame:1,
+    imgs:['v3-danhmuc.webp'], frame:1,
     grid:2,
     items:[
       { t:'Hàng hóa' }, { t:'Nhóm hàng' },
@@ -187,7 +187,7 @@ plus: {
   { n:15, type:'device',
     crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Quản lý kho','Tại App'],
     title:'NGHIỆP VỤ QUẢN LÝ KHO',
-    imgs:['slide14.jpg'], frame:1,
+    imgs:['slide14.webp'], frame:1,
     items:[
       { t:'Nhập kho' }, { t:'Xuất kho' }, { t:'Kiểm kê' },
       { t:'Giá vốn' }, { t:'Tồn đầu kỳ' }
@@ -211,7 +211,7 @@ plus: {
   { n:17, type:'device',
     crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Công nợ nhà cung cấp','Tại App'],
     title:'THEO DÕI VÀ THANH TOÁN CÔNG NỢ',
-    imgs:['slide16-1.jpg','slide16-2.jpg'], frame:1,
+    imgs:['slide16-1.webp','slide16-2.webp'], frame:1,
     items:[
       { t:'Thanh toán nợ', s:'Lịch sử thanh toán công nợ nhà cung cấp' },
       { t:'Nợ đầu kỳ',     s:'Khai báo công nợ cũ đầu kỳ' }
@@ -222,14 +222,14 @@ plus: {
   { n:18, type:'webshot',
     crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Công nợ nhà cung cấp','Tại Web'],
     title:'THEO DÕI VÀ THANH TOÁN CÔNG NỢ',
-    img:'s17.png',
+    img:'s17.webp',
     note:'Cung cấp công cụ để **Theo dõi và thanh toán công nợ NCC** đơn giản và hiệu quả.' },
 
   /* 18 ─ Báo cáo App ---------------------------------------------------- */
   { n:19, type:'device',
     crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Báo cáo chi tiết','Tại App'],
     title:'BÁO CÁO QUẢN LÝ KHO',
-    imgs:['s18-1.jpg','s18-2.jpg'], frame:1,
+    imgs:['s18-1.webp','s18-2.webp'], frame:1,
     items:[
       { t:'Kiểm kê / Hao hụt NVL' },
       { t:'Tổng hợp / Chi tiết Nhập xuất kho' },
@@ -243,7 +243,7 @@ plus: {
   { n:20, type:'webshot',
     crumb:['TÍNH NĂNG iPOS INVENTORY {{Plus}}','Báo cáo chi tiết','Tại Web'],
     title:'BÁO CÁO QUẢN LÝ KHO',
-    img:'s19.png',
+    img:'s19.webp',
     note:'Cung cấp các **Báo cáo quản lý Kho chuyên biệt cho F&B** nhanh chóng và chính xác.' },
 
   /* 20 ─ Giá trị mang lại ----------------------------------------------- */
@@ -261,19 +261,19 @@ plus: {
     title:'GIÁ TRỊ MANG LẠI',
     active:0,
     lead:'Quản lý toàn bộ danh mục và các nghiệp vụ trên một Ứng dụng',
-    imgs:['v3-home-quantri.jpg','v3-danhmuc.jpg'], frame:1 },
+    imgs:['v3-home-quantri.webp','v3-danhmuc.webp'], frame:1 },
 
   { n:23, type:'value',
     title:'GIÁ TRỊ MANG LẠI',
     active:1,
     lead:'Cung cấp các chỉ số & Báo cáo trực quan, thời gian thực',
-    imgs:['v3-home-quantri.jpg','v3-baocao-tonkho.jpg','s18-1.jpg'], frame:1 },
+    imgs:['v3-home-quantri.webp','v3-baocao-tonkho.webp','s18-1.webp'], frame:1 },
 
   { n:24, type:'value',
     title:'GIÁ TRỊ MANG LẠI',
     active:2,
     lead:'Quản trị kho hiệu quả ➜ Tối ưu chi phí, tối đa lợi nhuận',
-    imgs:['s23.png'], art:1 },
+    imgs:['s23.webp'], art:1 },
 
   /* 24 ─ Điểm khác biệt Plus & Pro (Trum bổ sung 08/09/2026) ------------- */
   { n:25, type:'compare',
@@ -293,7 +293,7 @@ plus: {
   { n:26, type:'profiles',
     num:'06',
     title:'CHÂN DUNG KHÁCH HÀNG',
-    img:'s25.png',
+    img:'s25.webp',
     items:[
       { t:'Mô hình kinh doanh trong ngành **F&B** có nhu cầu quản lý kho.',
         s:'Quán cafe, trà sữa, nhà hàng, quán ăn — có nguyên vật liệu cần theo dõi tồn và chi phí.', sx:1 },
@@ -343,12 +343,12 @@ pro: {
     lines:['iPOS INVENTORY'],
     badge:'Pro',            /* thẻ vàng, lấy kiểu từ logo-ivt-pro.png */
     /* thứ tự: điện thoại trái · màn hình giữa · điện thoại phải */
-    devices:['bia1.jpg','bia2.png','bia3.jpg'] },
+    devices:['bia1.webp','bia2.webp','bia3.webp'] },
 
   /* 2 ─ Nội dung -------------------------------------------------------- */
   { n:2, type:'cover',
     variant:'split',
-    img:'anh-bia.png',
+    img:'anh-bia.webp',
     lines:['NỘI DUNG'],
     agenda:[
       'Giới thiệu iPOS Inventory {{Pro}}',
@@ -361,7 +361,7 @@ pro: {
   { n:3, type:'hero',
     title:'GIỚI THIỆU',
     /* dùng lại đúng 3 ảnh của slide bìa, xếp thành dải ngang */
-    devices:['bia1.jpg','bia2.png','bia3.jpg'],
+    devices:['bia1.webp','bia2.webp','bia3.webp'],
     body:'**iPOS Inventory** {{Pro}} là phần mềm quản trị kho chuyên nghiệp cho ngành F&B. Phần mềm chuẩn hóa quy trình đặt hàng, quản lý kho hàng chính xác theo thời gian thực, cung cấp báo cáo quản trị kho đặc thù. Qua đó giúp tối ưu chi phí nguyên liệu, gia tăng lợi nhuận.',
     body2:'**iPOS Inventory** {{Pro}} có giao diện Web trên máy tính và App trên thiết bị di động.' },
 
@@ -371,8 +371,8 @@ pro: {
     title:'NỀN TẢNG SỬ DỤNG',
     badge:'App và Web',
     frame:1,
-    phone:'s4-1.jpg',
-    web:'s4-2.png' },
+    phone:'s4-1.webp',
+    web:'s4-2.webp' },
 
   /* 4 ─ Bộ phận sử dụng ------------------------------------------------- */
   { n:5, type:'depts',
@@ -426,7 +426,7 @@ pro: {
   { n:7, type:'orderflow',
     crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Đặt hàng'],
     title:'CÁC BỘ PHẬN THAM GIA ĐẶT HÀNG',
-    img:'r06_1.png',
+    img:'r06_1.webp',
     steps:[
       { h:'Cửa hàng', c:'#2ec4a6', items:[
         'Chủ yếu sử dụng phiếu Yêu cầu mua hàng **RO**.',
@@ -449,14 +449,14 @@ pro: {
   { n:8, type:'imagefull',
     crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Quản lý kho'],
     title:'Sơ đồ luân chuyển hàng hoá', titleX:1,
-    img:'r07_1.png' },
+    img:'r07_1.webp' },
 
   /* 8 ─ Nhập kho -------------------------------------------------------- */
   { n:9, type:'device',
     crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Quản lý kho'],
     side:'right',
     title:'NHẬP KHO',
-    imgs:['s9-1.jpg','s9-2.jpg','s9-3.jpg'], frame:1, colw:560,
+    imgs:['s9-1.webp','s9-2.webp','s9-3.webp'], frame:1, colw:560,
     items:[
       { t:'Nhập mua hàng',      s:'Mua hàng từ NCC bên ngoài' },
       { t:'Nhập điều chuyển',   s:'Được sinh tự động khi có phiếu Xuất điều chuyển' },
@@ -470,7 +470,7 @@ pro: {
     crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Quản lý kho'],
     side:'right',
     title:'XUẤT KHO',
-    imgs:['s10-1.jpg','s10-2.jpg','s10-3.jpg'], frame:1, colw:560,
+    imgs:['s10-1.webp','s10-2.webp','s10-3.webp'], frame:1, colw:560,
     items:[
       { t:'Xuất bán POS',       s:'Đồng bộ tự động dữ liệu bán hàng từ POS' },
       { t:'Xuất bán hàng',      s:'Ghi nhận các thông tin bán hàng không bấm máy POS (bán từ kho tổng)' },
@@ -489,9 +489,9 @@ pro: {
       'Có quy trình sơ chế nguyên vật liệu',
       'Có quy trình chế biến bán thành phẩm' ] },
     cols:[
-      { badge:'SƠ CHẾ',   img:'r10_2.png',
+      { badge:'SƠ CHẾ',   img:'r10_2.webp',
         t:'**Có quản lý quy trình sơ chế nguyên liệu:** từ một nguyên liệu đầu vào thành nhiều nguyên liệu đầu ra.' },
-      { badge:'CHẾ BIẾN', img:'r10_3.png',
+      { badge:'CHẾ BIẾN', img:'r10_3.webp',
         t:'**Có quy trình chế biến bán thành phẩm:** quản lý quy trình chế biến từ nhiều nguyên liệu ra bán thành phẩm lưu kho.' }
     ] },
 
@@ -551,7 +551,7 @@ pro: {
   { n:15, type:'webgrid',
     crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Quản trị dòng tiền'],
     title:'CÔNG NỢ',
-    img:'s15.png',
+    img:'s15.webp',
     items:[
       'Cho phép khai báo **Công nợ đầu kỳ**',
       'Thanh toán và theo dõi **Công nợ hiện tại** từng Nhà cung cấp, chi tiết theo từng hóa đơn'
@@ -561,7 +561,7 @@ pro: {
   { n:16, type:'webgrid', dir:'col', cols:2,
     crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Thiết lập nâng cao'],
     title:'CẤU HÌNH CHUYÊN SÂU',
-    img:'s16.png',
+    img:'s16.webp',
     items:[
       'Cho phép vận hành **nhượng quyền chung** và **nhượng quyền tách biệt**',
       'Cho phép **trừ kho nhiều lớp bán thành phẩm**, tối ưu quy trình vận hành',
@@ -574,11 +574,11 @@ pro: {
     crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Trợ lý AI'],
     title:'TRỢ LÝ <b>iOne</b> HỖ TRỢ NHẬP LIỆU',
     items:[
-      { f:'ione-1.jpg', t:'Quét ảnh tạo phiếu nhập mua',
+      { f:'ione-1.webp', t:'Quét ảnh tạo phiếu nhập mua',
         s:'Chụp hoá đơn hoặc phiếu giao hàng của nhà cung cấp, Trợ lý đọc và điền sẵn dòng hàng, số lượng, đơn giá.' },
-      { f:'ione-2.jpg', t:'Chat để lập phiếu nhập mua',
+      { f:'ione-2.webp', t:'Chat để lập phiếu nhập mua',
         s:'Gõ yêu cầu bằng tiếng Việt tự nhiên, Trợ lý dựng phiếu nháp để bạn kiểm tra và lưu.' },
-      { f:'ione-3.jpg', t:'Kiểm kê bằng giọng nói',
+      { f:'ione-3.webp', t:'Kiểm kê bằng giọng nói',
         s:'Đọc tên hàng và số lượng khi đang đứng trong kho — không cần rời tay khỏi hàng để nhập máy.' }
     ] },
 
@@ -586,7 +586,7 @@ pro: {
   { n:18, type:'webgrid', dir:'col',
     crumb:['CHỨC NĂNG iPOS INVENTORY {{Pro}}','Kết nối đối tác'],
     title:'KẾT NỐI ĐỐI TÁC',
-    img:'ketnoi.png',
+    img:'ketnoi.webp',
     items:[
       'Tiện ích mở cổng **API kết nối trực tiếp realtime** đến partner thứ ba (**Misa Amis**), thuận tiện và tối ưu quy trình thao tác, tiết kiệm thời gian.'
     ] },
