@@ -43,7 +43,7 @@ def run(url, label):
 
         # ── Ban in cua bo slide ─────────────────────────────────────────
         for deck, nut in (('plus', '#toPlus'), ('pro', '#toPro'), ('v3', '#toV3')):
-            pg.evaluate("(k)=>App.setDeck(k)", deck)
+            pg.evaluate("(k)=>{if(DECKS[k].gated)App.gate[k]=true;App.setDeck(k)}", deck)
             pg.wait_for_timeout(600)
             pg.click('#pdfBtn'); pg.wait_for_timeout(2400)
             r = pg.evaluate("""()=>{const b=document.getElementById('prntBody');

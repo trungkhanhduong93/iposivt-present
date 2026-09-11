@@ -288,21 +288,37 @@ Cuộn hết cỡ vẫn còn ba trang cuối nằm dưới mép trên, nên có 
 Bộ thứ tư dựng từ bài giới thiệu nội bộ về phiên bản V3. Nó **có cả phần chính
 sách bán hàng, KPI và hoa hồng**.
 
-### Đã gỡ cổng mã — 10/09/2026
+### Cổng mã nội bộ — gỡ 10/09/2026, dựng lại 11/09/2026
 
-Trước đây bộ này khoá bằng mã PIN: cờ `gated: 1` trên bộ, băm SHA-256 trong
-`app.js`, hộp nhập mã `#pin`, và `tools/check_gate.py`. **Đã gỡ sạch cả bốn thứ.**
+Bộ này khoá bằng mã PIN. Bốn thứ làm nên cái cổng:
 
-Lý do Trum chốt: đã có nút PDF, sale xuất file gửi khách chứ không gửi link ra
-ngoài, nên không cần cổng chặn nữa.
+| Chỗ | Là gì |
+|---|---|
+| `js/slides-data.js` | cờ `gated: 1` trên bộ `v3` |
+| `js/app.js` | `PIN_HASH` là băm SHA-256 của mã, và khối `askPin` / `tryPin` |
+| `index.html` + `css/style.css` | hộp nhập mã `#pin` và khối CSS `.pin` |
+| `tools/check_gate.py` | bộ kiểm riêng, lấy mã từ biến môi trường `IVT_PIN` |
 
-**Hệ quả phải nhớ:** `iposivt-present.pages.dev` là trang công khai. Ai có link
-đều mở được bộ V3 kèm phần chính sách sale. Không có gì chặn nữa.
+**Mã không nằm trong repo, chỉ có bản băm.** Chạy bộ kiểm cổng thì truyền mã qua
+biến môi trường, đừng gõ thẳng vào file:
 
-Muốn khoá lại thì **đừng dựng lại cổng mã** — web tĩnh nên toàn bộ nội dung nằm
-trong `js/slides-data.js`, ai xem mã nguồn cũng đọc được, cổng mã chỉ chặn người
-xem tình cờ. Bật **Cloudflare Access** (Zero Trust, bản free 50 user) cho cả
-trang mới là chặn thật.
+```
+IVT_PIN=<ma> python tools/check_gate.py
+```
+
+**Cổng nhớ trong bộ nhớ trang, không lưu xuống `sessionStorage`** — tải lại tab
+là phải nhập lại. Cố ý như vậy.
+
+**Đây là rào cản nhẹ, KHÔNG phải bảo mật.** Web tĩnh nên toàn bộ nội dung nằm
+trong `js/slides-data.js`, ai xem mã nguồn cũng đọc được. Cổng mã chỉ chặn người
+xem tình cờ. Muốn chặn thật thì bật **Cloudflare Access** (Zero Trust, bản free
+50 user) cho cả trang.
+
+**Lỗ đã vá khi dựng lại:** `hashchange` không tải lại trang nên `boot()` không
+chạy lần nữa. Bản cũ chỉ hỏi mã trong `boot()`, nên gõ thẳng `#v3-2` vào thanh
+địa chỉ của tab đang mở thì `readHash()` chặn đúng nhưng **không ai hỏi mã** —
+im lặng, không đi đâu cả. Nay hàm nghe `hashchange` gọi `askPin()` nếu còn
+`wantDeck`.
 
 ### Nội dung lấy từ bản của sếp — 10/09/2026
 
@@ -952,8 +968,9 @@ Không cần `playwright install` — script dùng Chrome sẵn có trong máy.
 
 | Lệnh | Kiểm gì |
 |---|---|
-| `python tools/check_slides.py` | render toàn bộ 87 slide, báo slide nào tràn khung, slide nào bị auto-fit thu nhỏ, lỗi console |
-| `python tools/check_app.py` | điều hướng, lưới ESC, lightbox, chuyển bộ, phím X, hiện dần từng phần, **không sinh thanh cuộn ở 6 cỡ màn hình**, và không bộ nào còn hỏi mã |
+| `python tools/check_slides.py` | render toàn bộ 94 slide, báo slide nào tràn khung, slide nào bị auto-fit thu nhỏ, lỗi console |
+| `python tools/check_app.py` | điều hướng, lưới ESC, lightbox, chuyển bộ, phím X, hiện dần từng phần, **không sinh thanh cuộn ở 6 cỡ màn hình**, và cổng mã chặn đúng bộ |
+| `IVT_PIN=<ma> python tools/check_gate.py` | cổng mã nội bộ: bấm nút hay mở link thẳng đều hỏi mã, mã sai thì chặn, mã đúng thì nhớ trong phiên, tải lại tab là hỏi lại |
 | `python tools/check_mobile.py` | chế độ xấp trang khổ iPhone 14: đủ số trang, tỉ lệ 16:9, không tràn ngang, số trang chạy đúng khi cuộn, ảnh hỏng |
 | `python tools/check_pdfview.py` | nút PDF: nội dung nhúng giống bản gốc từng ký tự, cùng nguồn, Lưu PDF in đúng khung nhúng, chạy cả trên bản gộp một file |
 

@@ -66,6 +66,10 @@ const SHOT_R = 1272 / 2772;
 const COL_H = 500;          // chiều cao trống thật của .s-body ở slide có tiêu đề
 const PAD   = 12;           // viền trắng của khung máy (.pf padding 6px hai bên)
 /* Ngưỡng đổi sang chế độ xấp trang — phải khớp @media trong style.css. */
+/* Bộ nội bộ mở bằng mã. Chỉ lưu bản băm để mã không nằm thẳng trong mã nguồn.
+   Đây là rào cản nhẹ, KHÔNG phải bảo mật: trang tĩnh nên người thạo kỹ thuật
+   vẫn đọc được dữ liệu slide. Muốn chặn thật thì bật Cloudflare Access. */
+const PIN_HASH = 'aba1b56fdf9b7abaad8fa4e9afa71a056e3ebfad0c9e88991cd75dd0b4d42f58';
 /* Tên gói viết thành chữ riêng: chữ Standard, Plus, Pro nằm sẵn trong file logo
    nhưng bé xíu, chiếu lên màn hình đọc không ra. */
 const PK_NAME = { st: 'STANDARD', pl: 'PLUS', pr: 'PRO' };
@@ -859,6 +863,7 @@ const App = {
   boot () {
     this.el = {
       stage : $('#stage'),
+      pin   : $('#pin'),
       cnt   : $('#cnt'),
       prog  : $('#prog i'),
       prev  : $('#prev'),
@@ -879,11 +884,21 @@ const App = {
     this.bind();
     this.resize();
     this.render('all');
+    /* Link thẳng vào bộ nội bộ: dựng bộ mặc định xong mới hỏi mã */
+    if (this.wantDeck) this.askPin(this.wantDeck);
   },
 
   bind () {
     addEventListener('resize', () => this.resize());
     $$('.seg button').forEach(b => { b.onclick = () => this.setDeck(b.dataset.deck); });
+    $('#pinCancel').onclick = () => this.closePin();
+    $('#pinOk').onclick     = () => this.tryPin();
+    $('#pinInput').onkeydown = e => {
+      if (e.key === 'Enter') { e.preventDefault(); this.tryPin(); }
+      if (e.key === 'Escape') { e.preventDefault(); this.closePin(); }
+      e.stopPropagation();                 // đừng để phím lọt ra ngoài lật slide
+    };
+    this.el.pin.onclick = e => { if (e.target === this.el.pin) this.closePin(); };
     this.el.prev.onclick = () => this.go(-1, 'all');
     this.el.next.onclick = () => this.go(1,  'all');
     $('#gridBtn').onclick  = () => this.toggleGrid();
@@ -903,6 +918,7 @@ const App = {
     addEventListener('keydown', e => {
       const t = e.target.tagName;
       if (t === 'INPUT' || t === 'TEXTAREA') return;
+      if (this.el.pin.classList.contains('open')) return;
       if (this.el.help.classList.contains('open') && e.key !== 'Escape') return;
       /* Khung xem che kín màn: chỉ còn Esc và phím in của trình duyệt */
       if (e.key !== 'Escape' &&
@@ -945,7 +961,14 @@ const App = {
       if (!this.mob && Math.abs(dx) > 55) this.go(dx < 0 ? 1 : -1, 'all');
     }, { passive: true });
 
-    addEventListener('hashchange', () => { this.readHash(); this.render('all'); });
+    addEventListener('hashchange', () => {
+      this.readHash();
+      this.render('all');
+      /* Đổi hash không tải lại trang nên boot() không chạy lại — phải tự hỏi mã
+         ở đây, không thì gõ thẳng #v3-2 vào thanh địa chỉ là im lặng, không đi
+         đâu cả mà cũng chẳng hỏi gì. */
+      if (this.wantDeck) this.askPin(this.wantDeck);
+    });
   },
 
   readHash () {
@@ -954,6 +977,12 @@ const App = {
     const m = new RegExp('^#(' + Object.keys(DECKS).join('|') + ')(?:-(\\d+))?$')
       .exec(location.hash || '');
     if (!m) return;
+    /* Mở thẳng link của bộ nội bộ mà chưa có mã thì hỏi mã, chưa đổi bộ vội */
+    if (DECKS[m[1]].gated && !this.opened(m[1])) {
+      this.wantDeck = m[1];
+      this.wantSlide = parseInt(m[2] || '1', 10);   // nhớ đúng slide người ta gõ
+      return;
+    }
     this.key = m[1];
     const n = parseInt(m[2] || '1', 10);
     this.i = Math.min(Math.max(n - 1, 0), this.deck.slides.length - 1);
@@ -966,7 +995,54 @@ const App = {
 
   setDeck (k) {
     if (!DECKS[k] || this.key === k) return;
+    if (DECKS[k].gated && !this.opened(k)) return this.askPin(k);
     this.key = k; this.i = 0; this.render('all');
+  },
+
+  /* ── Cổng mã cho bộ nội bộ ──────────────────────────────────────────────
+     Nhớ trong bộ nhớ trang, KHÔNG lưu xuống sessionStorage: tải lại tab là
+     mất, phải nhập mã lần nữa. */
+  gate: {},
+
+  opened (k) { return this.gate[k] === true; },
+
+  askPin (k) {
+    this.wantDeck = k;
+    $('#pinErr').textContent = '';
+    const inp = $('#pinInput');
+    inp.value = '';
+    this.el.pin.classList.add('open');
+    setTimeout(() => inp.focus(), 30);
+  },
+
+  closePin () {
+    this.el.pin.classList.remove('open');
+    $('#pinErr').textContent = '';
+    this.wantDeck = null;
+  },
+
+  async tryPin () {
+    const k = this.wantDeck;
+    const v = $('#pinInput').value.trim();
+    if (!v) return;
+    let hex = '';
+    try {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v));
+      hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+    } catch (e) { hex = ''; }
+    if (hex !== PIN_HASH) {
+      $('#pinErr').textContent = 'Mã chưa đúng, thử lại.';
+      $('#pinInput').select();
+      return;
+    }
+    this.gate[k] = true;
+    const want = this.wantSlide;
+    this.closePin();
+    this.key = k;
+    const max = DECKS[k].slides.length - 1;
+    this.i = Math.min(Math.max((want || 1) - 1, 0), max);
+    this.wantSlide = null;
+    this.render('all');
   },
 
   go (d, mode) { this.to(this.i + d, mode); },

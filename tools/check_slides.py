@@ -66,6 +66,7 @@ with sync_playwright() as p:
     # rồi đổi slide bằng hash — không tải lại nên trạng thái giữ nguyên.
     pg.goto(BASE)
     pg.wait_for_timeout(700)
+    pg.evaluate("()=>{for (const k in DECKS) if (DECKS[k].gated) App.gate[k] = true;}")
 
     for t in targets:
         pg.evaluate('(h) => { location.hash = h; }', '#' + t)

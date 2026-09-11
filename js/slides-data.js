@@ -1005,6 +1005,7 @@ v3: {
   name: 'Cập nhật Inventory V3',
   short: 'V3',
   tagline: 'Bản nâng cấp lớn nhất của iPOS Inventory',
+  gated: 1,
   dir: 'assets/slides/v3/',
   vdir: 'assets/video/',
   slides: [
@@ -1137,7 +1138,7 @@ v3: {
   { n:9, type:'webshot', frame:1, imgw:700, plain:1,
     crumb:['GÓI BẢN QUYỀN {{V3}}','Chính sách bán hàng','Đổi gói và hết hạn'],
     title:'ĐỔI GÓI LÚC NÀO CŨNG ĐƯỢC',
-    img:'goi-ban-quyen.webp',
+    img:'doi-goi.webp',
     items:[
       { t:'Kích hoạt lần đầu là gói {{Standard}}',
         s:'Kèm **30 ngày dùng thử full {{Pro}}**. Hết hạn không mua thì về {{Standard}}.' },
@@ -1237,7 +1238,7 @@ v3: {
   { n:16, type:'webshot', frame:1,
     crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Bộ lọc','Trước — bản cũ'],
     title:'MỌI ĐIỀU KIỆN BÀY HẾT RA ĐẦU TRANG',
-    img:'bo-loc-cu.webp',
+    img:'bo-loc-cu-2.webp',
     items:[
       { t:'Chiếm ba hàng đầu trang', s:'Phải cuộn qua hết mới nhìn thấy dữ liệu' },
       { t:'Điều kiện nào cũng bày ra', s:'Dùng hay không dùng đều chiếm chỗ như nhau' }
