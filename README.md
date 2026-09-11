@@ -465,6 +465,55 @@ ngang tự nhiên của ảnh, cột chữ còn ~320px và autofit thu nhỏ xu�
 `imgw:720` cho slide mỗi kho một gói và `imgw:700` cho slide đổi gói thì cột chữ
 rộng ra và cả hai về đúng cỡ chữ chuẩn.
 
+## Mỗi loại slide một nhịp vào riêng — 11/09/2026
+
+Trước đợt này cả 94 slide dùng chung đúng một hiệu ứng: trượt ngang theo hướng
+đang đi kèm một nhịp nở rất nhẹ. Bìa, bảng so sánh và ảnh chụp màn vào y hệt
+nhau. Nay chia theo **vai trò** của slide, không chia theo bộ:
+
+| Nhóm | Loại slide | Nhịp vào | Vì sao |
+|---|---|---|---|
+| Bìa và chuyển mục | `cover` `section` `qa` `thanks` `hero` `heroshots` | `slno` nở nhẹ từ giữa, `--d-slow` | đang đổi chương thì không có gì để trượt tiếp |
+| Ảnh chụp màn | `device` `webshot` `video` `imagefull` `trio` `twoshot` `webgrid` `platform` | `sllen` trôi lên, `--d-base` | trượt ngang làm cả tấm ảnh rung |
+| Bảng so sánh | `matrix` | `slmo` chỉ mờ dần, `--d-fast` | từng dòng đã chạy nối nhau, trượt cả bảng nữa thì rối |
+| Sơ đồ quy trình | `orderflow` `production` `twolane` `pipeline` `costformula` | `slno`, `--d-base` | nở từ giữa để các nhánh toả ra đọc thành mạch |
+| Còn lại | `bullets` `pillars` `agenda` `mxsum` … | `sl` trượt ngang như cũ | đọc như lật sang trang sau |
+
+Bộ dựng gắn `t-<type>` vào chính thẻ slide, CSS bắt theo class đó. Loại nào
+không có tên trong bảng thì rơi về `sl` mặc định, **thêm loại slide mới không
+phải sửa gì**.
+
+**Đã đo trước và sau: mọi loại vẫn dừng hẳn trong khoảng 840 tới 1460ms**, không
+loại nào chạm trần `ANIM_END = 1600`. Các nhịp vào của cả slide chạy song song
+với hiệu ứng của từng phần nên không đẩy mốc dừng đi đâu cả. Đổi thời lượng thì
+phải đo lại, trần này là thứ auto-fit dựa vào.
+
+### Vì sao không làm morph kiểu PowerPoint — 11/09/2026
+
+Đã thử View Transitions API trên chính bộ này: chạy được, 98 lần chuyển slide
+không lỗi, hình học nội suy đúng dù khung phóng bằng `zoom`. Nhưng bỏ, vì ba lý
+do đo được:
+
+- **Không có gì để morph.** Đo cả 90 cặp slide liền nhau: 72 cặp có khối tiêu đề
+  ở cả hai bên, trong đó **50 cặp tiêu đề đứng yên hoàn toàn**, 14 cặp xê dịch
+  dưới 24px, chỉ 8 cặp từ 24px trở lên — mà tám cặp đó cũng chỉ là cao thêm 36px
+  do tiêu đề xuống hai dòng, toạ độ và bề ngang y hệt. Khung của bộ này cố ý cố
+  định nên không có vật thể nào chạy qua màn hình.
+- **Chỉ 6 cặp có khung ảnh ở cả hai bên**, đều nằm ở bộ V3, hai trong số đó xê
+  dịch 0px.
+- **Nó đá nhau với hiệu ứng hiện dần.** Slide mới bị chụp lúc nội dung còn ẩn
+  chờ hiện dần, nên giữa chừng transition thân slide mới trống trơn còn thân
+  slide cũ vẫn nguyên. Muốn sửa phải đảo thứ tự hiện dần và đo tự co, đúng chỗ
+  mong manh nhất.
+
+Cũng đã thử **giữ slide cũ lại trên màn** để làm đẩy/phủ/mờ chéo như PowerPoint.
+Chạy sạch, không rò thẻ, không lỗi js, kể cả khi bấm nhanh mười lần liên tiếp.
+Nhưng vướng đúng lý do thứ ba ở trên: chồng hai slide lên nhau khi slide mới còn
+trống thì ra bóng ma chứ không ra chuyển cảnh.
+
+**Muốn làm morph hay đẩy thật thì việc phải làm trước là: cho slide mới hiện
+xong nội dung rồi mới bắt đầu chuyển cảnh.** Đừng bắt tay vào morph trước.
+
 ## Slide "Ba gói" của bộ So sánh — 11/09/2026
 
 Slide 2 bộ So sánh nay dùng đúng nội dung slide 7 bộ V3: thẻ nhấn mạnh trên mỗi

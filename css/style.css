@@ -1537,6 +1537,34 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
   from{opacity:0;transform:translateX(var(--dx,24px)) scale(.994)}
   to  {opacity:1;transform:none}
 }
+/* ── Nhịp vào riêng cho từng loại slide ────────────────────────────────────
+   Một hiệu ứng cho cả 94 slide thì bìa, bảng và ảnh chụp màn đều vào y hệt
+   nhau. Chia theo VAI TRÒ của slide chứ không chia theo bộ. Loại nào không có
+   tên dưới đây thì giữ nhịp trượt ngang mặc định ở trên.
+   Đã đo: mọi loại dừng hẳn trong khoảng 840–1460ms, còn dư trần ANIM_END=1600. */
+
+/* Bìa và chuyển mục: đang đổi chương thì không có gì để trượt tiếp, nở nhẹ ra
+   từ giữa cho ra chất mở đầu. */
+@keyframes slno{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:none}}
+.slide.in.t-cover,.slide.in.t-section,.slide.in.t-qa,.slide.in.t-thanks,
+.slide.in.t-hero,.slide.in.t-heroshots{
+  animation:slno var(--d-slow) var(--ease-soft) both}
+
+/* Ảnh chụp màn: trượt ngang làm cả tấm ảnh rung, chỉ cho trôi lên là đủ */
+@keyframes sllen{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.slide.in.t-device,.slide.in.t-webshot,.slide.in.t-video,.slide.in.t-imagefull,
+.slide.in.t-trio,.slide.in.t-twoshot,.slide.in.t-webgrid,.slide.in.t-platform{
+  animation:sllen var(--d-base) var(--ease-soft) both}
+
+/* Bảng so sánh: từng dòng đã chạy nối nhau rồi, cả bảng mà trượt nữa thì rối */
+@keyframes slmo{from{opacity:0}to{opacity:1}}
+.slide.in.t-matrix{animation:slmo var(--d-fast) var(--ease) both}
+
+/* Sơ đồ quy trình: nở từ giữa để các nhánh toả ra sau đó đọc được thành mạch */
+.slide.in.t-orderflow,.slide.in.t-production,.slide.in.t-twolane,
+.slide.in.t-pipeline,.slide.in.t-costformula{
+  animation:slno var(--d-base) var(--ease-soft) both}
+
 /* Nền trang trí đi chậm hơn tiền cảnh — mắt đọc chữ trước, nền lùi ra sau */
 @keyframes rvbg{from{opacity:0;transform:scale(.9)}to{opacity:.85;transform:none}}
 .slide.in::before{animation:rvbg 1s .1s var(--ease-soft) both}

@@ -1103,7 +1103,9 @@ const App = {
       : `<div class="s-body"><div>Chưa có mẫu cho type "${esc(s.type)}"</div></div>`;
     if (s.plain) inner = tenThang(inner);
     const el = document.createElement('div');
-    el.className = 'slide' + (/nodeco/.test(inner) ? ' nodeco' : '')
+    /* Tên loại đi thẳng vào class để CSS cho mỗi loại một nhịp vào riêng —
+       xem khối "Nhịp vào riêng cho từng loại slide" trong style.css. */
+    el.className = 'slide t-' + s.type + (/nodeco/.test(inner) ? ' nodeco' : '')
                  + (s.type === 'cover' || s.type === 'end' ? ' bare' : '');
     el.innerHTML = inner +
       (s.todo ? `<div class="todo">${esc(s.todo)}</div>` : '') + `
