@@ -465,6 +465,38 @@ ngang tự nhiên của ảnh, cột chữ còn ~320px và autofit thu nhỏ xu�
 `imgw:720` cho slide mỗi kho một gói và `imgw:700` cho slide đổi gói thì cột chữ
 rộng ra và cả hai về đúng cỡ chữ chuẩn.
 
+## Slide "Ba gói" của bộ So sánh — 11/09/2026
+
+Slide 2 bộ So sánh nay dùng đúng nội dung slide 7 bộ V3: thẻ nhấn mạnh trên mỗi
+gói, và danh sách tính năng thật thay cho mấy dòng mô tả chung chung. Giữ lại hai
+thứ riêng của bộ So sánh: **số chênh lệch** giữa các gói (sinh từ chính bảng 99
+mục) và **dải chú dẫn** cách đọc bảng.
+
+Sửa ở `tools/gen_compare.py` rồi chạy lại, **đừng sửa tay trong `slides-data.js`**.
+Khuôn slide 2 nằm thẳng trong bộ sinh, các chỗ `%d` lấy theo đúng thứ tự: ba số ở
+bìa, tổng số mục, rồi từng gói kèm dòng chênh lệch.
+
+### Dải chú dẫn bị cắt mà không ai báo — 11/09/2026
+
+Nhồi nội dung V3 vào làm ba thẻ cao thêm, dải chú dẫn dưới chân bị cắt mất nửa
+dưới. **Bộ kiểm vẫn báo "không vấn đề".**
+
+Nguyên do: `.mxs` để `overflow:visible` còn `.s-body` thì `overflow:hidden`. Phần
+thừa tràn ra khỏi `.mxs` rồi bị `.s-body` cắt, mà `scrollHeight` của `.s-body`
+**không hề tăng**. Auto-fit đo `.s-body` thấy vừa khít nên không thu gì, bộ kiểm
+cũng chỉ đo `.s-body` nên không thấy gì.
+
+Đã xử hai đầu:
+
+- `check_slides.py` đo thêm **từng con trực tiếp của `.s-body`**, không chỉ đo
+  `.s-body`. Bật lên là lòi ra ba slide bảng so sánh đã tràn sẵn từ trước, 2 tới
+  6 pixel, dòng cuối mất viền.
+- `mxsum` nào có `legend` thì thêm class `dense`, thẻ thắt lại nhường chỗ cho dải
+  chú dẫn. Bộ V3 không có dải nên giữ nguyên khoảng thở cũ.
+- Bảng so sánh hạ đệm dọc của dòng từ 6px xuống 5px và của dòng tên phân hệ từ
+  7px xuống 5px. Dòng vẫn giãn đầy khung như cũ vì chúng là `flex:1 1 auto`, chỉ
+  có chiều cao **tối thiểu** hạ xuống.
+
 ## Mục lục dùng chung một kiểu — 11/09/2026
 
 Cả ba bộ trình chiếu nay dùng chung một kiểu mục lục: **một trục dọc bên trái,

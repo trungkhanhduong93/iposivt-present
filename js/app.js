@@ -241,7 +241,7 @@ mxsum (s) {
      tượng, nhìn thanh dài ngắn mới thấy ngay khoảng cách giữa ba gói. */
   const max = Math.max(...s.packs.map(p => +p.n));
   return head(kick(s, 'So sánh tính năng'), s.title, s.sub, 'up') +
-    `<div class="s-body"><div class="mxs">
+    `<div class="s-body"><div class="mxs${(s.legend || []).length ? ' dense' : ''}">
       <div class="row">${s.packs.map(p => `<div class="c ${p.k}">
         <div class="tp">
           <div class="lg"><img src="assets/${p.logo}" alt="">

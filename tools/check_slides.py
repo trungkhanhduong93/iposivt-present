@@ -30,10 +30,16 @@ targets = sys.argv[1].split(',') if len(sys.argv) > 1 else \
 
 PROBE = """() => {
   const over = [];
+  const ghi = e => over.push(e.className + ' ' + e.scrollWidth + 'x' + e.scrollHeight +
+                             ' > ' + e.clientWidth + 'x' + e.clientHeight);
   document.querySelectorAll('.s-body,[data-fit]').forEach(e => {
-    if (e.scrollHeight > e.clientHeight + 1 || e.scrollWidth > e.clientWidth + 1)
-      over.push(e.className + ' ' + e.scrollWidth + 'x' + e.scrollHeight +
-                ' > ' + e.clientWidth + 'x' + e.clientHeight);
+    if (e.scrollHeight > e.clientHeight + 1 || e.scrollWidth > e.clientWidth + 1) ghi(e);
+  });
+  /* Con truc tiep cua .s-body cung phai do rieng. Con de overflow:visible thi
+     phan thua tran ra ngoai hop cua no roi bi .s-body cat, ma scrollHeight cua
+     .s-body khong he tang — do moi mot minh .s-body la khong thay gi. */
+  document.querySelectorAll('#stage .s-body > *').forEach(e => {
+    if (e.scrollHeight > e.clientHeight + 1 || e.scrollWidth > e.clientWidth + 1) ghi(e);
   });
   const d = document.documentElement;
   return {

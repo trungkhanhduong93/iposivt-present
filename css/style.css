@@ -1422,6 +1422,18 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
 .mxs .cov i{display:block;height:100%;border-radius:4px;background:var(--st)}
 .mxs .c.pl .cov i{background:var(--pl)}
 .mxs .c.pr .cov i{background:linear-gradient(90deg,#9c7220,#cdb46e)}
+/* Slide nào có dải chú dẫn dưới chân thì ba thẻ phải nhường lại chỗ cho nó.
+   Ba thẻ dựng thoải mái cộng dải chú dẫn là cao hơn khung 500px, mà `.mxs` để
+   overflow:visible nên phần thừa tràn ra rồi bị `.s-body` cắt — auto-fit đo
+   `.s-body` thì thấy vừa khít, không có gì để thu, dải cứ thế mất một nửa. */
+.mxs.dense{gap:11px}
+.mxs.dense .c{padding:14px 20px 11px;gap:10px}
+.mxs.dense .tp{gap:7px}
+.mxs.dense .c ul{padding-top:9px;gap:6px}
+.mxs.dense .c p{font-size:16.5px;line-height:1.45}
+.mxs.dense .c li{font-size:15px;line-height:1.45}
+.mxs.dense .lgd{padding:10px 18px}
+
 .mxs .lgd{display:flex;flex-wrap:wrap;gap:10px 24px;padding:14px 20px;
   background:#f7f9fc;border:1px solid var(--line);border-radius:13px}
 .mxs .lgd span{display:flex;align-items:center;gap:9px;font-size:14.5px;color:var(--body)}
@@ -1455,7 +1467,10 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
    thì mọi dòng chia đều nhau và dòng mô tả bị kẹp, chữ chồng lên dòng dưới. */
 .mx .rw{flex:1 1 auto;min-height:33px;border-bottom:1px solid var(--line)}
 .mx .rw:last-child{border-bottom:0}
-.mx .rw>div{padding:6px 16px;display:flex;align-items:center;min-width:0}
+/* Đệm dọc 5px chứ không phải 6: ô đánh dấu cao 23px, cộng đệm hai đầu là chiều
+   cao tối thiểu thật của một dòng. Để 6px thì ba slide bảng dài nhất vượt khung
+   vài pixel và dòng cuối bị cắt mất viền. Dòng vẫn giãn đầy khung như cũ. */
+.mx .rw>div{padding:5px 16px;display:flex;align-items:center;min-width:0}
 .mx .no{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
 .mx .ft{flex-direction:column;align-items:flex-start !important;justify-content:center;gap:2px}
 .mx .ft b{font-size:16.5px;font-weight:600;color:var(--ink);line-height:1.3}
@@ -1466,7 +1481,7 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
 .mx .rw .c2{background:var(--pr-t)}
 
 /* Dong ten phan he, keo ngang het bang */
-.mx .gr{padding:7px 16px;background:linear-gradient(90deg,#eaeff7,#f7f9fc);
+.mx .gr{padding:5px 16px;background:linear-gradient(90deg,#eaeff7,#f7f9fc);
   border-bottom:1px solid var(--line);font-size:12.5px;font-weight:700;
   letter-spacing:1.4px;color:#3f5573;text-transform:uppercase;
   display:flex;align-items:center}

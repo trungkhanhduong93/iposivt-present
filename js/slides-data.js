@@ -696,7 +696,7 @@ cmp: {
         t:'Đầy đủ toàn bộ phân hệ và báo cáo' }
     ] },
 
-  /* 2 ─ Ba gói dành cho ai, kèm cách đọc bảng ---------------------------- */
+  /* 2 ─ Ba gói có gì, kèm cách đọc bảng ---------------------------------- */
   { n:2, type:'mxsum',
     crumb:['SO SÁNH TÍNH NĂNG','Ba gói'],
     title:'BA GÓI, MỘT PHẦN MỀM',
@@ -704,20 +704,28 @@ cmp: {
     total:'99 tính năng',
     packs:[
       { k:'st', logo:'logo-ivt-standard.png', n:'28',
-        t:'Nghiệp vụ kho cơ bản: mua hàng, bán POS, kiểm kê.',
-        li:['Đủ chứng từ nhập, xuất, kiểm kê nền tảng',
-            'Mười lăm báo cáo quản trị kho và đối soát',
-            'Đối soát KTV và iACC ngay từ gói thấp nhất'] },
+        tag:'TÍNH NĂNG KHO **FREE**',
+        t:'Miễn phí cho toàn bộ khách hàng.',
+        li:['Nhập mua',
+            'Công nợ nhà cung cấp',
+            'Kho hàng bán thẳng: tồn kho, kiểm kê'] },
       { k:'pl', logo:'logo-ivt-plus.png', n:'46',
-        t:'Mở rộng: công thức chế biến, giá thành, hao hụt nguyên vật liệu.',
-        li:['Thêm 18 tính năng so với Standard',
-            'Công thức chế biến, bảng giá, quy đổi đơn vị',
-            'Báo cáo hao hụt, tỷ lệ trả hàng, giá thành'] },
+        tag:'BAO GỒM TÍNH NĂNG **IVT Lite** CŨ',
+        t:'Gồm trọn gói Standard, cộng thêm 18 tính năng:',
+        li:['Trừ kho theo định lượng',
+            'Kho nguyên liệu và hàng hoá',
+            'Quản lý giá vốn',
+            'Quản lý hàng hỏng huỷ',
+            'Trợ lý iOne bản cơ bản'] },
       { k:'pr', logo:'logo-ivt-pro.png', n:'99',
-        t:'Đầy đủ toàn bộ phân hệ và báo cáo.',
-        li:['Thêm 53 tính năng so với Plus',
-            'Đặt hàng, sơ chế, chế biến, điều chuyển, nhượng quyền',
-            'Trọn 37 báo cáo của tám nhóm'] }
+        tag:'BAO GỒM TÍNH NĂNG **IVT Pro** HIỆN TẠI',
+        t:'Gồm trọn gói Plus, cộng thêm 53 tính năng:',
+        li:['Điều chuyển hàng giữa các kho',
+            'Đặt hàng nhà cung cấp, kho tổng, bếp trung tâm',
+            'Quản lý sản xuất: sơ chế và chế biến',
+            'Bán hàng và công nợ khách hàng, nội bộ',
+            'Vận hành nhượng quyền',
+            'Trợ lý iOne bản nâng cao'] }
     ],
     legend:[
       { k:'st', t:'Cột xám là gói **Standard**' },
