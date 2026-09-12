@@ -1074,7 +1074,7 @@ v3: {
     crumb:['MỤC TIÊU CẬP NHẬT {{V3}}','Bốn thay đổi lớn'],
     title:'BỐN THAY ĐỔI LỚN NHẤT',
     items:[
-      { n:'01', c:'#12988c', t:'**Gói bản quyền** chuẩn hoá thành ba bậc Standard, Plus và Pro' },
+      { n:'01', c:'#12988c', t:'**Gói bản quyền** chuẩn hoá thành ba bậc Standard, Plus và Pro. Khách dùng **FABi Box**, **POS PC** hay ~~không dùng POS FABi~~ đều kết nối IVT được, chọn gói nào là theo nhu cầu của khách.' },
       { n:'02', c:'#1b6fe0', t:'**Logic bản quyền** đổi sang tính theo từng kho, không theo mã công ty như trước' },
       { n:'03', c:'#e0673d', t:'**Menu và bộ lọc** làm lại: menu gom theo nhóm nghiệp vụ, bộ lọc gọn lại và điều kiện thường dùng nằm ngay trên thanh công cụ' },
       { n:'04', c:'#6d3fd4', t:'**Trợ lý iOne.** Ứng dụng tính năng AI áp dụng cho Nhập mua hàng và Kiểm kê' }
