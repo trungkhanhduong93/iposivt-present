@@ -1009,7 +1009,7 @@ cmp: {
 },
 
 /* ══════════════════════════════════════════════════════════════════════════
-   V3 — 18 slide
+   V3 — 26 slide
    Nguồn: "IVT V3 Introduction" (bài giới thiệu nội bộ, 09/04/2026).
    Có cả phần chính sách sale. Trước đây khoá bằng mã, nay bỏ khoá: sale gửi
    khách bản PDF xuất từ nút PDF chứ không gửi link ra ngoài.
@@ -1244,12 +1244,27 @@ v3: {
     items:[
       { f:'dong-bo-pos.webp', k:'brw', t:'Đồng bộ hoá đơn POS cho nhiều cửa hàng',
         s:'Chọn khoảng thời gian rồi tick các kho cần lấy lại dữ liệu. Cả chuỗi đồng bộ một lượt, không phải vào từng cửa hàng.' },
-      { f:'thanh-toan-vo.webp', k:'brw', t:'Thanh toán công nợ NCC liên kết Quỹ tiền kế toán VO',
+      { f:'thanh-toan-vo-2.webp', k:'brw', t:'Thanh toán công nợ NCC liên kết Quỹ tiền kế toán VO',
         s:'Lập phiếu thanh toán chọn thẳng quỹ tiền bên Kế toán VO, số liệu hai bên khớp nhau, không phải đối chiếu lại.' }
     ] },
 
-  /* 12 ─ Bộ lọc · bản cũ ------------------------------------------------- */
-  { n:16, type:'webshot', frame:1,
+  /* 12 ─ Tiện ích · tìm kiếm màn hình ------------------------------------ */
+  { n:16, type:'video',
+    crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Tiện ích bổ sung','Tìm kiếm màn hình'],
+    title:'TÌM THẲNG MÀN HÌNH CẦN VÀO',
+    video:'tim-kiem-man-hinh.mp4',
+    items:[
+      { t:'Mở ô tìm kiếm trên thanh công cụ',
+        s:'Bấm vào ô **Tìm kiếm màn hình**, hoặc nhấn phím tắt ~~Ctrl + F~~.' },
+      { t:'Gõ tên màn hình cần vào',
+        s:'Danh mục hay chứng từ đều tìm được, kết quả hiện kèm nhóm nghiệp vụ của màn hình đó.' },
+      { t:'Bấm chọn là vào thẳng màn hình',
+        s:'Hoặc chọn bằng phím mũi tên rồi ~~Enter~~. Hộp tìm kiếm giữ sẵn các màn hình **vừa mở**.' }
+    ],
+    note:'Không phải nhớ chức năng nằm ở nhóm nào trên menu, ~~gõ tên là ra~~.' },
+
+  /* 13 ─ Bộ lọc · bản cũ ------------------------------------------------- */
+  { n:17, type:'webshot', frame:1,
     crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Bộ lọc','Trước — bản cũ'],
     title:'MỌI ĐIỀU KIỆN BÀY HẾT RA ĐẦU TRANG',
     img:'bo-loc-cu-2.webp',
@@ -1259,7 +1274,7 @@ v3: {
     ] },
 
   /* 12 ─ Bộ lọc · V3 ----------------------------------------------------- */
-  { n:17, type:'webshot', frame:1,
+  { n:18, type:'webshot', frame:1,
     crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Bộ lọc','Sau — bản mới'],
     title:'GỌN VÀ NHANH HƠN',
     img:'bo-loc-moi.webp',
@@ -1271,7 +1286,7 @@ v3: {
     ] },
 
   /* 13 ─ Trợ lý iOne ----------------------------------------------------- */
-  { n:18, type:'trio',
+  { n:19, type:'trio',
     crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Trợ lý <b>iOne</b>'],
     title:'ỨNG DỤNG AI — TRỢ LÝ <b>iOne</b>',
     items:[
@@ -1284,7 +1299,7 @@ v3: {
     ] },
 
   /* 14 ─ Kho trên FABi --------------------------------------------------- */
-  { n:19, type:'device',
+  { n:20, type:'device',
     crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Mở rộng','App Manager và CMS FABi'],
     title:'DÙNG KHO NGAY TRÊN FABi',
     imgs:['fabi-app.webp','fabi-cms.webp'], colw:440, mock:['ph','brw'],
@@ -1295,7 +1310,7 @@ v3: {
     note:'Đầy đủ như App và Web IVT riêng lẻ, ~~không cần đăng nhập hệ thống khác~~. Tài khoản phải được phân quyền **Kho & Cung ứng** mới thấy menu này.' },
 
   /* Danh mục sửa được ngay trên App -------------------------------------- */
-  { n:20, type:'device',
+  { n:21, type:'device',
     crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Mở rộng','Danh mục trên App'],
     title:'SỬA DANH MỤC NGAY TRÊN APP',
     imgs:['danh-muc-app.webp'], colw:340, frame:1,
@@ -1307,7 +1322,7 @@ v3: {
     note:'Vào ở mục **Khác ➜ Danh mục**. Mỗi dòng hiện luôn tổng số đã khai, ~~không cần mở ra mới biết~~.' },
 
   /* 15 ─ Báo cáo mới ----------------------------------------------------- */
-  { n:21, type:'webgrid', dir:'col', cols:2,
+  { n:22, type:'webgrid', dir:'col', cols:2,
     crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Báo cáo','Giao diện mới trên Web'],
     title:'DANH SÁCH BÁO CÁO TỔ CHỨC LẠI',
     img:'bao-cao.webp',
@@ -1317,7 +1332,7 @@ v3: {
     ] },
 
   /* 16 ─ Chuyển đổi có thời gian thích nghi ------------------------------ */
-  { n:22, type:'twoshot',
+  { n:23, type:'twoshot',
     crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Chuyển đổi','Thời gian thích nghi'],
     title:'TỚI 10/10/2026 VẪN QUAY LẠI BẢN CŨ ĐƯỢC',
     sub:'Dữ liệu dùng chung nên chuyển qua lại không mất gì. Sau ngày đó giao diện chuyển hẳn, ~~không quay lại được nữa~~.',
@@ -1328,7 +1343,7 @@ v3: {
     ] },
 
   /* 17 ─ Chốt lại -------------------------------------------------------- */
-  { n:23, type:'pillars',
+  { n:24, type:'pillars',
     kicker:'CHỐT LẠI',
     title:'V3 CÓ LỢI GÌ CHO NGƯỜI DÙNG',
     items:[
@@ -1338,13 +1353,13 @@ v3: {
     ] },
 
   /* 18 ─ Hỏi đáp --------------------------------------------------------- */
-  { n:24, type:'qa',
+  { n:25, type:'qa',
     num:'05',
     title:'Hỏi đáp',
     lead:'Mời AnhChiEm mạnh dạn đặt câu hỏi. Đừng sợ!' },
 
   /* 19 ─ Hỗ trợ ---------------------------------------------------------- */
-  { n:25, type:'thanks',
+  { n:26, type:'thanks',
     title:'Thank you!',
     sub:'Chuyển đổi gói hoặc đào tạo nhân sự trên V3, liên hệ chuyên viên phụ trách hoặc mở mục Hỗ trợ ngay trên thanh công cụ.',
     company:'iPOS.vn Joint Stock Company',
