@@ -1256,10 +1256,8 @@ v3: {
     items:[
       { t:'Mở ô tìm kiếm trên thanh công cụ',
         s:'Bấm vào ô **Tìm kiếm màn hình**, hoặc nhấn phím tắt ~~Ctrl + F~~.' },
-      { t:'Gõ tên màn hình cần vào',
-        s:'Danh mục hay chứng từ đều tìm được, kết quả hiện kèm nhóm nghiệp vụ của màn hình đó.' },
-      { t:'Bấm chọn là vào thẳng màn hình',
-        s:'Hoặc chọn bằng phím mũi tên rồi ~~Enter~~. Hộp tìm kiếm giữ sẵn các màn hình **vừa mở**.' }
+      { t:'Gõ tên màn hình cần vào rồi bấm chọn',
+        s:'Danh mục hay chứng từ đều tìm được, kết quả hiện kèm nhóm nghiệp vụ của màn hình đó.' }
     ],
     note:'Không phải nhớ chức năng nằm ở nhóm nào trên menu, ~~gõ tên là ra~~.' },
 
