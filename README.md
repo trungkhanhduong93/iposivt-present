@@ -604,6 +604,29 @@ cũng chỉ đo `.s-body` nên không thấy gì.
   7px xuống 5px. Dòng vẫn giãn đầy khung như cũ vì chúng là `flex:1 1 auto`, chỉ
   có chiều cao **tối thiểu** hạ xuống.
 
+## Ảnh chụp bộ Plus đổi sang tài khoản demo — 13/09/2026
+
+Ảnh chụp bộ Plus trước đây lộ tài khoản thật: tên `Trum` trên App, `Bắp Owner Lite` trên Web, số
+tiền lẻ `30,000 đ` / `0 đ`. Đã sửa thẳng trên điểm ảnh, không chụp lại:
+
+| File | Sửa gì |
+|---|---|
+| `plus/v3-home-quantri.webp`, `plus/v3-home-theodoi.webp` | tên → `IVT Plus`, chữ avatar `T` → `I`, mọi số tiền → `10,000,000 đ` |
+| `plus/s17.webp`, `plus/s19.webp` | `Bắp Owner Lite` → `IVT Plus`; viên tên co lại, cả cụm nút đầu trang dịch phải theo |
+| `video/slide12plus.mp4`, `slide11.mp4`, `slide15.mp4` | như `s17`/`s19`, sửa từng khung |
+
+- Chữ số `0`, dấu phẩy và chữ `đ` gạch chân lấy nguyên điểm ảnh từ `30,000 đ` gốc. Chỉ số `1` và
+  tên là chữ dựng lại, font căn theo chữ gốc: Segoe UI Bold cho App, Inter cho Web.
+- Video: nút `Gia hạn sớm nhận quà` có viền chạy màu nên mỗi khung tự cắt-dịch trên chính nó, không
+  dán một bản sửa chung. Mở hộp thoại thì trang khoá cuộn, thanh cuộn biến mất, cả đầu trang lệch
+  trái 17px — khung đó dò lại vị trí. Khung trang khác đè kín đầu trang thì để nguyên
+  (`slide11` khung 300–321). Khung chuyển cảnh thử dựng mà xấu hơn bản gốc thì giữ gốc: `slide15`
+  khung 154, một khung 66ms.
+- Cố ý để nguyên: số tiền `1,000 đ` / `40,000 đ` trong `slide16-2.webp` (slide 17, ngoài danh sách
+  Trum giao), số liệu trong bảng Web của `s17` và video Trang chủ. Chưa rà video
+  `tim-kiem-man-hinh.mp4` của bộ V3.
+- **Chụp ảnh mới thì dùng tài khoản demo tên `IVT Plus`**, khỏi phải sửa lại lần nữa.
+
 ## Bìa và mục lục Plus đồng bộ với Pro — 13/09/2026
 
 Ba chỗ sửa cho hai bộ Plus và Pro nhìn cùng một khuôn:
