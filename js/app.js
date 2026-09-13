@@ -517,13 +517,15 @@ device (s, d) {
 
 /* Ảnh chụp màn Web nằm ngang: ảnh chiếm phần lớn slide, ghi chú dồn sang phải */
 webshot (s, d) {
+  /* mark:'x' | 'check' — dấu tròn đóng lên góc khung, cặp slide bản cũ / bản mới */
+  const mk = s.mark ? `<span class="vmk ${s.mark}">${IC[s.mark]}</span>` : '';
   const shot = s.frame
     ? `<div class="brw"><div class="bar3"><i></i><i></i><i></i></div>
-         <img src="${d.dir}${s.img}" alt="" data-zoom></div>`
+         <img src="${d.dir}${s.img}" alt="" data-zoom>${mk}</div>`
     : `<img src="${d.dir}${s.img}" alt="" data-zoom>`;
   return head(kick(s), s.title, '', 'up') + `<div class="s-body"><div class="vid${
     s.imgw ? ' fixw' : ''}"${s.imgw ? ` style="--iw:${s.imgw}px"` : ''}>
-    <div class="fr shot${s.frame ? ' brwrap' : ''}${s.shadow ? ' dsh' : ''}">${shot}</div>
+    <div class="fr shot${s.frame ? ' brwrap' : ''}${s.shadow ? ' dsh' : ''}${s.mark ? ' vmark' : ''}">${shot}</div>
     <div class="side" data-fit>
       ${s.items ? `<div class="lst">${s.items.map((it, i) => `
         <div class="it"><b>${i + 1}</b><div class="tx"><span>${md(it.t)}</span>

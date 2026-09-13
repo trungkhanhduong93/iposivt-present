@@ -1171,17 +1171,17 @@ v3: {
       { t:'Lên gói {{Pro}} có thêm phí triển khai',
         s:'Áp cho mô hình kho tổng và kho cửa hàng' },
       { t:'Hết hạn mà không gia hạn',
-        s:'Chỉ dùng được các tính năng như bản {{Standard}}, dữ liệu vẫn giữ nguyên.' }
+        s:'Với gói {{Plus}} và {{Pro}} đang sử dụng, khi hết hạn sẽ khóa tính năng, chỉ xem được dữ liệu và báo cáo.' }
     ] },
 
   /* 8 ─ Mua và gia hạn ngay trên hệ thống -------------------------------- */
-  { n:10, type:'webshot', frame:1, imgw:740, shadow:1,
+  { n:10, type:'webshot', frame:1, imgw:640, shadow:1,
     crumb:['GÓI BẢN QUYỀN {{V3}}','Chính sách bán hàng','Mua và gia hạn'],
     title:'MUA VÀ GIA HẠN NGAY TRÊN HỆ THỐNG',
     img:'gia-han.webp',
     items:[
       { t:'Mua mới ngay trên hệ thống', s:'Gói Plus mua như thông thường, gói Pro vẫn cần dịch vụ triển khai' },
-      { t:'Thanh toán xong là bản quyền chạy', s:'Hệ thống tự tạo phiếu triển khai cho iAcc' },
+      { t:'Thời hạn bản quyền được kích hoạt sau khi thanh toán', s:'Hệ thống tự tạo PYC cho IACC' },
       { t:'Mua mới và gia hạn nhiều điểm một lần', s:'Ảnh bên là gia hạn mười cửa hàng trong một lượt' },
       { t:'Ưu đãi áp như chính sách đang chạy', s:'Chọn thời hạn nào thì ưu đãi hiện ngay theo thời hạn đó' }
     ],
@@ -1193,7 +1193,7 @@ v3: {
     title:'THAY ĐỔI KHI BÁN HÀNG',
     items:[
       { n:'01', c:'#12988c', t:'**Chính sách bán hàng giữ nguyên.** Không thay đổi gì so với chính sách hiện hành đang áp dụng cho sale, hoa hồng tương ứng gói mới.' },
-      { n:'02', c:'#e0673d', t:'**Chuyển đổi gói theo logic gia hạn** và ~~không tính KPI~~. Trước đây là 2 sản phẩm nên tính mua mới và có KPI.' }
+      { n:'02', c:'#e0673d', t:'**Chuyển đổi gói từ Plus lên Pro hoặc ngược lại**, sẽ theo logic như gia hạn và ~~không tính KPI~~. Trước đây là hai sản phẩm riêng trên Hermes nên tính mua mới và có KPI.' }
     ] },
 
   /* 8 ─ Menu · bảng nhóm nghiệp vụ --------------------------------------- */
@@ -1231,7 +1231,7 @@ v3: {
       { t:'Cài đặt ➜ Thiết lập quy về một nơi', s:'Công nợ đầu kỳ, Quy tắc giá vốn, Định mức tồn kho, Nhân viên (trước là Tài khoản), Kế hoạch tự động' },
       { t:'Thêm menu Kết nối', s:'Mở đầu với kết nối Misa Amis để đồng bộ dữ liệu sang phần mềm kế toán' }
     ],
-    note:'Menu gom thành **chín nhóm nghiệp vụ**. Tìm nhanh hơn, và ~~nhân viên mới học nhanh hơn~~ vì chức năng nằm đúng chỗ người ta nghĩ tới.' },
+    note:'Menu thay đổi thành **09 nhóm nghiệp vụ**. Tìm nhanh hơn, và ~~người dùng mới sẽ học nhanh hơn~~ vì các màn hình được sắp xếp theo đúng nghiệp vụ.' },
 
   /* 10 ─ Quy trình hoá nghiệp vụ ----------------------------------------- */
   { n:14, type:'webshot',
@@ -1239,7 +1239,7 @@ v3: {
     title:'MỖI NGHIỆP VỤ CÓ THÊM PHẦN QUY TRÌNH',
     img:'quy-trinh-san-xuat.webp', frame:1,
     items:[
-      { t:'Nhóm nghiệp vụ nào cũng đã có quy trình', s:'Mua hàng, bán hàng, điều chuyển, sản xuất, kiểm kê, công nợ' },
+      { t:'Trong tất cả nghiệp vụ đều có sẵn quy trình và ví dụ', s:'Mua hàng, bán hàng, điều chuyển, sản xuất, kiểm kê, công nợ' },
       { t:'Sơ đồ từng bước kèm giải thích', s:'Bước nào đi trước, khi nào dùng phiếu nào, hàng lỗi xử ra sao' },
       { t:'Tắt bước không dùng', s:'Sơ đồ và menu đổi theo, bật lại bất cứ lúc nào' }
     ],
@@ -1270,9 +1270,9 @@ v3: {
     note:'Không phải nhớ chức năng nằm ở nhóm nào trên menu, ~~gõ tên là ra~~.' },
 
   /* 13 ─ Bộ lọc · bản cũ ------------------------------------------------- */
-  { n:17, type:'webshot', frame:1,
+  { n:17, type:'webshot', frame:1, mark:'x',
     crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Bộ lọc','Trước — bản cũ'],
-    title:'MỌI ĐIỀU KIỆN BÀY HẾT RA ĐẦU TRANG',
+    title:'GIAO DIỆN BỘ LỌC CŨ',
     img:'bo-loc-cu-2.webp',
     items:[
       { t:'Chiếm ba hàng đầu trang', s:'Phải cuộn qua hết mới nhìn thấy dữ liệu' },
@@ -1280,9 +1280,9 @@ v3: {
     ] },
 
   /* 12 ─ Bộ lọc · V3 ----------------------------------------------------- */
-  { n:18, type:'webshot', frame:1,
+  { n:18, type:'webshot', frame:1, mark:'check',
     crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Bộ lọc','Sau — bản mới'],
-    title:'GỌN VÀ NHANH HƠN',
+    title:'GIAO DIỆN BỘ LỌC MỚI',
     img:'bo-loc-moi.webp',
     items:[
       { t:'Điều kiện thường dùng ra ngoài', s:'Nằm ngay trên thanh công cụ' },
@@ -1325,22 +1325,22 @@ v3: {
       { t:'Từ bản này làm thẳng trên App', s:'Xem, thêm, sửa, xoá ngay trên điện thoại' },
       { t:'Đủ danh mục thường dùng', s:'Hàng hoá, nhóm hàng, đơn vị tính, quy đổi, công thức sơ chế và chế biến, kho hàng, khách hàng, nhà cung cấp' }
     ],
-    note:'Vào ở mục **Khác ➜ Danh mục**. Mỗi dòng hiện luôn tổng số đã khai, ~~không cần mở ra mới biết~~.' },
+    note:'Vào App ở mục **Khác ➜ Danh mục** để thao tác. Tuy nhiên, có một vài màn hình nghiệp vụ đặc thù ~~vẫn cần thao tác ở Web~~ (như biến thiên).' },
 
   /* 15 ─ Báo cáo mới ----------------------------------------------------- */
   { n:22, type:'webgrid', dir:'col', cols:2,
     crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Báo cáo','Giao diện mới trên Web'],
-    title:'DANH SÁCH BÁO CÁO TỔ CHỨC LẠI',
+    title:'GIAO DIỆN DANH SÁCH BÁO CÁO',
     img:'bao-cao.webp',
     items:[
       'Tám nhóm **A–H** nằm trên một hàng tab: quản trị kho, đặt hàng, sản xuất, giá thành, công nợ, phân tích, đối soát, kiểm soát',
-      'Báo cáo trải ngang theo mã **A01, A02…**, mỗi cái kèm một dòng nói rõ dùng để làm gì'
+      'Báo cáo trải ngang theo mã **A01, A02…** Bổ sung thêm dòng mô tả ngắn gọn bên dưới mỗi báo cáo'
     ] },
 
   /* 16 ─ Chuyển đổi có thời gian thích nghi ------------------------------ */
   { n:23, type:'twoshot',
     crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Chuyển đổi','Thời gian thích nghi'],
-    title:'TỚI 10/10/2026 VẪN QUAY LẠI BẢN CŨ ĐƯỢC',
+    title:'NGÀY 10/10/2026 KHÓA GIAO DIỆN V2',
     sub:'Dữ liệu dùng chung nên chuyển qua lại không mất gì. Sau ngày đó giao diện chuyển hẳn, ~~không quay lại được nữa~~.',
     imgs:['quay-lai-web.webp','quay-lai-app.webp'], mock:['brw',''],
     items:[
@@ -1349,13 +1349,14 @@ v3: {
     ] },
 
   /* 17 ─ Chốt lại -------------------------------------------------------- */
-  { n:24, type:'pillars',
+  { n:24, type:'pillars', cols:2, fit:1,
     kicker:'CHỐT LẠI',
-    title:'V3 CÓ LỢI GÌ CHO NGƯỜI DÙNG',
+    title:'V3 — GIÁ TRỊ MANG LẠI CHO NGƯỜI DÙNG',
     items:[
       { n:'01', c:'#12988c', t:'**Thao tác và tìm kiếm thuận tiện hơn** với cấu trúc tổ chức phân hệ mới theo nghiệp vụ.' },
       { n:'02', c:'#1b6fe0', t:'**Quy trình rõ ràng, ví dụ dễ hiểu**, tối ưu hiệu năng để mọi việc nhanh chóng hơn.' },
-      { n:'03', c:'#6d3fd4', t:'**Ứng dụng AI.** Trợ lý iOne thử nghiệm một vài tính năng và sẽ mở rộng trong thời gian tới.' }
+      { n:'03', c:'#6d3fd4', t:'**Ứng dụng AI.** Trợ lý iOne thử nghiệm một vài tính năng và sẽ mở rộng trong thời gian tới.' },
+      { n:'04', c:'#e0673d', t:'**Linh hoạt chuyển đổi gói phiên bản** tùy theo nhu cầu người dùng, theo từng kho. Dễ dàng mở rộng tệp người dùng hơn.' }
     ] },
 
   /* 18 ─ Hỏi đáp --------------------------------------------------------- */

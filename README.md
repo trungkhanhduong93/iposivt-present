@@ -131,7 +131,7 @@ khối CSS cùng tên trong `css/style.css`.
 | `modgrid` | Lưới thẻ phân hệ, span trên 12 cột, mỗi thẻ một màu | `groups[{h,ic,span,c,items}]` |
 | `device` | Ảnh máy + danh sách mục + ghi chú | `imgs` `items` `note` `side` `colw` `grid` |
 | `video` | Video chạy như ảnh động, cột phải nhận danh sách như `webshot` | `video` `poster` `items[{t,s}]` `note` |
-| `webshot` | Ảnh chụp màn Web nằm ngang + ghi chú phải | `img` `items` `note` `frame` |
+| `webshot` | Ảnh chụp màn Web nằm ngang + ghi chú phải | `img` `items` `note` `frame` `mark` |
 | `packs` | Ba thẻ gói kèm logo sản phẩm + hai thẻ lưu ý bên dưới | `packs[{logo,from,to,c}]` `notes[{h,ic,items}]` |
 | `intro` | Mở đầu một phần: chữ trái, ảnh lệch phải trên nền màu | `kicker` `title` `lead` `chips` `note` `img` |
 | `webgrid` | Khung trình duyệt + điểm nhấn (`dir:'row'` hoặc `'col'`) | `img` `items` `dir` `cols` |
@@ -671,11 +671,16 @@ Tranh minh hoạ nửa phải giữ nguyên. Từ 13/09/2026 bộ Plus cũng dù
 thành hai mục flex riêng, dấu cách giữa chúng bị nuốt mất — `Inventory` dính sát
 thẻ `Pro`.
 
-### Ảnh hộp thoại nổi thì cắt bo góc trong suốt
+### Ảnh hộp thoại nổi thì cắt sát bốn cạnh
 
-Ảnh chụp một hộp thoại nổi luôn dính bốn góc nền mờ phía sau, chuyển sang RGB
-là bốn góc thành xám đen. `gia-han.webp` đã cắt bo góc bán kính **21px** thành
-trong suốt, lưu WebP giữ kênh alpha.
+Ảnh chụp một hộp thoại nổi luôn dính bốn góc nền mờ phía sau. Lần đầu
+`gia-han.webp` cắt bo góc bán kính 21px thành trong suốt, nhưng viền khử răng
+cưa vẫn còn một vệt xám ở bốn góc — nhìn trên slide vẫn thấy.
+
+13/09/2026 đổi cách: **cắt thẳng mỗi cạnh 11px** (1117×761 → 1095×739), góc
+ảnh thành nền đỏ và trắng của chính hộp thoại, lưu RGB không cần kênh alpha. Đo
+lại: vùng 18px ở mỗi góc không còn điểm xám nào. Slide 10 bộ V3 hạ `imgw` từ
+740 xuống 640 để ảnh vẽ nhỏ lại cho nét.
 
 Cờ `shadow:1` trên slide `webshot` đổ bóng cho **cả khung giả lập**, không phải
 cho ảnh bên trong. `.fr` vốn có `overflow:hidden` nên cắt cụt bóng — luật này mở

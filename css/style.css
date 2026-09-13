@@ -1191,6 +1191,20 @@ body[data-deck="pro"] .qa .ln{background:#fff}
    đệm thì lại ăn mất chỗ của ảnh. */
 .vid .fr.dsh{overflow:visible}
 .vid .fr.dsh .brw{box-shadow:0 24px 48px rgba(9,44,78,.26),0 6px 14px rgba(9,44,78,.13)}
+/* mark:'x' | 'check' — dấu tròn đóng lên góc phải trên của khung trình duyệt, cặp
+   slide bộ lọc cũ / mới. Dấu thò ra ngoài khung nên phải mở overflow cả .fr lẫn
+   .brw; thanh trên và ảnh tự bo góc thay cho .brw. */
+.vid .fr.vmark{overflow:visible}
+.vid .fr.vmark .brw{position:relative;overflow:visible}
+.vid .fr.vmark .brw .bar3{border-radius:13px 13px 0 0}
+.vid .fr.vmark .brw img{border-radius:0 0 13px 13px}
+.vmk{position:absolute;right:-22px;top:-22px;z-index:4;width:60px;height:60px;border-radius:50%;
+  display:grid;place-items:center;border:4px solid #fff;
+  box-shadow:0 10px 24px rgba(9,44,78,.22),0 2px 6px rgba(9,44,78,.12)}
+.vmk svg{width:28px;height:28px;fill:none;stroke:#fff;stroke-width:3.4;stroke-linecap:round;
+  stroke-linejoin:round}
+.vmk.x{background:linear-gradient(160deg,#f0625a,#d63a31)}
+.vmk.check{background:linear-gradient(160deg,#22b573,#12906a)}
 
 /* ── Nội dung bổ sung (bật/tắt bằng phím X) ────────────────────────────── */
 .xflag{position:relative}
