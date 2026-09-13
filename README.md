@@ -604,6 +604,25 @@ cũng chỉ đo `.s-body` nên không thấy gì.
   7px xuống 5px. Dòng vẫn giãn đầy khung như cũ vì chúng là `flex:1 1 auto`, chỉ
   có chiều cao **tối thiểu** hạ xuống.
 
+## Bóng đổ bị cắt cụt — 13/09/2026
+
+Trum thấy bóng khung ảnh V3 slide 8 không tự nhiên: hai bên bị cắt thẳng, trên dưới thành mảng xám chữ
+nhật. Nguyên nhân là khung cha `overflow:hidden` chặn mất bóng tràn ra, và `check_slides.py` không bắt vì
+bóng không tính vào `scrollHeight`.
+
+Viết thêm `tools/check_shadow.py`: quét mọi phần tử có `box-shadow`, lần lên khung cha nào `overflow`
+khác `visible` cắt mất quá 10px và quá 35% độ dài bóng thì báo. Bỏ qua ca phần tử cố ý thò ra ngoài mép.
+Lần quét đầu ra 6 slide lỗi thật, đã sửa:
+
+| Slide | Khung cắt | Sửa |
+|---|---|---|
+| V3 8, 9, 14 | `.vid .fr.shot.brwrap` cắt 60px hai bên | `overflow:visible` cho mọi webshot có khung |
+| V3 13, 20 | `.s-body` cắt 32px đáy bóng `.brw` | bóng `.dev .shots .brw` bằng bóng khung điện thoại `.pf` |
+| V3 13, 20 | bóng riêng của ảnh nằm trong `.brw` | `box-shadow:none` như `trio`, `twoshot` |
+
+Còn báo nhưng cố ý, không sửa: bìa ba bộ và dải thiết bị (máy thò ra ngoài mép), V3 slide 3 (mép trái
+có lớp phủ trắng mờ 120px che vết cắt, đã khai `ALLOW`).
+
 ## Ảnh chụp bộ Plus đổi sang tài khoản demo — 13/09/2026
 
 Ảnh chụp bộ Plus trước đây lộ tài khoản thật: tên `Trum` trên App, `Bắp Owner Lite` trên Web, số

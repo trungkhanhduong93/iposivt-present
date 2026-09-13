@@ -658,9 +658,13 @@ body[data-deck="pro"] .tree .g>b{background:linear-gradient(120deg,var(--orange-
   box-shadow:var(--sh-2);cursor:zoom-in;background:#fff}
 /* Khung máy cho ảnh chụp thô (chưa có viền sẵn).
    Phải neo chiều cao 100% — để auto thì ảnh lấy kích thước gốc và khung tràn cột. */
-.dev .shots .brw{flex:0 1 auto;min-width:0;min-height:0;max-height:100%}
+.dev .shots .brw{flex:0 1 auto;min-width:0;min-height:0;max-height:100%;
+  /* bóng mặc định của .brw dài 86px xuống dưới, khung cao hết cột thì .s-body (lề
+     dưới 54px) cắt ngang thành một đường thẳng. Dùng đúng bóng của khung điện thoại
+     .pf đứng cạnh (V3 slide 13, 20) */
+  box-shadow:0 18px 40px rgba(9,44,78,.20),0 3px 8px rgba(9,44,78,.10)}
 .dev .shots .brw img{flex:0 1 auto;min-height:0;width:100%;height:auto;
-  max-height:100%;object-fit:contain}
+  max-height:100%;object-fit:contain;border-radius:0;box-shadow:none}
 .dev .shots .pf{height:100%;padding:6px;background:#fff;border-radius:26px;display:flex;
   box-shadow:0 18px 40px rgba(9,44,78,.20),0 3px 8px rgba(9,44,78,.10)}
 .dev .shots .pf img{height:100%;width:auto;max-width:none;max-height:none;
@@ -1191,6 +1195,12 @@ body[data-deck="pro"] .qa .ln{background:#fff}
    đệm thì lại ăn mất chỗ của ảnh. */
 .vid .fr.dsh{overflow:visible}
 .vid .fr.dsh .brw{box-shadow:0 24px 48px rgba(9,44,78,.26),0 6px 14px rgba(9,44,78,.13)}
+/* Mọi khung trình duyệt của webshot đều phải mở overflow, không riêng dsh: .brw đổ
+   bóng 60px mà .fr cao hết cột nhưng chỉ rộng bằng ảnh, nên overflow:hidden cắt
+   thẳng hai bên — trên dưới ảnh còn một mảng xám chữ nhật (V3 slide 8, 9, 14).
+   Không còn cần chặn tràn ở đây: .brw đã max-height:100%, tràn thật thì .vid kéo
+   scrollHeight của .s-body lên và check_slides bắt được. */
+.vid .fr.shot.brwrap{overflow:visible}
 /* mark:'x' | 'check' — dấu tròn đóng lên góc phải trên của khung trình duyệt, cặp
    slide bộ lọc cũ / mới. Dấu thò ra ngoài khung nên phải mở overflow cả .fr lẫn
    .brw; thanh trên và ảnh tự bo góc thay cho .brw. */
