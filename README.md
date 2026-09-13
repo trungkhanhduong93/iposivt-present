@@ -118,7 +118,7 @@ khối CSS cùng tên trong `css/style.css`.
 
 | type | Dùng cho | Trường chính |
 |---|---|---|
-| `cover` | Bìa. 5 biến thể: `left` (nền tranh, chữ trái), `devices` (chữ chìm + 3 thiết bị), `split` (chữ trái, tranh phải), `pro` (ảnh trên, mục lục dưới), `matrix` (chữ trái, ba thẻ gói phải, không dùng ảnh) | `variant` `img` `lines` `badge` `packs` |
+| `cover` | Bìa. 5 biến thể: `left` (nền tranh, chữ trái — hiện không bộ nào dùng), `devices` (chữ chìm + 3 thiết bị; khai `phones` thay `devices` thì xếp quạt toàn điện thoại — bìa Plus), `split` (chữ trái, tranh phải), `pro` (ảnh trên, mục lục dưới), `matrix` (chữ trái, ba thẻ gói phải, không dùng ảnh) | `variant` `img` `lines` `badge` `packs` |
 | `matrix` | Bảng đối chiếu tính năng ba gói, có dòng tên phân hệ xen giữa | `rows[{c,t,d,v}]` `rows[{g}]` `note` |
 | `mxsum` | Ba thẻ gói kèm thanh độ phủ, dùng cho trang mở và trang chọn gói | `packs` `total` `legend` |
 | `agenda` | Mục lục trục mốc số; `li` thì mục nằm trong thẻ, không có `li` thì chỉ một dòng kẻ; `p` là số slide mở đầu | `items[{t,x,p,li[]}]` |
@@ -604,6 +604,24 @@ cũng chỉ đo `.s-body` nên không thấy gì.
   7px xuống 5px. Dòng vẫn giãn đầy khung như cũ vì chúng là `flex:1 1 auto`, chỉ
   có chiều cao **tối thiểu** hạ xuống.
 
+## Bìa và mục lục Plus đồng bộ với Pro — 13/09/2026
+
+Ba chỗ sửa cho hai bộ Plus và Pro nhìn cùng một khuôn:
+
+- **Bìa Plus** chuyển từ `left` (tranh nền) sang `devices` như bìa Pro. Bộ Plus
+  không có ảnh chụp Web nên khai `phones` — năm ảnh App của slide Giới thiệu
+  (n:6) xếp quạt: máy giữa rộng 236px, cao nhất, lớp trên cùng; ra rìa nhỏ dần
+  tới 200px, hạ thấp 75px, nghiêng 6°. Toạ độ tính trong `T.cover`, không có
+  CSS riêng — dùng lại `.cvd .dv.ph`. Thẻ `Plus` đổi màu bằng
+  `body[data-deck="plus"]`, cùng cách bộ V3 đổi màu.
+- **Mục lục Plus** chuyển từ `agenda` sang bìa `Nội dung` `split` như Pro, dùng
+  lại tranh của bìa cũ. Bảy mục vừa khung. **Bỏ số trang `p`** vì khuôn này
+  không in số trang. Mục có cờ bổ sung khai dạng `{ t, x:1 }`.
+- **Slide Giới thiệu Pro** (n:3) thêm tên sản phẩm giữa khoảng trống trên dải
+  thiết bị, cùng kiểu banner slide Giới thiệu Plus: khai `brand` + `badge`
+  trên slide `hero` có `devices`. CSS dùng chung `.bnr .brand`, luật riêng
+  `.dvband .brand` phải đặt **sau** vì cùng độ ưu tiên.
+
 ## Mục lục dùng chung một kiểu — 11/09/2026
 
 Cả ba bộ trình chiếu nay dùng chung một kiểu mục lục: **một trục dọc bên trái,
@@ -624,7 +642,7 @@ Sửa thứ tự slide thì **phải sửa `p` theo** — không có gì tự ki
 
 Bìa `Nội dung` của bộ Pro (`cover` `variant:'split'`) không đi qua `agenda` nhưng
 đã chỉnh CSS `.cvs .ag` cho cùng ngôn ngữ: mốc số tròn, trục dọc, dòng kẻ chân.
-Tranh minh hoạ nửa phải giữ nguyên.
+Tranh minh hoạ nửa phải giữ nguyên. Từ 13/09/2026 bộ Plus cũng dùng khuôn này.
 
 **`.cvs .ag>div>span` phải là `display:block`.** Để `flex` thì chữ và thẻ badge
 thành hai mục flex riêng, dấu cách giữa chúng bị nuốt mất — `Inventory` dính sát

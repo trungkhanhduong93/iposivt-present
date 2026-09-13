@@ -141,9 +141,29 @@ cover (s, d) {
     </div>`;
   }
   if (s.variant === 'matrix') return T.cover_matrix(s, d);
-  /* Bìa Pro: chữ chìm cỡ lớn + 3 thiết bị xếp lớp (điện thoại · màn hình · điện thoại) */
+  /* Bìa Pro: chữ chìm cỡ lớn + 3 thiết bị xếp lớp (điện thoại · màn hình · điện thoại).
+     Khai `phones` thay cho `devices` thì xếp quạt toàn điện thoại (bìa Plus). */
   if (s.variant === 'devices') {
-    const [l, mid, r] = s.devices;
+    let dv;
+    if (s.phones) {
+      const N = s.phones.length, m = (N - 1) / 2;
+      dv = s.phones.map((f, i) => {
+        const k = Math.abs(i - m) / (m || 1);          // 0 ở giữa, 1 ở rìa
+        const w = 236 - k * 36;                        // máy giữa to nhất
+        const h = (w - 12) / SHOT_R + 12;              // 12 = viền trắng hai bên
+        const top = 285 + k * 75;                      // vòng cung: máy giữa cao nhất
+        const left = 640 + (i - m) * 205 - w / 2;
+        return `<div class="dv ph" style="left:${left.toFixed(1)}px;width:${w.toFixed(1)}px;
+          bottom:${(720 - top - h).toFixed(1)}px;z-index:${10 - Math.round(k * 4)};
+          transform:rotate(${((i - m) / (m || 1) * 6).toFixed(1)}deg)">
+          <img src="${d.dir}${f}" alt="" data-zoom></div>`;
+      }).join('');
+    } else {
+      const [l, mid, r] = s.devices;
+      dv = `<div class="dv scr"><img src="${d.dir}${mid}" alt="" data-zoom></div>
+      <div class="dv ph l"><img src="${d.dir}${l}" alt="" data-zoom></div>
+      <div class="dv ph r"><img src="${d.dir}${r}" alt="" data-zoom></div>`;
+    }
     return `<div class="cvd nodeco">
       <span class="wm">${esc(s.watermark)}</span>
       <div class="hd">
@@ -152,18 +172,18 @@ cover (s, d) {
           s.badge ? `<span class="pro">${esc(s.badge)}</span>` : ''}</h1>
         <div class="rule"></div>
       </div>
-      <div class="dv scr"><img src="${d.dir}${mid}" alt="" data-zoom></div>
-      <div class="dv ph l"><img src="${d.dir}${l}" alt="" data-zoom></div>
-      <div class="dv ph r"><img src="${d.dir}${r}" alt="" data-zoom></div>
+      ${dv}
     </div>`;
   }
   /* Chữ dồn trái, tranh chiếm nửa phải — dùng cho slide Nội dung */
   if (s.variant === 'split') {
+    /* mục là chuỗi, hoặc { t, x } khi cần gắn cờ nội dung bổ sung */
     return `<div class="cvs nodeco">
       <div class="tx">
         <div><h1>${esc(s.lines[0])}</h1><div class="rule"></div></div>
         <div class="ag">${(s.agenda || []).map((t, i) =>
-          `<div><i>${String(i + 1).padStart(2, '0')}</i><span>${md(t)}</span></div>`).join('')}</div>
+          `<div${xf(t) ? ' class="xflag"' : ''}><i>${String(i + 1).padStart(2, '0')}</i><span>${
+            md(t.t || t)}</span></div>`).join('')}</div>
       </div>
       <div class="art"><img src="${d.dir}${s.img}" alt=""></div>
     </div>`;
@@ -320,6 +340,8 @@ hero (s, d) {
     : `<img src="${d.dir}${s.img}" alt="">`;
   const pic = s.devices
     ? `<div class="pic dvb"><div class="dvband">
+         ${s.brand ? `<div class="brand"><span class="nm">${esc(s.brand)}</span>${
+           s.badge ? `<span class="bdg">${esc(s.badge)}</span>` : ''}</div>` : ''}
          <div class="dv scr"><img src="${d.dir}${s.devices[1]}" alt="" data-zoom></div>
          <div class="dv ph l"><img src="${d.dir}${s.devices[0]}" alt="" data-zoom></div>
          <div class="dv ph r"><img src="${d.dir}${s.devices[2]}" alt="" data-zoom></div>

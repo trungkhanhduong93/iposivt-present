@@ -27,24 +27,30 @@ plus: {
   vdir: 'assets/video/',
   slides: [
 
-  /* 1 ─ Bìa ------------------------------------------------------------- */
-  { n:1, type:'cover', variant:'left',
-    img:'anh-bia.webp',
+  /* 1 ─ Bìa — cùng khuôn bìa Pro: chữ chìm + máy xếp lớp, dựng bằng HTML --- */
+  { n:1, type:'cover', variant:'devices',
     logo:'logo-ipos.png',
+    watermark:'iPOS IVT PLUS',
     lines:['iPOS INVENTORY'],
-    badge:'Plus' },        /* thẻ xanh, lấy màu từ logo-ivt-plus.png */
+    badge:'Plus',           /* thẻ xanh, lấy màu từ logo-ivt-plus.png */
+    /* bộ Plus chỉ có ảnh App nên xếp quạt 5 máy thay cho màn hình giữa —
+       dùng lại đúng 5 ảnh của slide Giới thiệu (n:6), máy giữa đứng trên cùng */
+    phones:['v3-home-quantri.webp','v3-danhmuc.webp','v3-home-theodoi.webp',
+            'v3-quytrinh.webp','v3-baocao-tonkho.webp'] },
 
-  /* 2 ─ Nội dung -------------------------------------------------------- */
-  { n:2, type:'agenda',
-    title:'Nội dung',
-    items:[
-      { t:'Tại sao cần quản lý kho',        p:4 },
-      { t:'Giới thiệu iPOS Inventory Plus', p:6 },
-      { t:'Tính năng',                      p:9 },
-      { t:'Giá trị mang lại',               p:21 },
-      { t:'Điểm khác biệt giữa Plus & Pro', p:25 },
-      { t:'Chân dung khách hàng',           p:26 },
-      { t:'Hỏi đáp', x:1,                   p:27 }
+  /* 2 ─ Nội dung — cùng khuôn bìa Nội dung bộ Pro, tranh lấy từ bìa cũ ---- */
+  { n:2, type:'cover',
+    variant:'split',
+    img:'anh-bia.webp',
+    lines:['NỘI DUNG'],
+    agenda:[
+      'Tại sao cần quản lý kho',
+      'Giới thiệu iPOS Inventory {{Plus}}',
+      'Tính năng',
+      'Giá trị mang lại',
+      'Điểm khác biệt giữa Plus & Pro',
+      'Chân dung khách hàng',
+      { t:'Hỏi đáp', x:1 }
     ] },
 
   /* 3 ─ Giải thích từ ngữ ----------------------------------------------- */
@@ -360,6 +366,9 @@ pro: {
   /* 2 ─ Giới thiệu ------------------------------------------------------ */
   { n:3, type:'hero',
     title:'GIỚI THIỆU',
+    /* tên sản phẩm canh giữa trên dải thiết bị, cùng kiểu slide Giới thiệu bộ Plus */
+    brand:'iPOS INVENTORY',
+    badge:'Pro',
     /* dùng lại đúng 3 ảnh của slide bìa, xếp thành dải ngang */
     devices:['bia1.webp','bia2.webp','bia3.webp'],
     body:'**iPOS Inventory** {{Pro}} là phần mềm quản trị kho chuyên nghiệp cho ngành F&B. Phần mềm chuẩn hóa quy trình đặt hàng, quản lý kho hàng chính xác theo thời gian thực, cung cấp báo cáo quản trị kho đặc thù. Qua đó giúp tối ưu chi phí nguyên liệu, gia tăng lợi nhuận.',

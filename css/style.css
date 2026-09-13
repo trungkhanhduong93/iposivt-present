@@ -261,6 +261,8 @@ body[data-deck="v3"] .cvd .wm{color:rgba(18,152,140,.10)}
 body[data-deck="v3"] .cvd .hd h1{color:#0f5a55}
 body[data-deck="v3"] .cvd .hd h1 .pro{background:linear-gradient(180deg,#0f7a72,#17a89a);
   box-shadow:0 5px 15px rgba(15,122,114,.28);color:#fff}
+/* Bìa Plus: thẻ xanh đặc #0560a6 như logo-ivt-plus.png, chữ chìm và nền giữ như Pro */
+body[data-deck="plus"] .cvd .hd h1 .pro{background:#0560a6;box-shadow:0 4px 12px rgba(5,96,166,.28)}
 /* Thẻ "Pro" lấy đúng kiểu badge vàng trong logo-ivt-pro.png */
 .cvd .hd h1 .pro{display:inline-block;vertical-align:12px;margin-left:16px;
   padding:7px 24px 9px;border-radius:999px;font-size:31px;font-weight:700;
@@ -462,11 +464,11 @@ body[data-deck="pro"] .sect .ln{background:#fff}
 /* .hero .pic img đặt width:100% — phải thắng nó bằng img.lg cùng độ ưu tiên.
    File logo có nền trắng sẵn nên bọc thành thẻ trắng bo góc cho ra chủ ý. */
 /* Tên sản phẩm canh giữa phía trên, cùng kiểu chữ + thẻ với slide bìa */
-.bnr .brand{position:absolute;left:0;right:0;top:14px;z-index:5;
+.bnr .brand,.dvband .brand{position:absolute;left:0;right:0;top:14px;z-index:5;
   display:flex;align-items:center;justify-content:center;gap:13px}
-.bnr .brand .nm{font-size:27px;font-weight:700;letter-spacing:-.9px;color:#0b3f8f;
+.bnr .brand .nm,.dvband .brand .nm{font-size:27px;font-weight:700;letter-spacing:-.9px;color:#0b3f8f;
   line-height:1.16}
-.bnr .brand .bdg{padding:5px 15px 6px;border-radius:999px;font-size:16px;font-weight:700;
+.bnr .brand .bdg,.dvband .brand .bdg{padding:5px 15px 6px;border-radius:999px;font-size:16px;font-weight:700;
   letter-spacing:-.2px;color:#fff;line-height:1;background:#0560a6;
   box-shadow:0 3px 9px rgba(5,96,166,.26)}
 .bnr .beam{position:absolute;left:-10%;top:-40%;width:60%;height:190%;pointer-events:none;
@@ -482,6 +484,12 @@ body[data-deck="pro"] .sect .ln{background:#fff}
 .bnr .ph::after{content:'';position:absolute;left:12%;right:12%;bottom:-16px;height:16px;
   border-radius:50%;background:rgba(9,44,78,.13);filter:blur(7px);z-index:-1}
 .bnr .ph img{width:100%;height:auto;border-radius:21px;display:block;cursor:zoom-in}
+/* Dải thiết bị slide Giới thiệu Pro dùng lại tên sản phẩm của banner. Đặt SAU
+   `.bnr .brand` vì cùng độ ưu tiên: chữ giữa khoảng trống trên màn hình (mép
+   trên màn ở y=112), thẻ vàng như logo-ivt-pro.png */
+.dvband .brand{top:40px}
+.dvband .brand .bdg{background:linear-gradient(180deg,#9c7220 0%,#ac8129 46%,#cdb46e 100%);
+  box-shadow:0 3px 9px rgba(138,107,22,.26)}
 
 /* Thẻ Plus / Pro trong tiêu đề — cùng màu với logo sản phẩm */
 .tbdg{display:inline-block;vertical-align:5px;margin:0 2px;padding:4px 14px 5px;

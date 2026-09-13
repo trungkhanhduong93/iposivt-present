@@ -86,17 +86,19 @@ with sync_playwright() as p:
     h1 = pg.evaluate('()=>document.querySelector("#stage .s-body").scrollHeight')
     ok('an het van do dung chieu cao', h0 == h1, '%d vs %d' % (h0, h1))
 
-    pg.goto(BASE + '#plus-1'); pg.wait_for_timeout(700)
+    # can slide A khong chia phan, B va C lien sau deu co trong bang RV: plus-8
+    # imagefull -> plus-9 modgrid -> plus-10 device. Doi kieu slide o day thi doi moc.
+    pg.goto(BASE + '#plus-8'); pg.wait_for_timeout(700)
     pg.keyboard.press(' '); pg.wait_for_timeout(600)
     r = st()
     ok('Space sang slide sau va cho bam tiep',
-       r['h'] == '#plus-2' and r['s'] == 0 and r['an'] == r['n'] > 0, r)
+       r['h'] == '#plus-9' and r['s'] == 0 and r['an'] == r['n'] > 0, r)
     pg.keyboard.press(' '); pg.wait_for_timeout(300)
     ok('Space hien them mot phan', st()['s'] == 1, st())
     pg.keyboard.press('ArrowRight'); pg.wait_for_timeout(900)
     r = st()
     ok('mui ten phai bo qua buoc va hien tron',
-       r['h'] == '#plus-3' and r['s'] == r['n'] and r['an'] == 0, r)
+       r['h'] == '#plus-10' and r['s'] == r['n'] and r['an'] == 0, r)
 
     # video phai tu chay, lap, tat tieng, khong co thanh dieu khien
     for i in range(1, N_PLUS + 1):
