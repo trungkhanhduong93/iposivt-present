@@ -89,8 +89,11 @@ TABLES = [
      'Công thức chế biến mở từ {{Plus}}; sơ chế bán thành phẩm và định mức biến thiên chỉ có trên {{Pro}}.'),
     ('Danh mục — phần 2', 'DANH MỤC ĐỐI TÁC VÀ KHO', [('2.10', '2.17')],
      'Bảng giá mở từ {{Plus}}. Khách hàng, nhượng quyền, mẫu đặt hàng và quản lý lô date là phần riêng của {{Pro}}.'),
+    # Cắt tay ở 4.01: phần 1 trọn phân hệ đặt hàng, phần 2 trọn sơ chế + chế biến.
+    # Để bộ chia tự động thì nó chia đều 5/5, kéo 4.01 sang nhầm slide đặt hàng.
     ('Đặt hàng · Sơ chế · Chế biến', 'ĐẶT HÀNG, SƠ CHẾ VÀ CHẾ BIẾN', ['3.', '4.', '5.'],
-     'Trọn ba phân hệ này chỉ có trên {{Pro}} — đây là phần khác biệt lớn nhất giữa Pro và hai gói còn lại.'),
+     'Trọn ba phân hệ này chỉ có trên {{Pro}} — đây là phần khác biệt lớn nhất giữa Pro và hai gói còn lại.',
+     ['4.01']),
     ('Xuất kho', 'PHÂN HỆ XUẤT KHO', ['6.'],
      'Xuất bán POS có ở cả ba gói. Trả lại nhà cung cấp, xuất huỷ và xuất khác mở từ {{Plus}}; điều chuyển nội bộ thì cần {{Pro}}.'),
     ('Nhập kho · Kiểm kê', 'NHẬP KHO VÀ KIỂM KÊ', ['7.', '8.'],
@@ -112,8 +115,8 @@ TABLES = [
 
 # kiểm mọi mục đều được xếp vào đúng một slide
 seen = {}
-for _, _, sp, _ in TABLES:
-    for r in pick(*sp):
+for tb in TABLES:
+    for r in pick(*tb[2]):
         seen[r['c']] = seen.get(r['c'], 0) + 1
 miss = [r['c'] for r in items if seen.get(r['c'], 0) != 1]
 if miss:
@@ -245,9 +248,24 @@ def chunk(rows):
     return parts
 
 
+def cut_at(rows, codes):
+    """Cắt tay: mỗi mã trong `codes` mở đầu một slide mới. Vẫn phải lọt ngưỡng chiều cao."""
+    parts, cur = [], []
+    for r in rows:
+        if r['c'] in codes and cur:
+            parts.append(cur); cur = []
+        cur.append(r)
+    parts.append(cur)
+    assert len(parts) == len(codes) + 1, 'ma cat khong co trong khoi: %s' % codes
+    for p in parts:
+        if len(pack(p, BUDGET)) != 1:
+            raise SystemExit('cat tay tai %s lam mot slide cao qua khung' % codes)
+    return parts
+
+
 n = 2
-for crumb2, title, sp, note in TABLES:
-    parts = chunk(pick(*sp))
+for crumb2, title, sp, note, *cut in TABLES:
+    parts = cut_at(pick(*sp), cut[0]) if cut else chunk(pick(*sp))
     for k, rows in enumerate(parts, 1):
         n += 1
         sfx = (' — phần %d' % k) if len(parts) > 1 else ''

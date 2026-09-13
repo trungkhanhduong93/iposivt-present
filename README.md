@@ -715,6 +715,11 @@ thì cắt thành "phần 1, phần 2" và **chia đều** — hạ dần ngư�
 mà vẫn giữ nguyên số slide. Cắt tham lam không thôi thì slide cuối còn trơ một
 dòng.
 
+Muốn cắt đúng ranh giới nghiệp vụ thì khai phần tử thứ năm trong `TABLES`: danh
+sách mã mở đầu slide mới. Ví dụ `['4.01']` để slide đặt hàng chỉ còn phân hệ 3,
+sơ chế và chế biến dồn sang slide sau (13/09/2026). Script vẫn kiểm từng phần có
+lọt ngưỡng 442px không, vượt là dừng.
+
 Bộ này công khai, không có `gated` nên không hỏi mã.
 
 ### Nút PDF — bản gốc dạng cuộn dọc

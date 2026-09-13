@@ -816,9 +816,7 @@ cmp: {
       { c:'3.01', t:'Kế hoạch đặt hàng nội bộ', v:[0,0,1] },
       { c:'3.02', t:'Yêu cầu mua hàng', v:[0,0,1] },
       { c:'3.03', t:'Đặt mua hàng', v:[0,0,1] },
-      { c:'3.04', t:'Đặt hàng nội bộ', v:[0,0,1] },
-      { g:'4 · Phân hệ sơ chế' },
-      { c:'4.01', t:'Khai báo công thức sơ chế nguyên vật liệu', v:[0,0,1] }
+      { c:'3.04', t:'Đặt hàng nội bộ', v:[0,0,1] }
     ],
     note:'Trọn ba phân hệ này chỉ có trên {{Pro}} — đây là phần khác biệt lớn nhất giữa Pro và hai gói còn lại.' },
 
@@ -828,6 +826,7 @@ cmp: {
     title:'ĐẶT HÀNG, SƠ CHẾ VÀ CHẾ BIẾN — PHẦN 2',
     rows:[
       { g:'4 · Phân hệ sơ chế' },
+      { c:'4.01', t:'Khai báo công thức sơ chế nguyên vật liệu', v:[0,0,1] },
       { c:'4.02', t:'Xuất kho sơ chế nguyên vật liệu', v:[0,0,1] },
       { c:'4.03', t:'Nhập kho sau sơ chế', v:[0,0,1] },
       { g:'5 · Phân hệ chế biến' },
