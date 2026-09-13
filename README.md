@@ -135,7 +135,7 @@ khối CSS cùng tên trong `css/style.css`.
 | `packs` | Ba thẻ gói kèm logo sản phẩm + hai thẻ lưu ý bên dưới | `packs[{logo,from,to,c}]` `notes[{h,ic,items}]` |
 | `intro` | Mở đầu một phần: chữ trái, ảnh lệch phải trên nền màu | `kicker` `title` `lead` `chips` `note` `img` |
 | `webgrid` | Khung trình duyệt + điểm nhấn (`dir:'row'` hoặc `'col'`) | `img` `items` `dir` `cols` |
-| `pillars` | Thẻ số lớn, số cột linh hoạt | `items[{n,t,c}]` `cols` `fit` |
+| `pillars` | Thẻ số lớn, số cột linh hoạt | `items[{n,t,c}]` `cols` `fit` `dense` |
 | `value` | Rail 3 giá trị + ảnh minh hoạ | `active` `imgs` `frame` `art` |
 | `compare` | Bảng so sánh có tick / x | `cols` `rows[{t,v}]` |
 | `profiles` | Chân dung khách hàng + tranh | `items[{t,s,sx}]` `img` |

@@ -722,6 +722,11 @@ body[data-deck="pro"] .tree .g>b{background:linear-gradient(120deg,var(--orange-
 .pil[style*="--pc:2"] .c p{font-size:19.5px;font-weight:500;line-height:1.62;color:var(--body)}
 .pil[style*="--pc:4"] .c p{font-size:15px;font-weight:500;line-height:1.55;color:var(--body)}
 .pil[style*="--pc:4"] .c b{font-size:42px}
+/* dense:1 — thẻ 2 cột mà chữ dài tới 5 dòng: cao hơn hàng 243px thì số bị đẩy cụt mép trên,
+   chữ chạm đáy thẻ, auto-fit không kêu vì thẻ tự overflow:hidden */
+.pil.dense .c{padding:24px 28px 22px;gap:10px}
+.pil.dense .c b{font-size:40px}
+.pil.dense .c p{font-size:18px;line-height:1.55}
 .pil .c .dot{width:34px;height:4px;border-radius:3px;background:var(--mc);opacity:.55}
 
 /* ── Giá trị chi tiết ──────────────────────────────────────────────────── */

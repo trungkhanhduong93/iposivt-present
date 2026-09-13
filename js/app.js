@@ -555,7 +555,7 @@ pillars (s) {
      hẳn dòng dẫn mà chẳng báo gì. */
   return head(s.crumb ? kick(s) : (s.kicker || (s.num ? `PHẦN ${esc(s.num)}` : '')),
     s.title, '', 'up') +
-    `<div class="s-body"><div class="pil${s.fit ? ' fit' : ''}" style="--pc:${s.cols || s.items.length}">
+    `<div class="s-body"><div class="pil${s.fit ? ' fit' : ''}${s.dense ? ' dense' : ''}" style="--pc:${s.cols || s.items.length}">
       ${s.items.map((p, i) => `<div class="c"${p.c ? ` style="--mc:${p.c}"` : ''}>
         <b>${esc(p.n || String(i + 1).padStart(2, '0'))}</b><p>${md(p.t)}</p>
         ${s.items.length <= 3 ? '<span class="dot"></span>' : ''}</div>`).join('')}

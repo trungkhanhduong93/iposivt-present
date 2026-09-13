@@ -1071,22 +1071,22 @@ v3: {
   /* 3 ─ Mục tiêu cập nhật V3 --------------------------------------------- */
   { n:4, type:'pillars', cols:3, fit:1,
     crumb:['MỤC TIÊU CẬP NHẬT {{V3}}','Ba mục tiêu'],
-    title:'BA MỤC TIÊU CỦA BẢN NÀY',
+    title:'MỤC TIÊU BẢN CẬP NHẬT V3',
     items:[
-      { n:'01', c:'#12988c', t:'**Quản lý kho tập trung trên một sản phẩm.** Không còn hai dòng chạy song song, toàn bộ nghiệp vụ kho quy về một nền tảng duy nhất.' },
-      { n:'02', c:'#1b6fe0', t:'**Tăng tính cạnh tranh trên thị trường.** Bổ sung và tối ưu những điểm khách hay đem ra so: giao diện, tốc độ thao tác, bộ lọc và hệ thống báo cáo.' },
-      { n:'03', c:'#6d3fd4', t:'**Ứng dụng AI.** Trợ lý iOne lo các thao tác thủ công tốn thời gian: quét ảnh lập phiếu, ra lệnh qua chatbox, kiểm kê bằng giọng nói.' }
+      { n:'01', c:'#12988c', t:'**Quản lý kho tập trung trên một sản phẩm.** Không còn hai sản phẩm Lite & Pro như V2, toàn bộ nghiệp vụ, tính năng tập trung về một nền tảng.' },
+      { n:'02', c:'#1b6fe0', t:'**Tăng lợi thế cạnh tranh trên thị trường.** Bổ sung và cải thiện nhiều thay đổi về: hiệu năng, giao diện, quy trình thao tác, cũng như các tính năng kèm theo.' },
+      { n:'03', c:'#6d3fd4', t:'**Ứng dụng AI.** Ngoài hỗ trợ kiến thức phần mềm, Trợ lý iOne được thử nghiệm nâng cấp thêm các tính năng tự động khác.' }
     ] },
 
   /* 4 ─ Bốn thay đổi lớn nhất -------------------------------------------- */
-  { n:5, type:'pillars', cols:2,
+  { n:5, type:'pillars', cols:2, dense:1,
     crumb:['MỤC TIÊU CẬP NHẬT {{V3}}','Bốn thay đổi lớn'],
-    title:'BỐN THAY ĐỔI LỚN NHẤT',
+    title:'BỐN THAY ĐỔI TRỌNG TÂM CỦA BẢN V3',
     items:[
       { n:'01', c:'#12988c', t:'**Gói bản quyền** chuẩn hoá thành ba bậc Standard, Plus và Pro. Khách dùng **FABi Box**, **POS PC** hay ~~không dùng POS FABi~~ đều kết nối IVT được, chọn gói nào là theo nhu cầu của khách.' },
-      { n:'02', c:'#1b6fe0', t:'**Logic bản quyền** đổi sang tính theo từng kho, không theo mã công ty như trước' },
-      { n:'03', c:'#e0673d', t:'**Menu và bộ lọc** làm lại: menu gom theo nhóm nghiệp vụ, bộ lọc gọn lại và điều kiện thường dùng nằm ngay trên thanh công cụ' },
-      { n:'04', c:'#6d3fd4', t:'**Trợ lý iOne.** Ứng dụng tính năng AI áp dụng cho Nhập mua hàng và Kiểm kê' }
+      { n:'02', c:'#1b6fe0', t:'**Logic bản quyền** thay đổi sang áp dụng theo từng kho, không theo mã công ty như trước. Linh hoạt trong việc cho người dùng tự chọn phiên bản, chọn kho, và tự thanh toán.' },
+      { n:'03', c:'#e0673d', t:'**Giao diện tổng thể, Menu nghiệp vụ, Bộ lọc và Báo cáo** được tối ưu lại. Giao diện tối ưu theo chiều ngang, mang lại diện tích rộng và bao quát. Các vị trí menu sắp xếp theo nghiệp vụ, dễ nhớ, dễ phân quyền. Bộ lọc gọn lại và linh hoạt hơn.' },
+      { n:'04', c:'#6d3fd4', t:'**Trợ lý iOne:** Ngoài việc hỗ trợ kiến thức, các tính năng AI sẽ được áp dụng cho các nghiệp vụ tự động như Nhập hàng, Kiểm kê. Đây sẽ là bản thử nghiệm đầu tiên để phát triển thêm.' }
     ] },
 
   /* 4 ─ Gói mới · chuyển đổi tự động, kèm điều khách cũ cần lưu ý -------- */
