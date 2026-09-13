@@ -1091,7 +1091,8 @@ v3: {
   /* 4 ─ Gói mới · chuyển đổi tự động, kèm điều khách cũ cần lưu ý -------- */
   { n:6, type:'packs',
     crumb:['GÓI BẢN QUYỀN {{V3}}','Với khách hàng','Chuyển đổi tự động'],
-    title:'CHUYỂN ĐỔI TỰ ĐỘNG, KHÔNG CẦN THAO TÁC',
+    title:'CHUYỂN ĐỔI GÓI PHIÊN BẢN TỰ ĐỘNG',
+    sub:'Ngày 10/09/2026, phiên bản V3 được cập nhật, hệ thống sẽ tự chuyển đổi gói phiên bản mới theo quy tắc sau:',
     packs:[
       { logo:'logo-ivt-plus.png',     c:'#1b6fe0', from:'Đang dùng Lite',      to:'Gói Plus' },
       { logo:'logo-ivt-pro.png',      c:'#b0741f', from:'Đang dùng Pro',       to:'Gói Pro' },
@@ -1110,7 +1111,7 @@ v3: {
   /* 5 ─ Ba gói có gì ----------------------------------------------------- */
   { n:7, type:'mxsum',
     crumb:['GÓI BẢN QUYỀN {{V3}}','Với khách hàng','Ba gói có gì'],
-    title:'BA GÓI CÓ GÌ',
+    title:'SO SÁNH TÍNH NĂNG',
     sub:'Cùng một phần mềm, khác nhau ở số phân hệ được mở.',
     total:'99 tính năng',
     packs:[
@@ -1142,7 +1143,7 @@ v3: {
   /* 6 ─ Bản quyền tính theo từng kho ------------------------------------- */
   { n:8, type:'webshot', frame:1, imgw:700, plain:1,
     crumb:['GÓI BẢN QUYỀN {{V3}}','Với khách hàng','Mỗi kho một gói riêng'],
-    title:'MỘT MÃ CÔNG TY, MỖI KHO MỘT GÓI',
+    title:'GÓI PHIÊN BẢN THEO KHO',
     img:'goi-theo-kho.webp',
     items:[
       { t:'Bản cũ: cả mã công ty chung một phiên bản',
@@ -1159,7 +1160,7 @@ v3: {
   /* 6 ─ Đổi gói và hết hạn · gộp hai slide cũ làm một --------------------- */
   { n:9, type:'webshot', frame:1, imgw:700, plain:1,
     crumb:['GÓI BẢN QUYỀN {{V3}}','Chính sách bán hàng','Đổi gói và hết hạn'],
-    title:'ĐỔI GÓI LÚC NÀO CŨNG ĐƯỢC',
+    title:'LINH HOẠT CHUYỂN ĐỔI',
     img:'doi-goi.webp',
     items:[
       { t:'Kích hoạt lần đầu là gói {{Standard}}',
@@ -1175,7 +1176,7 @@ v3: {
     ] },
 
   /* 8 ─ Mua và gia hạn ngay trên hệ thống -------------------------------- */
-  { n:10, type:'webshot', frame:1, imgw:640, shadow:1,
+  { n:10, type:'webshot', frame:1, imgw:500, shadow:1,
     crumb:['GÓI BẢN QUYỀN {{V3}}','Chính sách bán hàng','Mua và gia hạn'],
     title:'MUA VÀ GIA HẠN NGAY TRÊN HỆ THỐNG',
     img:'gia-han.webp',
@@ -1190,7 +1191,7 @@ v3: {
   /* 7 ─ Gói mới · với sale ----------------------------------------------- */
   { n:11, type:'pillars', cols:2, fit:1,
     crumb:['GÓI BẢN QUYỀN {{V3}}','Chính sách bán hàng','Với sale'],
-    title:'THAY ĐỔI KHI BÁN HÀNG',
+    title:'CHÍNH SÁCH VỚI SALES',
     items:[
       { n:'01', c:'#12988c', t:'**Chính sách bán hàng giữ nguyên.** Không thay đổi gì so với chính sách hiện hành đang áp dụng cho sale, hoa hồng tương ứng gói mới.' },
       { n:'02', c:'#e0673d', t:'**Chuyển đổi gói từ Plus lên Pro hoặc ngược lại**, sẽ theo logic như gia hạn và ~~không tính KPI~~. Trước đây là hai sản phẩm riêng trên Hermes nên tính mua mới và có KPI.' }
@@ -1199,7 +1200,7 @@ v3: {
   /* 8 ─ Menu · bảng nhóm nghiệp vụ --------------------------------------- */
   { n:12, type:'modgrid',
     crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Menu','Gom theo nhóm nghiệp vụ'],
-    title:'CHỨC NĂNG GOM VỀ ĐÚNG NHÓM',
+    title:'CHỨC NĂNG THEO NGHIỆP VỤ',
     groups:[
       { h:'Đặt hàng', ic:'cart', span:3, c:'#12988c',
         items:['Giữ nguyên như bản cũ'] },
@@ -1236,7 +1237,7 @@ v3: {
   /* 10 ─ Quy trình hoá nghiệp vụ ----------------------------------------- */
   { n:14, type:'webshot',
     crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Quy trình hoá','Đủ mọi nhóm nghiệp vụ'],
-    title:'MỖI NGHIỆP VỤ CÓ THÊM PHẦN QUY TRÌNH',
+    title:'QUY TRÌNH VÀ VÍ DỤ',
     img:'quy-trinh-san-xuat.webp', frame:1,
     items:[
       { t:'Trong tất cả nghiệp vụ đều có sẵn quy trình và ví dụ', s:'Mua hàng, bán hàng, điều chuyển, sản xuất, kiểm kê, công nợ' },
@@ -1259,7 +1260,7 @@ v3: {
   /* 12 ─ Tiện ích · tìm kiếm màn hình ------------------------------------ */
   { n:16, type:'video',
     crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Tiện ích bổ sung','Tìm kiếm màn hình'],
-    title:'TÌM THẲNG MÀN HÌNH CẦN VÀO',
+    title:'TÌM KIẾM CHỨC NĂNG',
     video:'tim-kiem-man-hinh.mp4',
     items:[
       { t:'Mở ô tìm kiếm trên thanh công cụ',
@@ -1285,10 +1286,9 @@ v3: {
     title:'GIAO DIỆN BỘ LỌC MỚI',
     img:'bo-loc-moi.webp',
     items:[
-      { t:'Điều kiện thường dùng ra ngoài', s:'Nằm ngay trên thanh công cụ' },
-      { t:'Điều kiện nâng cao thu một chỗ', s:'Mở ra khi cần dùng tới' },
-      { t:'Ít click hơn', s:'Ra đúng dữ liệu muốn xem nhanh hơn' },
-      { t:'Cấu hình tham số lọc', s:'Tuỳ biến ô lọc nào mang ra ngoài để lọc cho nhanh' }
+      { t:'Cấu hình tham số lọc', s:'Cho phép tùy chọn trường hiển thị ngoài' },
+      { t:'Các trường lọc thu gọn về một icon', s:'Tiết kiệm diện tích hơn' },
+      { t:'Rút ngắn thao tác và thời gian tìm kiếm hơn' }
     ] },
 
   /* 13 ─ Trợ lý iOne ----------------------------------------------------- */
@@ -1307,7 +1307,7 @@ v3: {
   /* 14 ─ Kho trên FABi --------------------------------------------------- */
   { n:20, type:'device',
     crumb:['CÁC THAY ĐỔI LỚN {{V3}}','Mở rộng','App Manager và CMS FABi'],
-    title:'DÙNG KHO NGAY TRÊN FABi',
+    title:'TÍCH HỢP KHO NGAY TRÊN FABi',
     imgs:['fabi-app.webp','fabi-cms.webp'], colw:440, mock:['ph','brw'],
     items:[
       { t:'Trên app FABi Manager', s:'Vào Ứng dụng ➜ Kho & Cung ứng' },

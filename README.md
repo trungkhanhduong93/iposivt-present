@@ -132,7 +132,7 @@ khối CSS cùng tên trong `css/style.css`.
 | `device` | Ảnh máy + danh sách mục + ghi chú | `imgs` `items` `note` `side` `colw` `grid` |
 | `video` | Video chạy như ảnh động, cột phải nhận danh sách như `webshot` | `video` `poster` `items[{t,s}]` `note` |
 | `webshot` | Ảnh chụp màn Web nằm ngang + ghi chú phải | `img` `items` `note` `frame` `mark` |
-| `packs` | Ba thẻ gói kèm logo sản phẩm + hai thẻ lưu ý bên dưới | `packs[{logo,from,to,c}]` `notes[{h,ic,items}]` |
+| `packs` | Ba thẻ gói kèm logo sản phẩm + hai thẻ lưu ý bên dưới | `packs[{logo,from,to,c}]` `notes[{h,ic,items}]` `sub` |
 | `intro` | Mở đầu một phần: chữ trái, ảnh lệch phải trên nền màu | `kicker` `title` `lead` `chips` `note` `img` |
 | `webgrid` | Khung trình duyệt + điểm nhấn (`dir:'row'` hoặc `'col'`) | `img` `items` `dir` `cols` |
 | `pillars` | Thẻ số lớn, số cột linh hoạt | `items[{n,t,c}]` `cols` `fit` `dense` |

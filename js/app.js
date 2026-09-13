@@ -837,7 +837,7 @@ T.packs = function (s, d) {
       <h3><i>${IC[n.ic] || IC.box}</i>${esc(n.h)}</h3>
       <ul>${n.items.map(t => `<li>${md(t)}</li>`).join('')}</ul>
     </div>`).join('');
-  return head(kick(s), s.title, '', 'up') + `<div class="s-body"><div class="pks">
+  return head(kick(s), s.title, s.sub, 'up') + `<div class="s-body"><div class="pks">
     <div class="row">${cards}</div>
     ${notes ? `<div class="dept">${notes}</div>` : ''}
   </div></div>`;
