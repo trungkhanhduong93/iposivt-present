@@ -1063,7 +1063,7 @@ v3: {
     crumb:['MỤC TIÊU CẬP NHẬT {{V3}}','Tổng quan'],
     title:'Bản nâng cấp lớn nhất của IVT',
     img:'tong-quan.webp',
-    lead:'Thay đổi làm mới giao diện Web & App, sắp xếp lại menu theo từng nghiệp vụ kho, ứng dụng tính năng AI, bổ sung thêm nhiều tiện ích, và đặc biệt là Gói bản quyền **Standard – Plus – Pro**.',
+    lead:'Thay đổi làm mới giao diện Web & App, sắp xếp lại menu theo từng nghiệp vụ kho, ứng dụng tính năng AI, bổ sung thêm nhiều tiện ích, và đặc biệt là Gói bản quyền **Standard – Plus – Pro**.',
     chips:['Menu theo nghiệp vụ','Bộ lọc mới','Ba gói bản quyền','Trợ lý iOne'],
     note:'Trang chủ V3 tách bạch khu **Quản trị** và **Cần theo dõi**, số liệu kho hiển thị ngay khi mở.' },
 
