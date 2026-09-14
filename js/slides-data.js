@@ -1285,9 +1285,9 @@ v3: {
     img:'bo-loc-moi.webp',
     items:[
       { t:'Cấu hình tham số lọc', s:'Cho phép tùy chọn trường hiển thị ngoài' },
-      { t:'Các trường lọc thu gọn về một icon', s:'Tiết kiệm diện tích hơn' },
-      { t:'Rút ngắn thao tác và thời gian tìm kiếm hơn' }
-    ] },
+      { t:'Các trường lọc thu gọn về một icon', s:'Tiết kiệm diện tích hơn' }
+    ],
+    note:'Rút ngắn thao tác và ~~thời gian tìm kiếm~~ hơn.' },
 
   /* 13 ─ Trợ lý iOne ----------------------------------------------------- */
   { n:19, type:'trio',
