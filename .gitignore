@@ -3,6 +3,7 @@
 iPOS-Inventory-Present.html
 
 # Rác hệ điều hành / trình soạn thảo
+__pycache__/
 Thumbs.db
 desktop.ini
 .DS_Store

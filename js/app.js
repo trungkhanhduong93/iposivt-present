@@ -917,7 +917,7 @@ const App = {
       help  : $('#help'),
       dsw   : $('#dsw'),
       dswl  : $('#dswList'),
-      prtip : $('#prntTip'),
+      toast : $('#pdfToast'),
       pdtip : $('#pdfTip')
     };
     this.readHash();
@@ -949,10 +949,11 @@ const App = {
     this.el.next.onclick = () => this.go(1,  'all');
     $('#gridBtn').onclick  = () => this.toggleGrid();
     /* Một nút, hai bản in: bộ So sánh mở bản gốc nguyên văn, ba bộ còn lại mở
-       chính slide của nó xếp dọc. */
-    $('#pdfBtn').onclick    = () => this.openPdf(true);
+       chính slide của nó xếp dọc. Trên điện thoại ba bộ đó tải thẳng PDF làm sẵn;
+       nút Xuất PDF trong bản in cũng vậy — không có file thì mới gọi hộp thoại in. */
+    $('#pdfBtn').onclick    = () => (this.mob && this.downloadPdf()) || this.openPdf(true);
     $('#prntClose').onclick = () => this.togglePrint(false);
-    $('#prntSave').onclick  = () => this.savePrint();
+    $('#prntSave').onclick  = () => this.downloadPdf() || this.savePrint();
     $('#pdfClose').onclick = () => this.togglePdf(false);
     $('#gclose').onclick  = () => this.toggleGrid(false);
     $('#fsBtn').onclick   = () => this.fullscreen();
@@ -1430,7 +1431,6 @@ const App = {
       this.el.prt.innerHTML = `${esc(this.deck.name)}<small>${
         this.deck.slides.length} slide · mỗi slide một trang</small>`;
     } else {
-      clearInterval(this.prntWait);
       /* Trả lại tiêu đề trang đã đổi để đặt tên file PDF, xem savePrint() */
       if (this.title0) { document.title = this.title0; this.title0 = null; }
     }
@@ -1438,12 +1438,7 @@ const App = {
        Ctrl+P lúc đang trình chiếu vẫn phải in được như trình duyệt vẫn làm. */
     document.body.classList.toggle('prnt-on', open);
     this.el.prnt.classList.toggle('open', open);
-    if (open) {
-      requestAnimationFrame(() => this.fitPrint());
-      /* Gọi SAU khi khung đã mở: vòng chờ ảnh tự dừng khi khung đóng */
-      if (this.mob) this.waitPrintImgs();
-      else { $('#prntSave').disabled = false; this.el.prtip.textContent = ''; }
-    }
+    if (open) requestAnimationFrame(() => this.fitPrint());
   },
 
   /* ── Khung xem bản gốc ──────────────────────────────────────────────────
@@ -1507,7 +1502,8 @@ const App = {
     setTimeout(() => URL.revokeObjectURL(url), 120000);
   },
 
-  /* Chrome đặt tên file PDF theo tiêu đề trang: đổi sang tên bộ rồi mới gọi in.
+  /* Hộp thoại in — chỉ còn dùng khi không có PDF làm sẵn (bản gộp một file).
+     Chrome đặt tên file PDF theo tiêu đề trang: đổi sang tên bộ rồi mới gọi in.
      Trả lại lúc đóng bản in chứ không trong afterprint — trên điện thoại print()
      không chặn trang, chưa chắc afterprint bắn sau khi file đã lưu. */
   savePrint () {
@@ -1516,29 +1512,35 @@ const App = {
     print();
   },
 
-  /* Điện thoại: khoá nút Xuất PDF tới khi ảnh của bản in tải xong — mạng di động
-     chậm mà in ngay thì ảnh chưa về in ra ô trắng. Quá 20 giây thì vẫn mở nút,
-     kèm lời báo thiếu ảnh. */
-  waitPrintImgs () {
-    const btn = $('#prntSave'), key = this.key, t0 = Date.now();
-    const imgs = $$('img', this.el.prb);
-    clearInterval(this.prntWait);
-    const tick = () => {
-      if (this.prntKey !== key || !this.el.prnt.classList.contains('open')) return true;
-      const n = imgs.filter(im => im.complete).length;
-      if (n < imgs.length && Date.now() - t0 < 20000) {
-        btn.disabled = true;
-        this.el.prtip.classList.remove('warn');
-        this.el.prtip.textContent = `Đang tải ảnh ${n}/${imgs.length}…`;
-        return false;
-      }
-      btn.disabled = false;
-      this.showTip(this.el.prtip, '<b>Xuất PDF</b>');
-      if (n < imgs.length && !IN_APP) this.el.prtip.innerHTML +=
-        ` Còn ${imgs.length - n} ảnh chưa tải xong, PDF có thể thiếu ảnh.`;
-      return true;
-    };
-    if (!tick()) this.prntWait = setInterval(() => { if (tick()) clearInterval(this.prntWait); }, 250);
+  /* PDF làm sẵn khổ ngang 16:9 — tools/build_pdf.py sinh ra pdf/ và js/pdf-files.js.
+     Không in qua hộp thoại nữa: điện thoại và Safari Mac bỏ qua @page size, ép slide
+     vào giữa trang A4 dọc (Trum báo 14/09/2026). Bản gộp một file không mang theo
+     PDF nên không có PDF_FILES — trả false để nơi gọi quay về hộp thoại in. */
+  downloadPdf () {
+    const f = typeof PDF_FILES === 'object' && PDF_FILES[this.key];
+    if (!f) return false;
+    const a = document.createElement('a');
+    a.href = f.file;
+    a.download = f.file.split('/').pop();
+    /* Mở bằng file:// thì Chrome bỏ qua download và mở file ngay trong tab: cho ra
+       tab mới để khỏi mất trang trình chiếu. */
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    const mb = (f.size / 1048576).toFixed(1).replace('.', ',');
+    this.toast(`Đang tải <b>${esc(a.download)}</b> · ${mb} MB` + (IN_APP
+      ? '<br>Không thấy file? Mở trang bằng <b>Chrome</b> hoặc <b>Safari</b> rồi bấm lại.' : ''), IN_APP);
+    return true;
+  },
+
+  toast (html, warn) {
+    const t = this.el.toast;
+    t.innerHTML = html;
+    t.classList.toggle('warn', !!warn);
+    t.classList.add('show');
+    clearTimeout(this.toastT);
+    this.toastT = setTimeout(() => t.classList.remove('show'), warn ? 8000 : 4000);
   },
 
   /* Dòng hướng dẫn lưu PDF — CSS chỉ cho hiện trên điện thoại. Hộp thoại in mỗi

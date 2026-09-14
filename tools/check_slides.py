@@ -92,4 +92,12 @@ with sync_playwright() as p:
 print('\nda kiem %d slide' % len(targets))
 print('van de:', ', '.join(problems) if problems else 'khong co')
 print('loi js:', errs[:5] if errs else 'khong co')
-sys.exit(1 if (problems or errs) else 0)
+
+# PDF lam san (pdf/) la ban chup noi dung luc dung. Nhac ngay o day vi script nay chay
+# sau moi lan sua — quen dung lai thi nguoi xem tai ve ban cu.
+sys.path.insert(0, str(ROOT / 'tools'))
+from build_pdf import stale
+cu = stale()
+print('PDF lam san:', ('CU (%s) -> chay python tools/build_pdf.py truoc khi push' % ', '.join(cu))
+      if cu else 'khop noi dung')
+sys.exit(1 if (problems or errs or cu) else 0)

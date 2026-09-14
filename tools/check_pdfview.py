@@ -9,7 +9,7 @@
 Chay ca tren ban thu muc va ban gop mot file — hai moi truong nay khac nhau o
 cho quan trong nhat: ban gop khong con thu muc assets de tro toi.
 """
-import io, sys, pathlib
+import io, re, sys, pathlib
 from playwright.sync_api import sync_playwright
 sys.stdout.reconfigure(encoding='utf-8')
 R = pathlib.Path(__file__).resolve().parent.parent
@@ -24,8 +24,10 @@ def ok(name, cond, note=''):
 
 
 # Chan lenh in that de hop thoai in khong chan tien trinh kiem tra.
-BAY = ("window.__p=0;addEventListener('beforeprint',()=>{window.__p=1});"
-       "window.print=new Proxy(window.print,{apply(){window.__p=1}});")
+BAY = ("window.__p=0;window.__dl=null;addEventListener('beforeprint',()=>{window.__p=1});"
+       "window.print=new Proxy(window.print,{apply(){window.__p=1}});"
+       "HTMLAnchorElement.prototype.click=new Proxy(HTMLAnchorElement.prototype.click,"
+       "{apply(t,a){window.__dl={href:a.getAttribute('href'),name:a.download}}});")
 
 
 def run(url, label):
@@ -76,6 +78,17 @@ def run(url, label):
             pg.emulate_media(media='screen'); pg.wait_for_timeout(100)
             ok('bo %s: in ra giay khong mat anh nao' % deck, giay == man,
                'an tren man %d, an khi in %d' % (man, giay))
+            # Xuat PDF: co PDF lam san thi tai file; ban gop khong mang PDF thi mo hop thoai in
+            pg.evaluate('()=>{window.__p=0;window.__dl=null}')
+            pg.click('#prntSave'); pg.wait_for_timeout(300)
+            if pg.evaluate("()=>typeof PDF_FILES==='object'"):
+                dl = pg.evaluate('()=>window.__dl')
+                ok('bo %s: Xuat PDF tai file lam san, khong goi hop thoai in' % deck,
+                   dl and dl['href'] == pg.evaluate('(k)=>PDF_FILES[k].file', deck)
+                   and not pg.evaluate('()=>window.__p'), str(dl))
+            else:
+                ok('bo %s: khong co PDF lam san thi mo hop thoai in' % deck,
+                   pg.evaluate('()=>window.__p') == 1)
             pg.keyboard.press('Escape'); pg.wait_for_timeout(400)
             ok('bo %s: Esc dong ban in' % deck, not pg.is_visible('#prnt'))
             ok('bo %s: dong roi thi tat luat in' % deck,
@@ -149,6 +162,18 @@ with sync_playwright() as p:
     ok('nhung nguyen van, giong tung ky tu', got == src,
        '%d/%d ky tu' % (len(got or ''), len(src)))
     b.close()
+
+# PDF lam san la ban chup noi dung luc dung: sua slide ma quen dung lai thi nguoi xem tai ban cu
+print('-- PDF lam san (pdf/) --')
+sys.path.insert(0, str(R / 'tools'))
+import build_pdf
+cu = build_pdf.stale()
+ok('khop noi dung hien tai', not cu, ('cu: %s -> chay python tools/build_pdf.py' % ', '.join(cu)) if cu else '')
+for k, m in build_pdf.load_manifest().items():
+    raw = (R / m['file']).read_bytes() if (R / m['file']).is_file() else b''
+    trang, kho = build_pdf.pdf_info(raw)
+    ok('%s: %d trang, kho ngang 960x540pt' % (m['file'], m['pages']),
+       trang == m['pages'] and kho == {(b'960', b'540')}, '%d trang %s' % (trang, kho))
 
 print('\n=> %s' % ('TAT CA PASS' if ok_all else 'CO LOI'))
 sys.exit(0 if ok_all else 1)

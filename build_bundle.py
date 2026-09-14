@@ -139,6 +139,9 @@ def main():
     page = read(os.path.join(ROOT, 'js', 'compare-page.js'))
     html = html.replace('<script src="js/compare-page.js"></script>',
                         '<script>\n' + page + '\n</script>')
+    # PDF làm sẵn (pdf/, ~18 MB) không nhét vào bản gộp: bỏ luôn danh sách file, nút
+    # Xuất PDF thấy không có PDF_FILES thì quay về hộp thoại in như trước.
+    html = re.sub(r'<script src="js/pdf-files\.js"></script>\r?\n?', '', html)
     html = html.replace('<script src="js/slides-data.js"></script>',
                         shim + '\n<script>\n' + data + '\n</script>')
     html = html.replace('<script src="js/app.js"></script>',

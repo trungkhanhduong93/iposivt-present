@@ -1,0 +1,2 @@
+# PDF làm sẵn là file nhị phân — cấm git đổi xuống dòng trong đó
+*.pdf binary

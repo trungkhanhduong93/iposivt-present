@@ -605,6 +605,35 @@ cũng chỉ đo `.s-body` nên không thấy gì.
   7px xuống 5px. Dòng vẫn giãn đầy khung như cũ vì chúng là `flex:1 1 auto`, chỉ
   có chiều cao **tối thiểu** hạ xuống.
 
+## PDF làm sẵn khổ ngang 16:9 — 14/09/2026
+
+Trum thử nút PDF trên điện thoại: slide khổ ngang bị **nhét vào giữa trang A4 dọc**. Hộp thoại in của điện
+thoại bỏ qua `@page{size:1280px 720px}` mà web khai, Safari trên Mac cũng vậy. Web không ép được khổ giấy, nên
+bỏ hẳn cách in qua hộp thoại cho ba bộ slide.
+
+Thay bằng file PDF dựng sẵn bằng Chrome máy tính: `python tools/build_pdf.py` → `pdf/` và `js/pdf-files.js`.
+
+| | |
+|---|---|
+| Điện thoại | bấm PDF là tải thẳng file, có thông báo tên file và dung lượng |
+| Máy tính | nút PDF vẫn mở khung xem trước; nút Xuất PDF trong đó tải file làm sẵn |
+| Bộ So sánh | giữ nguyên: bản gốc, in ra A4 dọc |
+| Bản gộp một file | không mang PDF (~18 MB), nút Xuất PDF quay về hộp thoại in |
+| Dung lượng | Plus 5,7 MB · Pro 5,9 MB · V3 5,9 MB |
+
+Ba chi tiết trong script:
+
+- Ảnh WebP không trong suốt được phục vụ dưới dạng JPEG q88 lúc dựng. Chrome nhúng thẳng JPEG; để WebP thì
+  nó nén lại không mất dữ liệu, Plus nặng 10,5 MB.
+- Video thay bằng khung hình giây 0.1 làm poster, thẻ video giữ nguyên để CSS vẫn áp.
+- Ngày tạo PDF ghim cố định, tắt chuyển động: nội dung không đổi thì dựng lại ra đúng từng byte, git không
+  phình. Đã đo: dựng hai lần giống hệt.
+
+**Sửa nội dung thì dựng lại PDF trước khi push.** `pdf/manifest.json` giữ dấu vân tay đầu vào của từng bộ
+(khối slide, CSS, JS, `index.html`, `assets/`). `check_slides.py` và `check_pdfview.py` báo lỗi khi PDF cũ
+hơn nội dung. Bộ V3 cũng có PDF, link công khai như mọi file trong repo; từ giao diện chỉ tải được sau khi
+nhập mã.
+
 ## Điện thoại: menu chọn bộ và nút PDF — 14/09/2026
 
 Ở khổ iPhone (393px), bốn nút chọn bộ không đủ chỗ, **nút V3 bị cắt mất**. Trum yêu cầu chọn bộ bằng menu
@@ -626,7 +655,8 @@ bộ V3 dài.
 `check_mobile.py` thêm: thanh công cụ ở 393 và 360px không còn nút thừa, không gì thò ra ngoài màn; menu đủ
 bộ, chọn đúng, hỏi mã; bản in từng bộ xuất ra đúng số trang 960×540pt; giả lập Zalo thì hiện cảnh báo.
 
-**Chưa kiểm trên máy thật:** Android có giữ khổ 16:9 hay ép A4, iPhone có bỏ qua `@page size` không.
+**Cách in qua hộp thoại đã bỏ:** Trum thử trên điện thoại, slide bị ép vào giữa trang A4 dọc. Xem mục
+PDF làm sẵn ở trên.
 
 ## Bản in: khung điện thoại viền đen, xuất PDF thì mất — 14/09/2026
 
@@ -1201,7 +1231,7 @@ thẳng phần tử: `pg.locator('#stage').screenshot(...)`.
 
 ## 11. Kiểm tra trước khi push
 
-Thư mục `tools/` có 2 script Playwright. Cài một lần:
+Thư mục `tools/` có các script Playwright. Cài một lần:
 
 ```bash
 pip install playwright
@@ -1211,18 +1241,19 @@ Không cần `playwright install` — script dùng Chrome sẵn có trong máy.
 
 | Lệnh | Kiểm gì |
 |---|---|
-| `python tools/check_slides.py` | render toàn bộ 94 slide, báo slide nào tràn khung, slide nào bị auto-fit thu nhỏ, lỗi console |
+| `python tools/check_slides.py` | render toàn bộ 96 slide, báo slide nào tràn khung, slide nào bị auto-fit thu nhỏ, lỗi console, PDF làm sẵn có cũ không |
 | `python tools/check_app.py` | điều hướng, lưới ESC, lightbox, chuyển bộ, phím X, hiện dần từng phần, **không sinh thanh cuộn ở 6 cỡ màn hình**, và cổng mã chặn đúng bộ |
 | `IVT_PIN=<ma> python tools/check_gate.py` | cổng mã nội bộ: bấm nút hay mở link thẳng đều hỏi mã, mã sai thì chặn, mã đúng thì nhớ trong phiên, tải lại tab là hỏi lại |
-| `python tools/check_mobile.py` | chế độ xấp trang khổ iPhone 14: đủ số trang, tỉ lệ 16:9, không tràn ngang, số trang chạy đúng khi cuộn, ảnh hỏng |
-| `python tools/check_pdfview.py` | nút PDF: nội dung nhúng giống bản gốc từng ký tự, cùng nguồn, Lưu PDF in đúng khung nhúng, chạy cả trên bản gộp một file |
+| `python tools/check_mobile.py` | chế độ xấp trang khổ iPhone 14: đủ số trang, tỉ lệ 16:9, không tràn ngang, số trang chạy đúng khi cuộn, ảnh hỏng; thanh công cụ điện thoại, menu chọn bộ, nút PDF tải file làm sẵn |
+| `python tools/check_pdfview.py` | nút PDF: nội dung nhúng giống bản gốc từng ký tự, cùng nguồn, Lưu PDF in đúng khung nhúng, chạy cả trên bản gộp một file; Xuất PDF tải file làm sẵn; PDF làm sẵn khớp nội dung, đúng khổ 960×540pt |
+| `python tools/build_pdf.py --check` | chỉ kiểm PDF làm sẵn có cũ hơn nội dung không, không dựng |
 
 Ảnh chụp từng slide lưu vào `tools/shots/`, xem lại để soi bố cục. Bộ điện thoại
 chụp khi thêm tham số: `python tools/check_mobile.py shot` — ảnh vào
 `tools/shots-mobile/`.
 
 **Đây là chốt duy nhất giữa code sửa và trang chạy thật.** Các lỗi trong mục 10 đều
-do 2 script này bắt được, không phải nhìn mắt thường mà thấy.
+do các script này bắt được, không phải nhìn mắt thường mà thấy.
 
 ---
 
@@ -1233,12 +1264,15 @@ trang tự cập nhật:
 
 ```bash
 cd "C:\Users\trung.duong\Desktop\IVT\present IVT\web-present"
+python tools/build_pdf.py
 git add -A && git commit -m "cap nhat noi dung" && git push
 ```
 
 Ba điều cần nhớ:
 
 - **Chỉ nhánh `main` mới lên link chính.** Nhánh khác ra bản xem trước ở URL riêng.
+- **Sửa nội dung thì dựng lại PDF** bằng `python tools/build_pdf.py` (~30 giây). Quên thì người xem
+  tải về bản cũ; `check_slides.py` báo `PDF lam san: CU`.
 - **Ctrl+F5 lần đầu mở lại**, không thì trình duyệt còn giữ bản cũ trong cache.
 - **Trang là public.** Ai có link đều xem được, Google index được. Muốn chặn thì
   bật Cloudflare Access (Zero Trust, bản free cho 50 user).

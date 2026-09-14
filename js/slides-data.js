@@ -49,7 +49,7 @@ plus: {
       'Tính năng',
       'Giá trị mang lại',
       'Điểm khác biệt giữa Plus & Pro',
-      'Chân dung khách hàng',
+      'Mô hình phù hợp',
       { t:'Hỏi đáp', x:1 }
     ] },
 

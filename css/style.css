@@ -1327,8 +1327,6 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
 /* Nút chính trong thanh tiêu đề bản in */
 .prnt .tbtn.go{background:var(--blue);border-color:var(--blue);color:#fff}
 .prnt .tbtn.go:hover{background:var(--blue-d);border-color:var(--blue-d)}
-/* Điện thoại: khoá nút tới khi ảnh bản in tải xong, xem waitPrintImgs() */
-.prnt .tbtn.go[disabled]{opacity:.5;cursor:default}
 
 /* ── Trợ giúp phím ─────────────────────────────────────────────────────── */
 .help{position:fixed;inset:0;z-index:95;background:rgba(6,11,18,.9);display:none;place-items:center}
@@ -1397,6 +1395,18 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
    hướng dẫn .prtip chỉ hiện trong khối MÀN HÌNH HẸP. */
 .pdfic-m,.prtip{display:none}
 
+/* Báo đang tải PDF làm sẵn — nổi trên mọi khung, tự tắt sau vài giây */
+.pdf-toast{position:fixed;left:50%;bottom:22px;z-index:97;width:max-content;
+  max-width:calc(100vw - 32px);padding:10px 16px;border-radius:12px;background:#15243a;
+  border:1px solid rgba(255,255,255,.14);box-shadow:0 12px 32px rgba(0,0,0,.4);
+  color:#dbe6f4;font-size:13px;line-height:1.5;text-align:center;pointer-events:none;
+  opacity:0;visibility:hidden;transform:translate(-50%,12px);
+  transition:opacity .2s,transform .2s,visibility 0s .2s}
+.pdf-toast.show{opacity:1;visibility:visible;transform:translate(-50%,0);
+  transition:opacity .2s,transform .2s}
+.pdf-toast b{color:#fff;font-weight:600;word-break:break-all}
+.pdf-toast.warn{background:#3a2708;border-color:#7a5418;color:#ffe2b5}
+
 /* =============================================================================
    IN RA GIẤY
    Chỉ in khi đang mở một trong hai khung xem — bấm Ctrl+P lúc đang trình chiếu
@@ -1409,7 +1419,8 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
 
   body.prnt-on{overflow:visible !important;height:auto !important;background:#fff}
   body.prnt-on .app,body.prnt-on .grid,body.prnt-on .lb,
-  body.prnt-on .pin,body.prnt-on .help,body.prnt-on .pdfv{display:none !important}
+  body.prnt-on .pin,body.prnt-on .help,body.prnt-on .pdfv,
+  body.prnt-on .pdf-toast{display:none !important}
   body.prnt-on .prnt.open{position:static;display:block;background:#fff}
   body.prnt-on .prnt .prh,body.prnt-on .prtip{display:none !important}
   body.prnt-on .prnt .pb{display:block;padding:0 !important;gap:0 !important;

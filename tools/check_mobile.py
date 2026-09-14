@@ -10,9 +10,8 @@ Chạy ở khổ iPhone 14 (393×852). Đừng chụp bằng full_page của Pla
 có thanh công cụ dính nên ảnh ra trắng phần trên; chụp theo viewport.
 
 Kiểm luôn thanh công cụ điện thoại (menu thả chọn bộ + nút PDF, không còn lưới,
-toàn màn hình, phím tắt) và nút PDF: bản in của từng bộ xuất ra đúng mỗi slide một
-trang 960×540pt. PDF này do Chrome máy tính dựng — hộp thoại in thật của Android
-và iPhone thì script không thay được, phải thử trên máy.
+toàn màn hình, phím tắt) và nút PDF: bộ slide tải thẳng file làm sẵn trong pdf/,
+file đúng số trang, khổ ngang 960×540pt.
 """
 import re, sys, pathlib
 from playwright.sync_api import sync_playwright
@@ -79,8 +78,10 @@ MENU = """() => { const its = [...document.querySelectorAll('#dswList .dsw-it')]
                                 return r.left >= 0 && r.right <= innerWidth && r.height >= 44; })}; }"""
 MENU_OPEN = "()=>document.getElementById('dsw').classList.contains('open')"
 
-# Chan lenh in that, chi ghi lai la da goi
-BAY = "window.__p=0;window.print=new Proxy(window.print,{apply(){window.__p=1}});"
+# Chan lenh in that va tai file that, chi ghi lai la da goi
+BAY = ("window.__p=0;window.__dl=null;window.print=new Proxy(window.print,{apply(){window.__p=1}});"
+       "HTMLAnchorElement.prototype.click=new Proxy(HTMLAnchorElement.prototype.click,"
+       "{apply(t,a){window.__dl={href:a.getAttribute('href'),name:a.download}}});")
 
 fails, errs = [], []
 def ok(name, cond, extra=''):
@@ -108,7 +109,6 @@ with sync_playwright() as p:
 
     pg.goto(BASE)
     pg.wait_for_timeout(900)
-    TITLE0 = pg.title()
 
     # ── Thanh cong cu: menu chon bo + so trang + nut PDF. Luoi, toan man hinh,
     # bang phim bo tren dien thoai (Trum 14/09/2026). Tung dinh: nut V3 bi cat mat.
@@ -176,8 +176,8 @@ with sync_playwright() as p:
         bad = pg.evaluate(BROKEN)
         ok('khong trang nao hong anh', not bad, bad)
 
-        # ── Nut PDF: bo So sanh mo ban goc; bo slide mo ban in, cho anh xong moi
-        # cho bam Xuat PDF, va ban in xuat ra dung moi slide mot trang.
+        # ── Nut PDF: bo So sanh mo ban goc; bo slide tai thang PDF lam san trong pdf/.
+        # Hop thoai in cua dien thoai ep slide vao trang A4 doc nen khong in nua.
         pg.click('#pdfBtn')
         if pg.evaluate('(k)=>!!DECKS[k].page', deck):
             pg.wait_for_timeout(900)
@@ -188,29 +188,21 @@ with sync_playwright() as p:
                 pg.screenshot(path=str(OUT / ('%s-pdf.png' % deck)))
             pg.click('#pdfClose'); pg.wait_for_timeout(300)
             continue
-        try:
-            pg.wait_for_function("()=>!document.getElementById('prntSave').disabled", timeout=30000)
-            san = True
-        except Exception:
-            san = False
-        tip = pg.inner_text('#prntTip')
-        ok('PDF: anh tai xong thi mo nut Xuat PDF', san, tip[:60])
-        ok('PDF: dong huong dan chi cach luu', 'Lưu dưới dạng PDF' in tip, tip[:70])
+        pg.wait_for_timeout(400)
+        dl = pg.evaluate('()=>window.__dl')
+        fi = pg.evaluate('(k)=>PDF_FILES[k]', deck)
+        ok('PDF: tai thang file lam san, khong mo ban in',
+           dl and dl['href'] == fi['file'] and not pg.is_visible('#prnt'), dl)
+        ok('PDF: bao dang tai', pg.is_visible('#pdfToast') and '.pdf' in pg.inner_text('#pdfToast'),
+           pg.inner_text('#pdfToast')[:60])
         if SHOT:
             pg.screenshot(path=str(OUT / ('%s-pdf.png' % deck)))
-        pg.click('#prntSave'); pg.wait_for_timeout(200)
-        name = pg.evaluate('(k)=>DECKS[k].name', deck)
-        ok('PDF: bam Xuat PDF thi goi lenh in, ten file theo bo',
-           pg.evaluate('()=>window.__p') == 1 and pg.title() == name, pg.title())
-        pdf = pg.pdf(prefer_css_page_size=True, print_background=True)
-        trang = len(re.findall(rb'/Type\s*/Page\b', pdf))
-        kho = re.findall(rb'/MediaBox\s*\[\s*0 0 ([\d.]+) ([\d.]+)\s*\]', pdf)
-        ok('PDF: moi slide mot trang, du %d trang' % COUNT[deck], trang == COUNT[deck], trang)
-        ok('PDF: kho 960x540pt nhu slide 1280x720px',
-           kho and all((float(a), float(b)) == (960.0, 540.0) for a, b in kho), kho[:1])
-        pg.evaluate('()=>{window.__p=0}')
-        pg.click('#prntClose'); pg.wait_for_timeout(300)
-        ok('PDF: dong ban in thi tra lai tieu de trang', pg.title() == TITLE0, pg.title())
+        raw = (ROOT / fi['file']).read_bytes()
+        trang = len(re.findall(rb'/Type\s*/Page\b', raw))
+        kho = set(re.findall(rb'/MediaBox\s*\[\s*0 0 ([\d.]+) ([\d.]+)\s*\]', raw))
+        ok('PDF: file du %d trang' % COUNT[deck], trang == COUNT[deck], trang)
+        ok('PDF: kho ngang 960x540pt nhu slide', kho == {(b'960', b'540')}, kho)
+        pg.evaluate('()=>{window.__dl=null}')
 
     ctx.close()
 
@@ -219,14 +211,14 @@ with sync_playwright() as p:
     ctx = browser.new_context(viewport={'width': 393, 'height': 852}, is_mobile=True, has_touch=True,
                               user_agent='Mozilla/5.0 (Linux; Android 13; SM-A536E) AppleWebKit/537.36 '
                                          '(KHTML, like Gecko) Chrome/120.0 Mobile Safari/537.36 Zalo android/12345')
+    ctx.add_init_script(BAY)
     pg = ctx.new_page()
     pg.on('pageerror', lambda e: errs.append(str(e)))
     pg.goto(BASE); pg.wait_for_timeout(900)
-    pg.click('#pdfBtn')
-    pg.wait_for_function("()=>!document.getElementById('prntSave').disabled", timeout=30000)
-    ok('bao mo bang Chrome hoac Safari',
-       pg.evaluate("()=>document.getElementById('prntTip').classList.contains('warn')")
-       and 'Chrome' in pg.inner_text('#prntTip'), pg.inner_text('#prntTip')[:60])
+    pg.click('#pdfBtn'); pg.wait_for_timeout(400)
+    ok('bao mo bang Chrome hoac Safari neu khong thay file',
+       pg.evaluate("()=>document.getElementById('pdfToast').classList.contains('warn')")
+       and 'Chrome' in pg.inner_text('#pdfToast'), pg.inner_text('#pdfToast')[:80])
     ctx.close()
     browser.close()
 
