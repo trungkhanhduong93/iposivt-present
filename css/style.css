@@ -1308,11 +1308,11 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
 .pdfv{position:fixed;inset:0;z-index:85;background:#eef2f7;display:none;
   flex-direction:column}
 .pdfv.open{display:flex}
-.pdfv .ph{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;
+.pdfv .prh{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;
   gap:14px;padding:11px 20px;background:#0f1a29;
   border-bottom:1px solid rgba(255,255,255,.1)}
-.pdfv .ph h2{font-size:14px;font-weight:600;color:#fff;letter-spacing:-.2px}
-.pdfv .ph h2 small{color:#8296b0;font-weight:400;margin-left:9px}
+.pdfv .prh h2{font-size:14px;font-weight:600;color:#fff;letter-spacing:-.2px}
+.pdfv .prh h2 small{color:#8296b0;font-weight:400;margin-left:9px}
 .pdfv .pa{display:flex;align-items:center;gap:9px}
 .pdfv iframe{flex:1;width:100%;border:0;background:#eef2f7;display:block}
 
@@ -1325,11 +1325,14 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
 .prnt{position:fixed;inset:0;z-index:85;background:#e9edf3;display:none;
   flex-direction:column}
 .prnt.open{display:flex}
-.prnt .ph{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;
+/* Thanh tiêu đề tên .prh, KHÔNG được là .ph — .ph là khung điện thoại trong
+   slide. Từng trùng tên: bản in nhuộm mọi điện thoại thành viền xanh đen, và
+   luật @media print giấu thanh tiêu đề giấu luôn cả 22 điện thoại khi xuất PDF. */
+.prnt .prh{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;
   gap:14px;padding:11px 20px;background:#0f1a29;
   border-bottom:1px solid rgba(255,255,255,.1)}
-.prnt .ph h2{font-size:14px;font-weight:600;color:#fff;letter-spacing:-.2px}
-.prnt .ph h2 small{color:#8296b0;font-weight:400;margin-left:9px}
+.prnt .prh h2{font-size:14px;font-weight:600;color:#fff;letter-spacing:-.2px}
+.prnt .prh h2 small{color:#8296b0;font-weight:400;margin-left:9px}
 .prnt .pa{display:flex;align-items:center;gap:9px}
 .prnt .pb{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;
   gap:16px;padding:20px 0 40px}
@@ -1363,7 +1366,7 @@ body[data-deck="v3"] .grid .t:hover{border-color:#12988c}
   body.prnt-on .app,body.prnt-on .grid,body.prnt-on .lb,
   body.prnt-on .pin,body.prnt-on .help,body.prnt-on .pdfv{display:none !important}
   body.prnt-on .prnt.open{position:static;display:block;background:#fff}
-  body.prnt-on .prnt .ph{display:none !important}
+  body.prnt-on .prnt .prh{display:none !important}
   body.prnt-on .prnt .pb{display:block;padding:0 !important;gap:0 !important;
     overflow:visible !important}
   body.prnt-on .prnt .pg{box-shadow:none !important;break-inside:avoid;

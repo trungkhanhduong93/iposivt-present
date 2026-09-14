@@ -62,6 +62,20 @@ def run(url, label):
             ok('bo %s: anh khong lazy, in ra khong trang trang' % deck, r['lazy'] == 0)
             ok('bo %s: khong tran ngang' % deck, not r['tran'])
             ok('bo %s: bat luat in tren body' % deck, r['body'])
+            # Luat rieng cua ban in khong duoc dung vao noi dung slide. Tung dinh: thanh
+            # tieu de ten .ph trung khung dien thoai -> vien xanh den tren man, mat het
+            # dien thoai khi in that.
+            nhuom = pg.evaluate("""()=>{const c=getComputedStyle(document.querySelector('#prnt .prh')).backgroundColor;
+              return [...document.querySelectorAll('#prntBody *')]
+                .filter(e=>getComputedStyle(e).backgroundColor===c).length;}""")
+            ok('bo %s: khong phan tu slide nao an mau thanh tieu de' % deck, nhuom == 0, str(nhuom))
+            AN = "()=>[...document.querySelectorAll('#prntBody img')].filter(i=>!i.offsetWidth).length"
+            man = pg.evaluate(AN)
+            pg.emulate_media(media='print'); pg.wait_for_timeout(200)
+            giay = pg.evaluate(AN)
+            pg.emulate_media(media='screen'); pg.wait_for_timeout(100)
+            ok('bo %s: in ra giay khong mat anh nao' % deck, giay == man,
+               'an tren man %d, an khi in %d' % (man, giay))
             pg.keyboard.press('Escape'); pg.wait_for_timeout(400)
             ok('bo %s: Esc dong ban in' % deck, not pg.is_visible('#prnt'))
             ok('bo %s: dong roi thi tat luat in' % deck,

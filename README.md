@@ -604,6 +604,16 @@ cũng chỉ đo `.s-body` nên không thấy gì.
   7px xuống 5px. Dòng vẫn giãn đầy khung như cũ vì chúng là `flex:1 1 auto`, chỉ
   có chiều cao **tối thiểu** hạ xuống.
 
+## Bản in: khung điện thoại viền đen, xuất PDF thì mất — 14/09/2026
+
+Trum thấy bìa ba bộ trong bản in có khung điện thoại viền xanh đen dày. Nguyên nhân: **trùng tên class**.
+Thanh tiêu đề bản in và khung xem PDF tên `.ph`, trùng khung điện thoại trong slide. Luật `.prnt .ph` tô nền
+`#0f1a29` và đệm 11px 20px lên mọi điện thoại. Nặng hơn, luật `@media print` giấu thanh tiêu đề nên **giấu
+luôn 22 điện thoại ở 9 trang** khi xuất PDF thật (Plus trang 1, 6 · Pro 1, 3, 4, 17 · V3 1, 15, 19).
+
+Sửa: đổi thanh tiêu đề sang `.prh` ở `index.html` và 7 luật CSS. `check_pdfview.py` thêm hai chốt: không
+phần tử slide nào ăn màu thanh tiêu đề, và giả lập in không mất ảnh nào so với trên màn.
+
 ## Bóng đổ bị cắt cụt — 13/09/2026
 
 Trum thấy bóng khung ảnh V3 slide 8 không tự nhiên: hai bên bị cắt thẳng, trên dưới thành mảng xám chữ
