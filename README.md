@@ -20,7 +20,7 @@ Gửi kèm số slide được: `iposivt-present.pages.dev/#pro-13` mở thẳng
 |---|---|
 | **Plus** | `TRAINING IVT LITE - NHAN VIEN.pptx` (26 slide) + phần Trum bổ sung |
 | **Pro** | `Demo IVT Pro.pptx` (20 slide) + phần Trum bổ sung |
-| **So sánh tính năng** | `assets/So-sanh-IVT-Standard-Plus-Pro.html` — bảng đối chiếu 99 tính năng. Sửa số liệu thì sửa mảng `DATA` trong file đó, cả bộ slide lẫn bản gốc đều đọc từ đấy |
+| **So sánh tính năng** | `assets/So-sanh-IVT-Standard-Plus-Pro.html` — bảng đối chiếu 100 tính năng. Sửa số liệu thì sửa mảng `DATA` trong file đó, cả bộ slide lẫn bản gốc đều đọc từ đấy |
 | **Cập nhật Inventory V3** | bài giới thiệu nội bộ `IVT V3 Introduction` (09/04/2026), bổ sung nội dung từ bản `iPOS-Inventory-3.0` của sếp (10/09/2026) |
 
 Chữ trong `js/slides-data.js` là **nguyên văn từ PPTX**, kể cả chữ nằm trong
@@ -576,7 +576,7 @@ xong nội dung rồi mới bắt đầu chuyển cảnh.** Đừng bắt tay v�
 
 Slide 2 bộ So sánh nay dùng đúng nội dung slide 7 bộ V3: thẻ nhấn mạnh trên mỗi
 gói, và danh sách tính năng thật thay cho mấy dòng mô tả chung chung. Giữ lại hai
-thứ riêng của bộ So sánh: **số chênh lệch** giữa các gói (sinh từ chính bảng 99
+thứ riêng của bộ So sánh: **số chênh lệch** giữa các gói (sinh từ chính bảng 100
 mục) và **dải chú dẫn** cách đọc bảng.
 
 Sửa ở `tools/gen_compare.py` rồi chạy lại, **đừng sửa tay trong `slides-data.js`**.
@@ -732,7 +732,7 @@ màu cột là màu của gói, cố định ở `--st` xám, `--pl` xanh, `--pr
 ## 7b. Bộ So sánh tính năng — sinh tự động
 
 Bộ này **không viết tay**. `tools/gen_compare.py` đọc thẳng
-`../So-sanh-IVT-Standard-Plus-Pro.html`, bóc mảng `DATA` (99 tính năng, 12 phân
+`../So-sanh-IVT-Standard-Plus-Pro.html`, bóc mảng `DATA` (100 tính năng, 12 phân
 hệ, 8 nhóm báo cáo) rồi ghi phần `cmp:` vào `js/slides-data.js`.
 
 ```bash

@@ -97,7 +97,7 @@ TABLES = [
     ('Xuất kho', 'PHÂN HỆ XUẤT KHO', ['6.'],
      'Xuất bán POS có ở cả ba gói. Trả lại nhà cung cấp, xuất huỷ và xuất khác mở từ {{Plus}}; điều chuyển nội bộ thì cần {{Pro}}.'),
     ('Nhập kho · Kiểm kê', 'NHẬP KHO VÀ KIỂM KÊ', ['7.', '8.'],
-     'Nhập mua hàng và kiểm kê là nghiệp vụ nền, gói nào cũng có. Nhập điều chuyển và thu hồi đi kèm phân hệ nội bộ của {{Pro}}.'),
+     'Nhập mua hàng và kiểm kê là nghiệp vụ nền, gói nào cũng có. Nhập trả lại đi kèm xuất bán hàng, nhập điều chuyển và thu hồi đi kèm phân hệ nội bộ — cả ba chỉ có trên {{Pro}}.'),
     ('Công nợ · Nhượng quyền · Kế toán', 'CÔNG NỢ, NHƯỢNG QUYỀN VÀ KẾ TOÁN', ['9.', '10.', '11.'],
      'Công nợ nhà cung cấp và tính giá vốn có ở cả ba gói. Khoá sổ kho mở từ {{Plus}}.'),
     ('Báo cáo quản trị kho — phần 1', 'BÁO CÁO QUẢN TRỊ KHO', [('12.01.01', '12.01.08')],
@@ -129,7 +129,7 @@ print('tong %d muc — Standard %d, Plus %d, Pro %d' % (len(items), tot[0], tot[
 out = ["""
 /* ══════════════════════════════════════════════════════════════════════════
    SO SÁNH TÍNH NĂNG — công khai, không cần mã
-   Nguồn: "So-sanh-IVT-Standard-Plus-Pro.html" (bảng đối chiếu 99 tính năng).
+   Nguồn: "So-sanh-IVT-Standard-Plus-Pro.html" (bảng đối chiếu %d tính năng).
    FILE NÀY SINH TỰ ĐỘNG phần bộ so sánh — sửa nội dung thì sửa ở
    tools/gen_compare.py rồi chạy lại, đừng sửa tay ở đây.
    Chia slide theo khối nghiệp vụ; khối nào cao quá khung 500px thì bộ sinh tự
@@ -139,7 +139,7 @@ cmp: {
   id: 'cmp',
   name: 'So sánh tính năng',
   short: 'SO SÁNH',
-  tagline: 'Standard · Plus · Pro — 99 tính năng theo từng phân hệ',
+  tagline: 'Standard · Plus · Pro — %d tính năng theo từng phân hệ',
   /* Bộ này có bản gốc dạng cuộn dọc — cờ này bật nút PDF trên thanh công cụ */
   page: 1,
   dir: 'assets/slides/plus/',
@@ -198,9 +198,10 @@ cmp: {
       { k:'no', t:'Dấu tích là có, gạch ngang là không có' }
     ] },
 """
-      # Thứ tự phải khớp đúng từng %d trong khuôn ở trên: ba số ở bìa, tổng số
-      # mục, rồi từng thẻ gói — số tính năng của gói đứng TRƯỚC dòng chênh lệch.
-      % (tot[0], tot[1], tot[2], len(items),
+      # Thứ tự phải khớp đúng từng %d trong khuôn ở trên: tổng số mục ở chú thích
+      # đầu khối và ở tagline, ba số ở bìa, tổng số mục, rồi từng thẻ gói — số
+      # tính năng của gói đứng TRƯỚC dòng chênh lệch.
+      % (len(items), len(items), tot[0], tot[1], tot[2], len(items),
          tot[0],
          tot[1], tot[1] - tot[0],
          tot[2], tot[2] - tot[1])]
