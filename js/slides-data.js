@@ -1184,15 +1184,14 @@ v3: {
       { t:'Thời hạn bản quyền được kích hoạt sau khi thanh toán', s:'Hệ thống tự tạo PYC cho IACC' },
       { t:'Mua mới và gia hạn nhiều điểm một lần', s:'Ảnh bên là gia hạn mười cửa hàng trong một lượt' },
       { t:'Ưu đãi áp như chính sách đang chạy', s:'Chọn thời hạn nào thì ưu đãi hiện ngay theo thời hạn đó' }
-    ],
-    note:'Khách mua online điền email giới thiệu **@ipos.vn** thì sale hoặc CS đó được ghi nhận ~~KPI và doanh số~~.' },
+    ] },
 
   /* 7 ─ Gói mới · với sale ----------------------------------------------- */
   { n:11, type:'pillars', cols:2, fit:1,
     crumb:['GÓI BẢN QUYỀN {{V3}}','Chính sách bán hàng','Với sale'],
     title:'CHÍNH SÁCH VỚI SALES',
     items:[
-      { n:'01', c:'#12988c', t:'**Chính sách bán hàng giữ nguyên.** Không thay đổi gì so với chính sách hiện hành đang áp dụng cho sale, hoa hồng tương ứng gói mới.' },
+      { n:'01', c:'#12988c', t:'**Chính sách bán hàng giữ nguyên.** Với khách hàng mua mới online, chỉ cần điền email của sale hoặc CS tương ứng, KPI, doanh số và hoa hồng sẽ được tính như chính sách hiện tại cho sale hoặc CS.' },
       { n:'02', c:'#e0673d', t:'**Chuyển đổi gói từ Plus lên Pro hoặc ngược lại**, sẽ theo logic như gia hạn và ~~không tính KPI~~. Trước đây là hai sản phẩm riêng trên Hermes nên tính mua mới và có KPI.' }
     ] },
 
