@@ -76,6 +76,13 @@ const PK_NAME = { st: 'STANDARD', pl: 'PLUS', pr: 'PRO' };
 
 const MOB_W = 900;
 const isMob = () => innerWidth < MOB_W;
+
+/* Trình duyệt nhúng trong Zalo, Facebook, Messenger… không có lệnh in: bấm Xuất
+   PDF không có gì xảy ra, nên phải báo người xem mở bằng trình duyệt thật. */
+const IN_APP = /Zalo|FBAN|FBAV|FB_IAB|Instagram|Line\/|MicroMessenger|TikTok|musical_ly/i
+  .test(navigator.userAgent);
+const IOS = /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 function frameH (n, colW, colH, gap) {
   if (n < 2) return '';
   const w = (colW - (n - 1) * gap) / n;      // bề ngang tối đa cho một khung
@@ -907,7 +914,11 @@ const App = {
       pdff  : $('#pdfFrame'),
       lb    : $('#lb'),
       lbi   : $('#lb img'),
-      help  : $('#help')
+      help  : $('#help'),
+      dsw   : $('#dsw'),
+      dswl  : $('#dswList'),
+      prtip : $('#prntTip'),
+      pdtip : $('#pdfTip')
     };
     this.readHash();
     this.bind();
@@ -920,6 +931,12 @@ const App = {
   bind () {
     addEventListener('resize', () => this.resize());
     $$('.seg button').forEach(b => { b.onclick = () => this.setDeck(b.dataset.deck); });
+    /* Menu chọn bộ trên điện thoại: chạm ra ngoài là đóng */
+    $('#dswBtn').onclick = () => this.toggleDsw();
+    addEventListener('pointerdown', e => {
+      if (this.el.dsw.classList.contains('open') && !this.el.dsw.contains(e.target))
+        this.toggleDsw(false);
+    });
     $('#pinCancel').onclick = () => this.closePin();
     $('#pinOk').onclick     = () => this.tryPin();
     $('#pinInput').onkeydown = e => {
@@ -935,7 +952,7 @@ const App = {
        chính slide của nó xếp dọc. */
     $('#pdfBtn').onclick    = () => this.openPdf(true);
     $('#prntClose').onclick = () => this.togglePrint(false);
-    $('#prntSave').onclick  = () => print();
+    $('#prntSave').onclick  = () => this.savePrint();
     $('#pdfClose').onclick = () => this.togglePdf(false);
     $('#gclose').onclick  = () => this.toggleGrid(false);
     $('#fsBtn').onclick   = () => this.fullscreen();
@@ -963,7 +980,8 @@ const App = {
         case 'Home':   e.preventDefault(); this.to(0, 'all'); break;
         case 'End':    e.preventDefault(); this.to(this.deck.slides.length - 1, 'all'); break;
         case 'Escape':
-          if (this.el.lb.classList.contains('open'))   this.el.lb.classList.remove('open');
+          if (this.el.dsw.classList.contains('open'))  this.toggleDsw(false);
+          else if (this.el.lb.classList.contains('open'))   this.el.lb.classList.remove('open');
           else if (this.el.help.classList.contains('open')) this.el.help.classList.remove('open');
           else if (this.el.pdfv.classList.contains('open')) this.togglePdf(false);
           else if (this.el.prnt.classList.contains('open')) this.togglePrint(false);
@@ -1239,6 +1257,7 @@ const App = {
     if (!this.deck.page) this.togglePdf(false);   // bộ khác thì đóng khung xem
     if (this.prntKey !== this.key) this.togglePrint(false);
     $$('.seg button').forEach(b => b.classList.toggle('on', b.dataset.deck === this.key));
+    $('#dswName').textContent = $(`.seg button[data-deck="${this.key}"]`).textContent;
 
     if (this.mob) {
       this.renderPages();
@@ -1340,6 +1359,7 @@ const App = {
       document.body.classList.toggle('mob', mob);
       this.pagesKey = null;                 // đổi chế độ thì dựng lại từ đầu
       if (!mob) this.unwatchPages();
+      this.toggleDsw(false);
     }
     const root = document.documentElement.style;
     if (mob) {
@@ -1397,7 +1417,7 @@ const App = {
   },
 
   fitPrint () {
-    const w = this.el.prb.clientWidth - 48;
+    const w = this.el.prb.clientWidth - (this.mob ? 24 : 48);   // điện thoại: lề hẹp
     this.el.prnt.style.setProperty('--ps', Math.min(1, w / 1280).toFixed(4));
     $$('.pg > .slide', this.el.prb).forEach(el => this.fitOnce(el));
   },
@@ -1409,12 +1429,21 @@ const App = {
       this.buildPrint();
       this.el.prt.innerHTML = `${esc(this.deck.name)}<small>${
         this.deck.slides.length} slide · mỗi slide một trang</small>`;
+    } else {
+      clearInterval(this.prntWait);
+      /* Trả lại tiêu đề trang đã đổi để đặt tên file PDF, xem savePrint() */
+      if (this.title0) { document.title = this.title0; this.title0 = null; }
     }
     /* Lớp trên body mới là thứ bật luật in. Không dùng :has() cho chắc: bấm
        Ctrl+P lúc đang trình chiếu vẫn phải in được như trình duyệt vẫn làm. */
     document.body.classList.toggle('prnt-on', open);
     this.el.prnt.classList.toggle('open', open);
-    if (open) requestAnimationFrame(() => this.fitPrint());
+    if (open) {
+      requestAnimationFrame(() => this.fitPrint());
+      /* Gọi SAU khi khung đã mở: vòng chờ ảnh tự dừng khi khung đóng */
+      if (this.mob) this.waitPrintImgs();
+      else { $('#prntSave').disabled = false; this.el.prtip.textContent = ''; }
+    }
   },
 
   /* ── Khung xem bản gốc ──────────────────────────────────────────────────
@@ -1444,6 +1473,7 @@ const App = {
         this.el.pdff.srcdoc = src;
       }
     }
+    if (open) this.showTip(this.el.pdtip, '<b>Xuất PDF</b> trong bảng');
     /* Đóng thì trả tiêu điểm về trang cha, không thì mọi phím tắt sau đó rơi
        vào khung nhúng đang ẩn và trông như bàn phím chết. */
     if (!open) this.el.pdff.blur();
@@ -1475,6 +1505,77 @@ const App = {
       return;
     }
     setTimeout(() => URL.revokeObjectURL(url), 120000);
+  },
+
+  /* Chrome đặt tên file PDF theo tiêu đề trang: đổi sang tên bộ rồi mới gọi in.
+     Trả lại lúc đóng bản in chứ không trong afterprint — trên điện thoại print()
+     không chặn trang, chưa chắc afterprint bắn sau khi file đã lưu. */
+  savePrint () {
+    if (!this.title0) this.title0 = document.title;
+    document.title = this.deck.name;
+    print();
+  },
+
+  /* Điện thoại: khoá nút Xuất PDF tới khi ảnh của bản in tải xong — mạng di động
+     chậm mà in ngay thì ảnh chưa về in ra ô trắng. Quá 20 giây thì vẫn mở nút,
+     kèm lời báo thiếu ảnh. */
+  waitPrintImgs () {
+    const btn = $('#prntSave'), key = this.key, t0 = Date.now();
+    const imgs = $$('img', this.el.prb);
+    clearInterval(this.prntWait);
+    const tick = () => {
+      if (this.prntKey !== key || !this.el.prnt.classList.contains('open')) return true;
+      const n = imgs.filter(im => im.complete).length;
+      if (n < imgs.length && Date.now() - t0 < 20000) {
+        btn.disabled = true;
+        this.el.prtip.classList.remove('warn');
+        this.el.prtip.textContent = `Đang tải ảnh ${n}/${imgs.length}…`;
+        return false;
+      }
+      btn.disabled = false;
+      this.showTip(this.el.prtip, '<b>Xuất PDF</b>');
+      if (n < imgs.length && !IN_APP) this.el.prtip.innerHTML +=
+        ` Còn ${imgs.length - n} ảnh chưa tải xong, PDF có thể thiếu ảnh.`;
+      return true;
+    };
+    if (!tick()) this.prntWait = setInterval(() => { if (tick()) clearInterval(this.prntWait); }, 250);
+  },
+
+  /* Dòng hướng dẫn lưu PDF — CSS chỉ cho hiện trên điện thoại. Hộp thoại in mỗi
+     nền tảng một khác: Android chọn máy in "Lưu dưới dạng PDF", iPhone phải qua
+     nút Chia sẻ. Trình duyệt nhúng trong Zalo, Facebook thì không in được. */
+  showTip (el, btn) {
+    el.innerHTML = IN_APP
+      ? 'Trình duyệt trong ứng dụng (Zalo, Facebook…) không lưu được PDF. ' +
+        'Mở trang bằng <b>Chrome</b> hoặc <b>Safari</b> rồi bấm PDF lần nữa.'
+      : IOS ? `Bấm ${btn} → nút <b>Chia sẻ</b> trong hộp thoại in → <b>Lưu vào Tệp</b>.`
+            : `Bấm ${btn} → chọn máy in <b>Lưu dưới dạng PDF</b>.`;
+    el.classList.toggle('warn', IN_APP);
+  },
+
+  /* Menu chọn bộ trên điện thoại. Dựng lại mỗi lần mở cho khớp cổng mã: bộ có
+     mã hiện ổ khoá tới khi nhập đúng. */
+  toggleDsw (force) {
+    const open = force === undefined ? !this.el.dsw.classList.contains('open') : force;
+    if (open) {
+      const OK = '<svg class="dsw-ok" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>';
+      const LK = '<svg class="dsw-lk" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/>' +
+                 '<path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+      this.el.dswl.innerHTML = $$('.seg button').map(b => {
+        const k = b.dataset.deck, d = DECKS[k];
+        if (!d) return '';
+        const on = k === this.key, lock = d.gated && !this.opened(k);
+        return `<button class="dsw-it${on ? ' on' : ''}" data-deck="${k}" role="menuitem">` +
+          `<i class="dsw-dot"></i><span><b>${esc(b.textContent)}</b>` +
+          `<small>${d.slides.length} slide${lock ? ' · cần mã nội bộ' : ''}</small></span>` +
+          `${on ? OK : lock ? LK : ''}</button>`;
+      }).join('');
+      $$('.dsw-it', this.el.dswl).forEach(it => {
+        it.onclick = () => { this.toggleDsw(false); this.setDeck(it.dataset.deck); };
+      });
+    }
+    this.el.dsw.classList.toggle('open', open);
+    $('#dswBtn').setAttribute('aria-expanded', String(open));
   },
 
   toggleGrid (force) {

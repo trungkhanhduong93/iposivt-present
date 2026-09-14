@@ -265,6 +265,7 @@ Bố cục từng slide **không đổi gì** so với bản máy tính — khô
 | Ảnh | `loading="lazy"`, tải dần theo tầm nhìn — cả bộ nặng vài MB |
 | Hiệu ứng | tắt hết. Không chia phần, không chuyển động, không trượt slide |
 | Vuốt ngang | tắt, để không nhầm với cuộn |
+| Thanh công cụ | menu thả chọn bộ, số trang, nút PDF — không lưới, toàn màn hình, phím tắt (14/09/2026) |
 
 `renderPages()` trong `app.js` dựng cả bộ một lần rồi nhớ trong `pagesKey`; đổi
 bộ hay đổi chế độ mới dựng lại.
@@ -603,6 +604,29 @@ cũng chỉ đo `.s-body` nên không thấy gì.
 - Bảng so sánh hạ đệm dọc của dòng từ 6px xuống 5px và của dòng tên phân hệ từ
   7px xuống 5px. Dòng vẫn giãn đầy khung như cũ vì chúng là `flex:1 1 auto`, chỉ
   có chiều cao **tối thiểu** hạ xuống.
+
+## Điện thoại: menu chọn bộ và nút PDF — 14/09/2026
+
+Ở khổ iPhone (393px), bốn nút chọn bộ không đủ chỗ, **nút V3 bị cắt mất**. Trum yêu cầu chọn bộ bằng menu
+thả, bỏ lưới, toàn màn hình, phím tắt, thay bằng nút tải PDF.
+
+- **Menu thả `.dsw`** dựng từ chính các nút `.seg` — thêm bộ mới chỉ thêm một nút. Mỗi dòng có chấm màu
+  bộ, tên đầy đủ, số slide. Bộ đang xem có dấu tích, bộ có mã hiện ổ khoá tới khi nhập đúng.
+- **Nút PDF** dùng lại bản in sẵn có, bộ So sánh mở bản gốc. Trum chọn mở hộp thoại in của điện thoại
+  thay vì làm sẵn file PDF: không phình repo, luôn là bản mới nhất.
+- Khung bản in trên điện thoại **khoá nút Xuất PDF tới khi ảnh tải xong** (trần 20 giây) và có dòng
+  hướng dẫn: Android chọn máy in "Lưu dưới dạng PDF", iPhone qua nút Chia sẻ → Lưu vào Tệp. Mở trong
+  Zalo, Facebook thì báo mở bằng Chrome hoặc Safari — trình duyệt nhúng không có lệnh in.
+- Tên file PDF theo tên bộ: `savePrint()` đổi `document.title` trước khi in, đóng bản in mới trả lại.
+
+Ba lỗi gặp khi làm: gọi vòng chờ ảnh **trước** khi khung có class `open` nên nó thoát ngay; luật chung
+`b,strong{color:var(--ink)}` nhuộm tên bộ trên nút menu thành xám tối; số trang `01 / 26` gãy dòng khi tên
+bộ V3 dài.
+
+`check_mobile.py` thêm: thanh công cụ ở 393 và 360px không còn nút thừa, không gì thò ra ngoài màn; menu đủ
+bộ, chọn đúng, hỏi mã; bản in từng bộ xuất ra đúng số trang 960×540pt; giả lập Zalo thì hiện cảnh báo.
+
+**Chưa kiểm trên máy thật:** Android có giữ khổ 16:9 hay ép A4, iPhone có bỏ qua `@page size` không.
 
 ## Bản in: khung điện thoại viền đen, xuất PDF thì mất — 14/09/2026
 

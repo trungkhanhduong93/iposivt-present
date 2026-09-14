@@ -26,6 +26,17 @@
       <button id="toV3"   data-deck="v3"             title="Phím 4"><i>Cập nhật Inventory </i>V3</button>
     </div>
 
+    <!-- Chọn bộ trên điện thoại: bốn nút ở trên không đủ chỗ (nút V3 bị cắt mất ở
+         khổ iPhone), nên dưới 900px thay bằng menu thả. Danh sách dựng từ chính các
+         nút .seg — thêm bộ mới chỉ phải thêm một nút ở trên. -->
+    <div class="dsw" id="dsw">
+      <button class="dsw-btn" id="dswBtn" aria-haspopup="true" aria-expanded="false">
+        <i class="dsw-dot"></i><b id="dswName">IVT Plus</b>
+        <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <div class="dsw-list" id="dswList" role="menu"></div>
+    </div>
+
     <span class="sp"></span>
 
     <span class="cnt" id="cnt">01<i> / 28</i></span>
@@ -37,6 +48,7 @@
 
     <button class="tbtn" id="pdfBtn" title="Bản in dạng cuộn dọc (P)">
       <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
+      <svg class="pdfic-m" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 11v7m-3-3 3 3 3-3"/></svg>
       <span>PDF</span>
     </button>
 
@@ -93,6 +105,7 @@
       </button>
     </div>
   </div>
+  <p class="prtip" id="prntTip"></p>
   <div class="pb" id="prntBody"></div>
 </div>
 
@@ -110,6 +123,7 @@
       </button>
     </div>
   </div>
+  <p class="prtip" id="pdfTip"></p>
   <iframe id="pdfFrame" title="So sánh tính năng — bản gốc"></iframe>
 </div>
 
